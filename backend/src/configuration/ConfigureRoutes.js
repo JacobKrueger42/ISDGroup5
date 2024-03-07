@@ -50,7 +50,7 @@ function GenerateRoutes(controller, name, app, opts) {
 				create: ['post', `/${name}`],
 				detail: ['get', `/${name}/:id`],
 				update: ['post', `/${name}/:id/update`],
-				delete: ['delete', `/${name}/:id`]
+				remove: ['delete', `/${name}/:id`]
 			}[method] ?? null;
 
 		if (!routeConfig) throw new Error(`unrecognized route: ${name}.${method}`);
