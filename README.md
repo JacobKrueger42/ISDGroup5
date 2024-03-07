@@ -19,7 +19,7 @@ To quickstart the frontend project,
 
 ```sh
 cd frontend
-npm install
+npm ci
 npm run dev
 ```
 
@@ -27,7 +27,7 @@ This will host the frontend on <http://localhost:5173> by default.
 
 ```sh
 cd backend
-npm install
+npm ci
 npm run dev
 ```
 
@@ -42,11 +42,33 @@ curl http://localhost:8181/counter/count
 
 ## Adding a controller
 
-Controllers are functions that handle a specific route (partial URL) and HTTP verb (GET, POST, etc.).
-These handler functions,
+### What is this?
+
+Controllers are functions that handle a specific route (partial URL) and HTTP verb (GET, POST, etc.). These handler functions,
 
 - take the current request and response as params (`req`, `res` respectively).
 - always complete the request by calling `res.send(someResponseData)` OR calling `next` ([more here](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes#route_functions))
+
+### Adding a new one
+
+1. Within the `/backend/src/controllers` directory, add a new folder with the name of the entity you want to control (eg. 'User'). This should be singular, not plural.
+2. Create an `index.js` within this directory.
+3. import the prisma client and any other services you may need
+
+```js
+import { prisma } from '#services';
+```
+
+4. add your various methods, these should be one of `[ list, count, create, detail, update, remove ]`
+
+```js
+export async function list(req, res) {
+	// add your logic here!
+	res.send('OK');
+}
+```
+
+Checkout the `Counter/index.js` controller as a fully implemented example.
 
 ## Team Members
 
