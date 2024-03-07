@@ -1,8 +1,8 @@
 // the methods defined in this file must match one that the route configurer knowns
 // otherwise your route will NOT be automatically configured
 // one of: [ list, count, create, detail, update, remove ] is valid
-import { PrismaClient } from '@prisma/client';
-const prisma = new PrismaClient();
+
+import { prisma } from '#services';
 
 export async function count(_, res) {
 	const counter = (await prisma.counter.findMany()) || [];

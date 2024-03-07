@@ -19,6 +19,7 @@
 	"imports": {
 		"#middleware": "./src/middleware/index.js",
 		"#controllers": "./src/controllers/index.js",
-		"#configuration": "./src/configuration/index.js"
+		"#configuration": "./src/configuration/index.js",
+		"#services": "./src/services/index.js"
 	}
 }
