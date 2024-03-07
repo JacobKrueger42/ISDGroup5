@@ -10,16 +10,15 @@ export async function count(_, res) {
 	res.json(total);
 }
 
-export async function update(req, res) {
+export async function update(req, res, next) {
 	const { count } = req.body;
 
 	try {
 		await prisma.counter.create({
 			data: { value: parseInt(count) }
 		});
+		res.send('OK');
 	} catch (error) {
-		console.log('an error occured while updating the count,\n', error);
+		next(error);
 	}
-
-	res.send('OK');
 }

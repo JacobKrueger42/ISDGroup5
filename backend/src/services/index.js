@@ -1,3 +1,3 @@
-import { default as prisma } from '../DatabaseClient';
+import { default as prisma } from '../services/DatabaseClient.js';
 
 export { prisma };

@@ -1,14 +1,15 @@
+import HttpStatus from 'http-status-codes';
+
 export default function ErrorHandler(err, req, res, next) {
-	const errStatus = err.statusCode || 500;
-	const errMsg = err.message || 'An error occured while processing a request';
+	const status = err.statusCode || HttpStatus.INTERNAL_SERVER_ERROR;
+	console.log(err.message || `An error occured while handling a request to "${req.path}"`);
 
-	res.status(errStatus).json({
-		success: false,
-		status: errStatus,
-		message: errMsg,
-		stack: process.env.NODE_ENV === 'development' ? err.stack : {}
-	});
-
-	// do not call next, terminate the request
-	// next();
+	res
+		.header('Content-Type', 'application/json')
+		.status(status)
+		.json({
+			path: req.path,
+			detailed_error_message: (err.message || '').replaceAll('\n', ' '),
+			message: 'An error occurred'
+		});
 }

@@ -10,12 +10,14 @@ const opts = {
 async function Setup() {
 	const app = express();
 
-	// configure middleware
+	// configure pre-request middleware
 	app.use(express.json());
-	app.use(ErrorHandler);
 
 	// configure routes automatically
 	await ConfigureRoutes(app, { verbose: opts });
+
+	// configure post-request middleware
+	app.use(ErrorHandler);
 
 	return app;
 }

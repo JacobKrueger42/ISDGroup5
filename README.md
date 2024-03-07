@@ -40,6 +40,14 @@ curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST -
 curl http://localhost:8181/counter/count
 ```
 
+## Adding a controller
+
+Controllers are functions that handle a specific route (partial URL) and HTTP verb (GET, POST, etc.).
+These handler functions,
+
+- take the current request and response as params (`req`, `res` respectively).
+- always complete the request by calling `res.send(someResponseData)` OR calling `next` ([more here](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes#route_functions))
+
 ## Team Members
 
 - Jacob Krueger (24454973)
