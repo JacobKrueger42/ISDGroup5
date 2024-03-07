@@ -10,8 +10,21 @@
 
 ## Quick start
 
-> TODO
+> This project uses `npm` to manage dependencies and run scripts. Ensure you have a recent version installed (`9.5.x+`). npm is a dependency of [NodeJs](https://nodejs.org/en/download).
+
+To quickstart the frontend project,
+
+```sh
+cd isdGroup5
+npm install
+npm run dev
+```
+
+**TODO: backend**
 
 ## Team Members
 
-> TODO
+- Jacob Krueger (24454973)
+- Sam Logan (24489724)
+- Afiz Mahmud (14272797)
+- Albert Ferguson (13611165)
