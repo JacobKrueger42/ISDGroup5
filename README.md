@@ -23,12 +23,21 @@ npm install
 npm run dev
 ```
 
-**TODO: backend**
+This will host the frontend on <http://localhost:5173> by default.
 
 ```sh
 cd backend
 npm install
 npm run dev
+```
+
+This will boot the API server on <http://localhost:8181> by default. Go ahead and give
+it a test by running these commands,
+
+```sh
+curl http://localhost:8181/counter/count
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"count": 2}' http://localhost:8181/counter/fake-id/update
+curl http://localhost:8181/counter/count
 ```
 
 ## Team Members
