@@ -1,28 +1,30 @@
 import express from 'express';
 import { ErrorHandler } from '#middleware';
 import { ConfigureRoutes } from '#configuration';
-// import { get, post } from '#controllers';
 
 const opts = {
 	port: 8181,
 	verbose: true
 };
 
-const app = express();
+async function Setup() {
+	const app = express();
 
-// apply configuration
-ConfigureRoutes(app, { verbose: opts });
+	// apply configuration
+	await ConfigureRoutes(app, { verbose: opts });
 
-// configure middleware
-app.use(ErrorHandler);
+	// configure middleware
+	app.use(express.json());
+	app.use(ErrorHandler);
 
-// configure controllers
-// app.get('/total', get);
-// app.post('/increment', post);
+	return app;
+}
 
-// startup
-app.listen(opts.port, () => {
-	console.log('  ExpressJs server is now running\n');
-	console.log('    ➜ Hot loading not enabled');
-	console.log(`    ➜ Local:		http://localhost:${opts.port}/`);
+Setup().then(app => {
+	// startup
+	app.listen(opts.port, () => {
+		console.log('\n  ExpressJs server is now running\n');
+		console.log('    ➜ Hot loading not enabled');
+		console.log(`    ➜ Local:		http://localhost:${opts.port}/`);
+	});
 });
