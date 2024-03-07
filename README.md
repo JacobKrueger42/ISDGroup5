@@ -2,7 +2,10 @@
 
 <p align="center">
     <a href="https://github.com/JacobKrueger42/ISDGroup5/blob/master/README.md">
-        <img src="https://badges.aleen42.com/src/react.svg" alt="In Meal is built with React" />
+        <img src="https://badges.aleen42.com/src/react.svg" alt="built with React" />
+    </a>
+    <a href="https://github.com/JacobKrueger42/ISDGroup5/blob/master/README.md">
+        <img src="https://badges.aleen42.com/src/vitejs.svg" alt="built with ViteJs" />
     </a>
 </p>
 
@@ -15,12 +18,18 @@
 To quickstart the frontend project,
 
 ```sh
-cd isdGroup5
+cd frontend
 npm install
 npm run dev
 ```
 
 **TODO: backend**
+
+```sh
+cd backend
+npm install
+npm run dev
+```
 
 ## Team Members
 
