@@ -18,25 +18,28 @@ export default async function ConfigureRoutes(app, opts) {
         console.log(`  discovered ${controllers.length} controllers`);
     if (controllers.length === 0) return;
 
+    const rootDir = path.resolve('.');
+    opts.verbose && console.log(`   root directory found at ${rootDir}`);
+
     await Promise.all(
-        controllers.map(name => ConfigureController(name, app, opts))
+        controllers.map(name => ConfigureController(name, app, rootDir, opts))
     );
 }
 
-async function ConfigureController(name, app, opts) {
+async function ConfigureController(name, app, rootDir, opts) {
     opts.verbose && console.log('\n   %s:', name);
 
     // import has different relative directory than fs
     const controllerDir = path.join(
-        '..',
-        '..',
+        rootDir,
         controllerDirectory,
         name,
         'index.js'
     );
 
     try {
-        const controller = await import(controllerDir);
+        // add file prefix to fix windows usages
+        const controller = await import(`file:///${controllerDir}`);
         GenerateRoutes(controller, name, app, opts);
     } catch (error) {
         console.log(
