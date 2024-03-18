@@ -31,12 +31,21 @@ npm ci
 npm run dev
 ```
 
-This will boot the API server on <http://localhost:8181> by default. Go ahead and give
-it a test by running these commands,
+This will boot the API server on <http://localhost:8181> by default. You should see a
+successful startup with some messages telling you what controllers have been discovered.
+Shutdown the server, and let's setup the database quickly.
+
+Go ahead and copy `example.env`, then rename it to `.env`. This should be grayed as Git ignores it. This is where we add environment variables or secrets. In a console, run the following to bootstrap the database and create a sqlite file,
+
+```sh
+npm run migrate
+```
+
+Now go ahead and rerun the server (`npm run dev`) and test this all with the following,
 
 ```sh
 curl http://localhost:8181/counter/count
-curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d '{"count": 2}' http://localhost:8181/counter/fake-id/update
+curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST -d  "{\"count\": 2}" http://localhost:8181/counter/fake-id/update
 curl http://localhost:8181/counter/count
 ```
 
@@ -46,8 +55,8 @@ curl http://localhost:8181/counter/count
 
 Controllers are functions that handle a specific route (partial URL) and HTTP verb (GET, POST, etc.). These handler functions,
 
-- take the current request and response as params (`req`, `res` respectively).
-- always complete the request by calling `res.send(someResponseData)` OR calling `next` ([more here](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes#route_functions))
+-   take the current request and response as params (`req`, `res` respectively).
+-   always complete the request by calling `res.send(someResponseData)` OR calling `next` ([more here](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/routes#route_functions))
 
 ### Adding a new one
 
@@ -72,7 +81,7 @@ Checkout the `Counter/index.js` controller as a fully implemented example.
 
 ## Team Members
 
-- Jacob Krueger (24454973)
-- Sam Logan (24489724)
-- Afiz Mahmud (14272797)
-- Albert Ferguson (13611165)
+-   Jacob Krueger (24454973)
+-   Sam Logan (24489724)
+-   Afiz Mahmud (14272797)
+-   Albert Ferguson (13611165)
