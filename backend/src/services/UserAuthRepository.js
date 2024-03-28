@@ -1,6 +1,6 @@
 import { prisma } from '#services';
 import PasswordHasher from '../services/PasswordHasher.js';
-import { isNullOrEmpty } from './StringUtils';
+import { isNullOrEmpty } from './StringUtils.js';
 
 const passwordOptions = Object.freeze({
     minLength: 8,
