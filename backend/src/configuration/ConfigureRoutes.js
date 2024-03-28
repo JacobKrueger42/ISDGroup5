@@ -62,7 +62,12 @@ function GenerateRoutes(controller, name, app, opts) {
                 create: ['post', `/${name}`],
                 detail: ['get', `/${name}/:id`],
                 update: ['post', `/${name}/:id/update`],
-                remove: ['delete', `/${name}/:id`]
+                remove: ['delete', `/${name}/:id`],
+                // auth routing
+                signup: ['post', '/auth/signup'],
+                login: ['post', '/auth/login'],
+                logout: ['post', '/auth/logout'],
+                resetPassword: ['post', '/auth/reset-password']
             }[method] ?? null;
 
         if (!routeConfig)

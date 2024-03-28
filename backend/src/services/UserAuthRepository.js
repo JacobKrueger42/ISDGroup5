@@ -9,7 +9,7 @@ const passwordOptions = Object.freeze({
 
 const availableRoles = ['ADMIN', 'STAFF', 'CUSTOMER'];
 
-export default function UserAuthRepository() {
+export default function userAuthRepository() {
     ////////////////////////
     // lifecycle
     ////////////////////////
