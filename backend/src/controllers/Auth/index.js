@@ -36,6 +36,10 @@ export async function login(req, res) {
     }
 }
 
-export async function logout(req, res) {}
+export async function logout(req, res) {
+    throw new Error('not implemented yet!');
+}
 
-export async function resetPassword(req, res) {}
+export async function resetPassword(req, res) {
+    throw new Error('not implemented yet!');
+}

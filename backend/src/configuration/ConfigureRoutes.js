@@ -27,8 +27,6 @@ export default async function ConfigureRoutes(app, opts) {
 }
 
 async function ConfigureController(name, app, rootDir, opts) {
-    opts.verbose && console.log('\n   %s:', name);
-
     // import has different relative directory than fs
     const controllerDir = path.join(
         rootDir,
@@ -40,7 +38,12 @@ async function ConfigureController(name, app, rootDir, opts) {
     try {
         // add file prefix to fix windows usages
         const controller = await import(`file:///${controllerDir}`);
-        GenerateRoutes(controller, name, app, opts);
+
+        if (name === 'Auth') {
+            GenerateAuthRoutes(controller, name, app, opts);
+        } else {
+            GenerateRoutes(controller, name, app, opts);
+        }
     } catch (error) {
         console.log(
             `an error occured while importing controller "${name ?? '<Unknown>'}" at path "${
@@ -51,19 +54,15 @@ async function ConfigureController(name, app, rootDir, opts) {
     }
 }
 
-function GenerateRoutes(controller, name, app, opts) {
+function GenerateAuthRoutes(controller, name, app, opts) {
+    opts.verbose && console.log('\n   %s:', name);
+
     const methods = Object.keys(controller);
+    const formattedName = name.toLowerCase();
 
     methods.forEach(method => {
         const routeConfig =
             {
-                list: ['get', `/${name}/list`],
-                count: ['get', `/${name}/count`],
-                create: ['post', `/${name}`],
-                detail: ['get', `/${name}/:id`],
-                update: ['post', `/${name}/:id/update`],
-                remove: ['delete', `/${name}/:id`],
-                // auth routing
                 signup: ['post', '/auth/signup'],
                 login: ['post', '/auth/login'],
                 logout: ['post', '/auth/logout'],
@@ -71,7 +70,7 @@ function GenerateRoutes(controller, name, app, opts) {
             }[method] ?? null;
 
         if (!routeConfig)
-            throw new Error(`unrecognized route: ${name}.${method}`);
+            throw new Error(`unrecognized route: ${formattedName}.${method}`);
         const [httpAction, route] = routeConfig;
 
         // setup
@@ -80,7 +79,39 @@ function GenerateRoutes(controller, name, app, opts) {
         app[httpAction](route, handler);
         opts.verbose &&
             console.log(
-                `    ${httpAction.toUpperCase()} ${route} -> ${name}.${method}`
+                `    ${httpAction.toUpperCase()} ${route} -> ${formattedName}.${method}`
+            );
+    });
+}
+
+function GenerateRoutes(controller, name, app, opts) {
+    opts.verbose && console.log('\n   %s:', name);
+
+    const methods = Object.keys(controller);
+    const formattedName = name.toLowerCase();
+
+    methods.forEach(method => {
+        const routeConfig =
+            {
+                list: ['get', `/${formattedName}/list`],
+                count: ['get', `/${formattedName}/count`],
+                create: ['post', `/${formattedName}`],
+                detail: ['get', `/${formattedName}/:id`],
+                update: ['post', `/${formattedName}/:id/update`],
+                remove: ['delete', `/${formattedName}/:id`]
+            }[method] ?? null;
+
+        if (!routeConfig)
+            throw new Error(`unrecognized route: ${formattedName}.${method}`);
+        const [httpAction, route] = routeConfig;
+
+        // setup
+        const handler = controller[method];
+
+        app[httpAction](route, handler);
+        opts.verbose &&
+            console.log(
+                `    ${httpAction.toUpperCase()} ${route} -> ${formattedName}.${method}`
             );
     });
 }
