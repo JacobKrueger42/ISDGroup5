@@ -52,7 +52,7 @@ export async function login(req, res, next) {
             if (err) next(err);
 
             // populate session
-            req.session.userId = user.Id;
+            req.session.userId = user.id;
 
             req.session.save(err => {
                 if (err) next(err);
