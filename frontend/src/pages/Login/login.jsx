@@ -6,11 +6,12 @@ import CardHeader from '@mui/material/CardHeader';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-
-import useAuth from './useAuth';
+import { Alert } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { useAuth } from '#hooks';
 
 export default function LoginPage() {
-    const { isLoading, user, loginAsync } = useAuth();
+    const { isLoading, error, loginAsync } = useAuth();
 
     const [formData, setFormData] = useState({
         email: '',
@@ -25,9 +26,9 @@ export default function LoginPage() {
         }));
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
-        console.log(formData);
+        await loginAsync(formData.email, formData.password);
     };
 
     return (
@@ -51,8 +52,10 @@ export default function LoginPage() {
                             type='email'
                             value={formData.email}
                             onChange={handleChange}
+                            disabled={isLoading}
                             fullWidth
                             required
+                            error={!!error}
                             sx={{ marginBottom: '1rem' }}
                         />
                         <TextField
@@ -61,8 +64,10 @@ export default function LoginPage() {
                             type='password'
                             value={formData.password}
                             onChange={handleChange}
+                            disabled={isLoading}
                             fullWidth
                             required
+                            error={!!error}
                             sx={{ marginBottom: '1rem' }}
                         />
                     </div>
@@ -73,13 +78,17 @@ export default function LoginPage() {
                             size='medium'
                             color='primary'
                             fullWidth
+                            disabled={isLoading}
                         >
                             Login
                         </Button>
                     </CardActions>
+                    <br />
+                    {error && <Alert severity='error'>{error.message}</Alert>}
+                    <br />
                 </form>
                 <Typography variant='body2' align='center'>
-                    Don@apos;t have an account? <a href='/'>Sign up</a>
+                    Don't have an account? <Link to='/register'>Sign up</Link>
                 </Typography>
             </CardContent>
         </Card>

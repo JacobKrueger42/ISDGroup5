@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useFetch } from '#hooks';
 
 export default function useAuth() {
+    const [error, setError] = useState(null);
     const [isLoading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
     const [session, setSession] = useState(null);
@@ -20,13 +21,20 @@ export default function useAuth() {
         fetchData();
     }, []);
 
-    async function loginAsync(username, password) {
-        const res = await post('auth/login', {
-            username: username,
-            password: password
-        });
+    async function loginAsync(email, password) {
+        try {
+            const res = await post('auth/login', {
+                email: email,
+                password: password
+            });
 
-        return navigate(res.redirect_uri);
+            setError(null);
+            navigate(res.redirect_uri);
+            return true;
+        } catch (error) {
+            setError(error);
+            return false;
+        }
     }
 
     async function logoutAsync() {
@@ -45,17 +53,13 @@ export default function useAuth() {
     }
 
     async function getUserAsync() {
-        try {
-            const user = await get('user');
-            setUser(user);
-        } catch (error) {
-            console.log(error.redirectUri);
-            return navigate(error.redirectUri);
-        }
+        const user = await get('user');
+        setUser(user);
     }
 
     return {
         isLoading,
+        error,
         user,
         session,
         loginAsync,

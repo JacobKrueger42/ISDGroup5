@@ -4,18 +4,20 @@
 // logout: ['post', '/auth/logout'],
 // resetPassword: ['post', '/auth/reset-password']
 
-import { prisma, userAuthRepository } from '#services';
+import HttpStatus from 'http-status-codes';
+import { userAuthRepository } from '#services';
 
 export async function signup(req, res) {
     try {
         const { email, name, password, role } = req.body;
-        await userAuthRepository.signupAsync(email, name, password, role);
+        const { signupAsync, loginAsync } = userAuthRepository();
+        await signupAsync(email, name, password, role);
 
         // by logging in with the provided creds after signup we implicitly
         // assert that signup was successful - this is a lazy approach
         // typically we should redirect back to /login and prompt the user to test their memory+credentials
         // by manually signing in
-        const user = await userAuthRepository.loginAsync(email, password);
+        const user = await loginAsync(email, password);
 
         req.session.regenerate(err => {
             if (err) next(err);
@@ -39,7 +41,8 @@ export async function signup(req, res) {
 export async function login(req, res, next) {
     try {
         const { email, password } = req.body;
-        const user = await userAuthRepository.loginAsync(email, password);
+        const { loginAsync } = userAuthRepository();
+        const user = await loginAsync(email, password);
 
         req.session.regenerate(err => {
             if (err) next(err);
@@ -56,7 +59,12 @@ export async function login(req, res, next) {
             });
         });
     } catch (error) {
-        next(error);
+        res.status(HttpStatus.UNAUTHORIZED).json({
+            path: req.path,
+            detailed_error_message:
+                'Email or password incorrect, please try again',
+            message: 'Invalid credentials'
+        });
     }
 }
 

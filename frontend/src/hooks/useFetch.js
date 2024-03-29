@@ -74,7 +74,7 @@ function handleResponse(response) {
             const error =
                 {
                     401: new UnauthorisedError(
-                        'Unauthorised',
+                        data?.detailed_error_message ?? 'Unauthorised',
                         data?.redirect_uri ?? '/'
                     )
                 }[response.status] ??
