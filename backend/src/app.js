@@ -2,7 +2,6 @@ import express from 'express';
 import { ErrorHandler } from '#middleware';
 import { ConfigureRoutes } from '#configuration';
 import session from 'express-session';
-import cookieParser from 'cookie-parser';
 import crypto from 'crypto';
 import cors from 'cors';
 
@@ -22,7 +21,6 @@ async function Setup() {
         })
     );
     app.use(express.json());
-    app.use(cookieParser());
     app.use(
         session({
             // ideally this should be loaded from an env var/secret file
