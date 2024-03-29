@@ -5,7 +5,8 @@ export const ApiConfig = {
 export const DefaultRequestOptions = Object.freeze({
     mode: 'cors',
     cache: 'no-cache',
-    credentials: 'same-origin',
+    // for our purposes, include ensures we can muck about with dev servers
+    credentials: 'include',
     redirect: 'follow',
     referrerPolicy: 'no-referrer'
 });

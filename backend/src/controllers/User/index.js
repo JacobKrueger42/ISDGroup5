@@ -10,8 +10,16 @@ export async function get(req, res, next) {
                 message: null
             });
         } else {
-            const user = await userAuthRepository.getUserAsync(userId);
-            res.json(user);
+            const { getUserAsync } = userAuthRepository();
+            const user = await getUserAsync(req.session.userId);
+            res.json({
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                displayName: `${user.firstName} ${user.lastName}`,
+                id: user.id,
+                role: user.role
+            });
         }
     } catch (error) {
         next(error);

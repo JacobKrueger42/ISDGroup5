@@ -1,15 +1,27 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFetch } from '#hooks';
 
 export default function useAuth() {
     const [error, setError] = useState(null);
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
     const [session, setSession] = useState(null);
     const navigate = useNavigate();
 
     const { get, post } = useFetch();
+
+    useEffect(() => {
+        (async () => {
+            setLoading(true);
+            try {
+                await getUserAsync();
+            } catch (errror) {
+                // not logged in, skip loading the user
+            }
+            setLoading(false);
+        })();
+    }, []);
 
     async function loginAsync(email, password) {
         console.info('logging in');
@@ -20,7 +32,7 @@ export default function useAuth() {
                 password: password
             });
 
-            await Promise.allSettled([getSessionAsync(), getUserAsync()]);
+            await getUserAsync();
 
             setError(null);
             setLoading(false);
@@ -73,11 +85,6 @@ export default function useAuth() {
 
     async function resetPasswordAsync() {
         // TODO: stubbed
-        throw new Error('not implemented yet!');
-    }
-
-    async function getSessionAsync() {
-        setSession({});
         throw new Error('not implemented yet!');
     }
 

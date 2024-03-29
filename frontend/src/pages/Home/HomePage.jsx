@@ -14,11 +14,11 @@ export default function HomePage() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user) {
+        if (!user && !isLoading) {
             console.warn('user not logged in, redirecting to login page');
             navigate('/login');
         }
-    });
+    }, []);
 
     const handleLogout = async e => {
         e.preventDefault();
