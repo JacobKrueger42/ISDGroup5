@@ -58,7 +58,7 @@ export async function login(req, res, next) {
                 if (err) next(err);
 
                 res.json({
-                    redirect_uri: '/welcome'
+                    redirect_uri: '/'
                 });
             });
         });
@@ -81,7 +81,7 @@ export async function logout(req, res, next) {
             req.session.regenerate(err => {
                 if (err) next(err);
                 res.json({
-                    redirect_uri: '/'
+                    redirect_uri: '/login'
                 });
             });
         });

@@ -12,6 +12,7 @@ export default function useAuth() {
     const { get, post } = useFetch();
 
     async function loginAsync(email, password) {
+        console.info('logging in');
         try {
             setLoading(true);
             const res = await post('auth/login', {
@@ -32,6 +33,7 @@ export default function useAuth() {
     }
 
     async function registerAsync(firstName, lastName, email, password) {
+        console.info('registering new user');
         try {
             setLoading(true);
             const res = await post('auth/signup', {
@@ -53,6 +55,7 @@ export default function useAuth() {
     }
 
     async function logoutAsync() {
+        console.info('logging out');
         try {
             setLoading(true);
             const res = await post('auth/logout');
