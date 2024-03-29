@@ -7,7 +7,11 @@ import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-function LoginPage() {
+import useAuth from './useAuth';
+
+export default function LoginPage() {
+    const { isLoading, user, loginAsync } = useAuth();
+
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -75,11 +79,9 @@ function LoginPage() {
                     </CardActions>
                 </form>
                 <Typography variant='body2' align='center'>
-                    Don't have an account? <a href='/'>Sign up</a>
+                    Don@apos;t have an account? <a href='/'>Sign up</a>
                 </Typography>
             </CardContent>
         </Card>
     );
 }
-
-export default LoginPage;

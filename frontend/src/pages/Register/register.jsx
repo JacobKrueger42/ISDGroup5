@@ -6,8 +6,9 @@ import CardHeader from '@mui/material/CardHeader';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { Link } from 'react-router-dom';
 
-function RegisterPage() {
+export default function RegisterPage() {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -106,11 +107,9 @@ function RegisterPage() {
                     </CardActions>
                 </form>
                 <Typography variant='body2' align='center'>
-                    Already have an account? <a href='/login'>Sign in</a>
+                    Already have an account? <Link to='/'>Log in</Link>
                 </Typography>
             </CardContent>
         </Card>
     );
 }
-
-export default RegisterPage;
