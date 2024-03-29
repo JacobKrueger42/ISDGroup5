@@ -5,19 +5,26 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
-    const { isLoading, error, user, logoutAsync } = useAuth();
+    const [user, setUser] = useState(null);
+    const { isLoading, error, getUserAsync, logoutAsync } = useAuth();
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!user && !isLoading) {
-            console.warn('user not logged in, redirecting to login page');
-            navigate('/login');
-        }
+        (async () => {
+            const user = await getUserAsync();
+
+            if (!user) {
+                console.warn('user not logged in, redirecting to login page');
+                navigate('/login');
+            }
+
+            setUser(user);
+        })();
     }, []);
 
     const handleLogout = async e => {
@@ -33,9 +40,11 @@ export default function HomePage() {
                     Welcome {user?.firstName ?? '<Unknown>'}, 👋
                 </Typography>
             </CardContent>
-            <br />
-            {error && <Alert severity='error'>{error.message}</Alert>}
-            <br />
+            {error && (
+                <Alert sx={{ margin: 4 }} severity='error'>
+                    {error.message}
+                </Alert>
+            )}
             <CardActions>
                 <Button
                     variant='contained'

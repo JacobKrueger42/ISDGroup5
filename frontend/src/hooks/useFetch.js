@@ -15,12 +15,14 @@ export class UnauthorisedError extends Error {
     constructor(message, redirectUri) {
         super(message);
         this.redirectUri = redirectUri;
+        this.code = 401;
     }
 }
 
 export class BadRequestError extends Error {
     constructor(message) {
         super(message);
+        this.code = 400;
     }
 }
 

@@ -83,9 +83,11 @@ export default function LoginPage() {
                             Login
                         </Button>
                     </CardActions>
-                    <br />
-                    {error && <Alert severity='error'>{error.message}</Alert>}
-                    <br />
+                    {error && (
+                        <Alert sx={{ margin: 4 }} severity='error'>
+                            {error.message}
+                        </Alert>
+                    )}
                 </form>
                 <Typography variant='body2' align='center'>
                     Don't have an account? <Link to='/register'>Sign up</Link>

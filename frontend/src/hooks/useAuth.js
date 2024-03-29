@@ -1,27 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useFetch } from '#hooks';
 
 export default function useAuth() {
     const [error, setError] = useState(null);
-    const [isLoading, setLoading] = useState(true);
-    const [user, setUser] = useState(null);
-    const [session, setSession] = useState(null);
+    const [isLoading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const { get, post } = useFetch();
-
-    useEffect(() => {
-        (async () => {
-            setLoading(true);
-            try {
-                await getUserAsync();
-            } catch (errror) {
-                // not logged in, skip loading the user
-            }
-            setLoading(false);
-        })();
-    }, []);
 
     async function loginAsync(email, password) {
         console.info('logging in');
@@ -31,8 +17,6 @@ export default function useAuth() {
                 email: email,
                 password: password
             });
-
-            await getUserAsync();
 
             setError(null);
             setLoading(false);
@@ -71,9 +55,6 @@ export default function useAuth() {
         try {
             setLoading(true);
             const res = await post('auth/logout');
-
-            setUser(null);
-            setSession(null);
             setLoading(false);
 
             navigate(res.redirect_uri);
@@ -89,15 +70,21 @@ export default function useAuth() {
     }
 
     async function getUserAsync() {
-        const user = await get('user');
-        setUser(user);
+        try {
+            setLoading(true);
+            const user = await get('user');
+            setLoading(false);
+            return user;
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
     }
 
     return {
         isLoading,
         error,
-        user,
-        session,
+        getUserAsync,
         loginAsync,
         logoutAsync,
         registerAsync,

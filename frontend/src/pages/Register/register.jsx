@@ -112,9 +112,11 @@ export default function RegisterPage() {
                             Register
                         </Button>
                     </CardActions>
-                    <br />
-                    {error && <Alert severity='error'>{error.message}</Alert>}
-                    <br />
+                    {error && (
+                        <Alert sx={{ margin: 4 }} severity='error'>
+                            {error.message}
+                        </Alert>
+                    )}
                 </form>
                 <Typography variant='body2' align='center'>
                     Already have an account? <Link to='/login'>Log in</Link>
