@@ -14,12 +14,13 @@ export default function userAuthRepository() {
     // lifecycle
     ////////////////////////
 
-    function createAdminAsync(email, name, hashedPassword) {
+    function createAdminAsync(email, firstName, lastName, hashedPassword) {
         return prisma.user
             .create({
                 data: {
                     email: email,
-                    name: name,
+                    firstName: firstName,
+                    lastName: lastName,
                     password: hashedPassword,
                     role: 'ADMIN'
                 }
@@ -29,12 +30,13 @@ export default function userAuthRepository() {
             });
     }
 
-    function createStaffAsync(email, name, hashedPassword) {
+    function createStaffAsync(email, firstName, lastName, hashedPassword) {
         return prisma.user
             .create({
                 data: {
                     email: email,
-                    name: name,
+                    firstName: firstName,
+                    lastName: lastName,
                     password: hashedPassword,
                     role: 'STAFF'
                 }
@@ -44,12 +46,13 @@ export default function userAuthRepository() {
             });
     }
 
-    function createCustomerAsync(email, name, hashedPassword) {
+    function createCustomerAsync(email, firstName, lastName, hashedPassword) {
         return prisma.user
             .create({
                 data: {
                     email: email,
-                    name: name,
+                    firstName: firstName,
+                    lastName: lastName,
                     password: hashedPassword,
                     role: 'CUSTOMER'
                 }
@@ -63,7 +66,7 @@ export default function userAuthRepository() {
     // workflow
     ////////////////////////
 
-    async function signupAsync(email, name, password, role) {
+    async function signupAsync(email, firstName, lastName, password, role) {
         if (isNullOrEmpty(role) || !availableRoles.includes(role))
             throw new Error(
                 'a role must be provided for a user (either ADMIN, CUSTOMER, or STAFF)'
@@ -94,7 +97,7 @@ export default function userAuthRepository() {
             ADMIN: createAdminAsync,
             CUSTOMER: createCustomerAsync,
             STAFF: createStaffAsync
-        }[role](email, name, hashedPassword);
+        }[role](email, firstName, lastName, hashedPassword);
 
         console.log(`created user with result: `, result);
 
@@ -156,7 +159,9 @@ function validatePassword(password) {
         throw new Error('a password is required (none was provided)');
 
     if (password.length < passwordOptions.minLength)
-        throw new Error(`password must be at least ${minLength} characters`);
+        throw new Error(
+            `password must be at least ${passwordOptions.minLength} characters`
+        );
 
     if (passwordOptions.requireAlphaNumeric) {
         const reg = new RegExp(/^(?=.*[a-zA-Z])(?=.*\d).{8,}$/);

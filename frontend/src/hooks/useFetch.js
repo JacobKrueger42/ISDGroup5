@@ -17,6 +17,12 @@ export class UnauthorisedError extends Error {
     }
 }
 
+export class BadRequestError extends Error {
+    constructor(message) {
+        super(message);
+    }
+}
+
 const makeUrl = resourcePath => `${ApiConfig['api_uri']}/${resourcePath}`;
 
 export default function useFetch() {
@@ -73,6 +79,11 @@ function handleResponse(response) {
 
             const error =
                 {
+                    400: new BadRequestError(
+                        data?.detailed_error_message ??
+                            data?.message ??
+                            'An error ocurred, please check your submission for errors'
+                    ),
                     401: new UnauthorisedError(
                         data?.detailed_error_message ?? 'Unauthorised',
                         data?.redirect_uri ?? '/'

@@ -7,11 +7,11 @@
 import HttpStatus from 'http-status-codes';
 import { userAuthRepository } from '#services';
 
-export async function signup(req, res) {
+export async function signup(req, res, next) {
     try {
-        const { email, name, password, role } = req.body;
+        const { email, firstName, lastName, password, role } = req.body;
         const { signupAsync, loginAsync } = userAuthRepository();
-        await signupAsync(email, name, password, role);
+        await signupAsync(email, firstName, lastName, password, role);
 
         // by logging in with the provided creds after signup we implicitly
         // assert that signup was successful - this is a lazy approach
@@ -34,7 +34,11 @@ export async function signup(req, res) {
             });
         });
     } catch (error) {
-        next(error);
+        res.status(HttpStatus.BAD_REQUEST).json({
+            path: req.path,
+            detailed_error_message: error.message,
+            message: 'Cannot register with the provided details'
+        });
     }
 }
 

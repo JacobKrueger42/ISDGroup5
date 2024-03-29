@@ -6,16 +6,18 @@ import CardHeader from '@mui/material/CardHeader';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { Alert } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useAuth } from '#hooks';
 
 export default function RegisterPage() {
+    const { isLoading, error, registerAsync } = useAuth();
+
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         email: '',
-        password: '',
-        phone: ''
+        password: ''
     });
 
     const handleChange = e => {
@@ -26,9 +28,14 @@ export default function RegisterPage() {
         }));
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
-        console.log(formData);
+        await registerAsync(
+            formData.firstName,
+            formData.lastName,
+            formData.email,
+            formData.password
+        );
     };
 
     return (
@@ -53,6 +60,8 @@ export default function RegisterPage() {
                             onChange={handleChange}
                             fullWidth
                             required
+                            disabled={isLoading}
+                            error={!!error}
                             sx={{ marginBottom: '1rem' }}
                         />
                         <TextField
@@ -62,6 +71,8 @@ export default function RegisterPage() {
                             onChange={handleChange}
                             fullWidth
                             required
+                            disabled={isLoading}
+                            error={!!error}
                             sx={{ marginBottom: '1rem' }}
                         />
                         <TextField
@@ -72,6 +83,8 @@ export default function RegisterPage() {
                             onChange={handleChange}
                             fullWidth
                             required
+                            disabled={isLoading}
+                            error={!!error}
                             sx={{ marginBottom: '1rem' }}
                         />
                         <TextField
@@ -82,6 +95,8 @@ export default function RegisterPage() {
                             onChange={handleChange}
                             fullWidth
                             required
+                            disabled={isLoading}
+                            error={!!error}
                             sx={{ marginBottom: '1rem' }}
                         />
                         <TextField
@@ -92,6 +107,8 @@ export default function RegisterPage() {
                             onChange={handleChange}
                             fullWidth
                             required
+                            disabled={isLoading}
+                            error={!!error}
                             sx={{ marginBottom: '1rem' }}
                         />
                     </div>
@@ -102,10 +119,14 @@ export default function RegisterPage() {
                             size='medium'
                             color='primary'
                             fullWidth
+                            disabled={isLoading}
                         >
                             Register
                         </Button>
                     </CardActions>
+                    <br />
+                    {error && <Alert severity='error'>{error.message}</Alert>}
+                    <br />
                 </form>
                 <Typography variant='body2' align='center'>
                     Already have an account? <Link to='/login'>Log in</Link>
