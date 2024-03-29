@@ -4,16 +4,23 @@ import { ConfigureRoutes } from '#configuration';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import crypto from 'crypto';
+import cors from 'cors';
 
 const opts = {
     port: 8181,
-    verbose: true
+    verbose: true,
+    frontendOrigin: 'http://localhost:5173'
 };
 
 async function Setup() {
     const app = express();
 
     // configure pre-request middleware
+    app.use(
+        cors({
+            origin: opts.frontendOrigin
+        })
+    );
     app.use(express.json());
     app.use(cookieParser());
     app.use(
