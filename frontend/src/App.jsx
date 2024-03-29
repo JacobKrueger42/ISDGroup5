@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import RegisterPage from './Register/register.jsx';
-import LoginPage from './Login/login.jsx';
+import { LoginPage, RegisterPage, NotFoundPage } from '#pages';
 
 function App() {
     return (
@@ -8,6 +7,8 @@ function App() {
             <Routes>
                 <Route path='/' element={<RegisterPage />} />
                 <Route path='/login' element={<LoginPage />} />
+                <Route path='/not-found' element={<NotFoundPage />} />
+                <Route path='/*' element={<NotFoundPage />} />
             </Routes>
         </BrowserRouter>
     );
