@@ -98,7 +98,8 @@ function GenerateRoutes(controller, name, app, opts) {
                 create: ['post', `/${formattedName}`],
                 detail: ['get', `/${formattedName}/:id`],
                 update: ['post', `/${formattedName}/:id/update`],
-                remove: ['delete', `/${formattedName}/:id`]
+                remove: ['delete', `/${formattedName}/:id`],
+                get: ['get', `/${formattedName}`]
             }[method] ?? null;
 
         if (!routeConfig)

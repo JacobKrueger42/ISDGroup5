@@ -1,6 +1,9 @@
 import express from 'express';
 import { ErrorHandler } from '#middleware';
 import { ConfigureRoutes } from '#configuration';
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
+import crypto from 'crypto';
 
 const opts = {
     port: 8181,
@@ -12,6 +15,17 @@ async function Setup() {
 
     // configure pre-request middleware
     app.use(express.json());
+    app.use(cookieParser());
+    app.use(
+        session({
+            // ideally this should be loaded from an env var/secret file
+            secret: 'asupersecretkey',
+            resave: false,
+            saveUninitialized: true,
+            genid: crypto.randomUUID,
+            cookie: { secure: true }
+        })
+    );
 
     // configure routes automatically
     await ConfigureRoutes(app, { verbose: opts });

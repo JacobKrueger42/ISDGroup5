@@ -132,11 +132,20 @@ export default function userAuthRepository() {
         // TODO: stub
     }
 
+    async function getUserAsync(userId) {
+        return prisma.user.findUnique({
+            where: {
+                id: userId
+            }
+        });
+    }
+
     return {
         signupAsync,
         loginAsync,
         logoutAsync,
-        resetPasswordAsync
+        resetPasswordAsync,
+        getUserAsync
     };
 }
 
