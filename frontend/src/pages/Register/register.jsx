@@ -99,18 +99,6 @@ export default function RegisterPage() {
                             error={!!error}
                             sx={{ marginBottom: '1rem' }}
                         />
-                        <TextField
-                            name='phone'
-                            label='Phone Number'
-                            type='tel'
-                            value={formData.phone}
-                            onChange={handleChange}
-                            fullWidth
-                            required
-                            disabled={isLoading}
-                            error={!!error}
-                            sx={{ marginBottom: '1rem' }}
-                        />
                     </div>
                     <CardActions>
                         <Button
