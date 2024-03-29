@@ -15,3 +15,17 @@ model Counter {
   id    Int     @id @default(autoincrement())
   value Int
 }
+
+model User {
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  firstName     String   
+  lastName      String   
+  role          String
+  // MD5  hash, not plaintext, no salt for simplicity in this implementation
+  password String
+  
+  // metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}

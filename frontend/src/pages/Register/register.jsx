@@ -1,19 +1,23 @@
-import { useState } from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import CardHeader from '@mui/material/CardHeader';
-import CardActions from '@mui/material/CardActions';
+import { useAuth } from '#hooks';
+import { Alert } from '@mui/material';
 import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-function RegisterPage() {
+export default function RegisterPage() {
+    const { isLoading, error, registerAsync } = useAuth();
+
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         email: '',
-        password: '',
-        phone: ''
+        password: ''
     });
 
     const handleChange = e => {
@@ -24,9 +28,14 @@ function RegisterPage() {
         }));
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
-        console.log(formData);
+        await registerAsync(
+            formData.firstName,
+            formData.lastName,
+            formData.email,
+            formData.password
+        );
     };
 
     return (
@@ -51,6 +60,8 @@ function RegisterPage() {
                             onChange={handleChange}
                             fullWidth
                             required
+                            disabled={isLoading}
+                            error={!!error}
                             sx={{ marginBottom: '1rem' }}
                         />
                         <TextField
@@ -60,6 +71,8 @@ function RegisterPage() {
                             onChange={handleChange}
                             fullWidth
                             required
+                            disabled={isLoading}
+                            error={!!error}
                             sx={{ marginBottom: '1rem' }}
                         />
                         <TextField
@@ -70,6 +83,8 @@ function RegisterPage() {
                             onChange={handleChange}
                             fullWidth
                             required
+                            disabled={isLoading}
+                            error={!!error}
                             sx={{ marginBottom: '1rem' }}
                         />
                         <TextField
@@ -80,16 +95,8 @@ function RegisterPage() {
                             onChange={handleChange}
                             fullWidth
                             required
-                            sx={{ marginBottom: '1rem' }}
-                        />
-                        <TextField
-                            name='phone'
-                            label='Phone Number'
-                            type='tel'
-                            value={formData.phone}
-                            onChange={handleChange}
-                            fullWidth
-                            required
+                            disabled={isLoading}
+                            error={!!error}
                             sx={{ marginBottom: '1rem' }}
                         />
                     </div>
@@ -100,17 +107,21 @@ function RegisterPage() {
                             size='medium'
                             color='primary'
                             fullWidth
+                            disabled={isLoading}
                         >
                             Register
                         </Button>
                     </CardActions>
+                    {error && (
+                        <Alert sx={{ margin: 4 }} severity='error'>
+                            {error.message}
+                        </Alert>
+                    )}
                 </form>
                 <Typography variant='body2' align='center'>
-                    Already have an account? <a href='/login'>Sign in</a>
+                    Already have an account? <Link to='/login'>Log in</Link>
                 </Typography>
             </CardContent>
         </Card>
     );
 }
-
-export default RegisterPage;

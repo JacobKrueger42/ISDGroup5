@@ -1,13 +1,18 @@
-import { useState } from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
-import CardHeader from '@mui/material/CardHeader';
-import CardActions from '@mui/material/CardActions';
+import { useAuth } from '#hooks';
+import { Alert } from '@mui/material';
 import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardHeader from '@mui/material/CardHeader';
 import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-function LoginPage() {
+export default function LoginPage() {
+    const { isLoading, error, loginAsync } = useAuth();
+
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -21,9 +26,9 @@ function LoginPage() {
         }));
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async e => {
         e.preventDefault();
-        console.log(formData);
+        await loginAsync(formData.email, formData.password);
     };
 
     return (
@@ -47,8 +52,10 @@ function LoginPage() {
                             type='email'
                             value={formData.email}
                             onChange={handleChange}
+                            disabled={isLoading}
                             fullWidth
                             required
+                            error={!!error}
                             sx={{ marginBottom: '1rem' }}
                         />
                         <TextField
@@ -57,8 +64,10 @@ function LoginPage() {
                             type='password'
                             value={formData.password}
                             onChange={handleChange}
+                            disabled={isLoading}
                             fullWidth
                             required
+                            error={!!error}
                             sx={{ marginBottom: '1rem' }}
                         />
                     </div>
@@ -69,17 +78,21 @@ function LoginPage() {
                             size='medium'
                             color='primary'
                             fullWidth
+                            disabled={isLoading}
                         >
                             Login
                         </Button>
                     </CardActions>
+                    {error && (
+                        <Alert sx={{ margin: 4 }} severity='error'>
+                            {error.message}
+                        </Alert>
+                    )}
                 </form>
                 <Typography variant='body2' align='center'>
-                    Don't have an account? <a href='/'>Sign up</a>
+                    Don't have an account? <Link to='/register'>Sign up</Link>
                 </Typography>
             </CardContent>
         </Card>
     );
 }
-
-export default LoginPage;
