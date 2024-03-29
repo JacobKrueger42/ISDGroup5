@@ -1,11 +1,12 @@
 import HttpStatus from 'http-status-codes';
 
-export default function requireAuth(err, req, res, next) {
-    if (req.session.userId) {
-        // typically we would assert the user ID isn't bogus
-        // but I'm not adding caching to this project or extra db lookups
-        next();
-    } else {
+export default async function requireAuth(req, res, next, callback) {
+    if (typeof callback !== 'function') {
+        console.error('a valid callback must be supplied to this middelware');
+        next(new Error('Authorisation invalid'));
+    }
+
+    if (!req?.session?.userId) {
         const forbiddenMessage = `Authorization is required to access "${req.path}"`;
         console.log(forbiddenMessage);
 
@@ -16,5 +17,9 @@ export default function requireAuth(err, req, res, next) {
                 detailed_error_message: forbiddenMessage,
                 message: 'Forbidden'
             });
+    } else {
+        // typically we would assert the user ID isn't bogus
+        // but I'm not adding caching to this project or extra db lookups
+        await callback();
     }
 }

@@ -1,15 +1,9 @@
-import HttpStatus from 'http-status-codes';
 import { userAuthRepository } from '#services';
+import { requireAuth } from '#middleware';
 
 export async function get(req, res, next) {
-    try {
-        if (!req?.session?.userId) {
-            res.status(HttpStatus.UNAUTHORIZED).json({
-                path: req.path,
-                detailed_error_message: 'You are not currently logged in',
-                message: null
-            });
-        } else {
+    await requireAuth(req, res, next, async () => {
+        try {
             const { getUserAsync } = userAuthRepository();
             const user = await getUserAsync(req.session.userId);
             res.json({
@@ -20,8 +14,8 @@ export async function get(req, res, next) {
                 id: user.id,
                 role: user.role
             });
+        } catch (error) {
+            next(error);
         }
-    } catch (error) {
-        next(error);
-    }
+    });
 }
