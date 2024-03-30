@@ -14,7 +14,7 @@ export default function userAuthRepository() {
     // lifecycle
     ////////////////////////
 
-    function createAdminAsync(email, firstName, lastName, hashedPassword) {
+    function createAdminAsync(email, firstName, lastName, hashedPassword, phone) {
         return prisma.user
             .create({
                 data: {
@@ -22,6 +22,7 @@ export default function userAuthRepository() {
                     firstName: firstName,
                     lastName: lastName,
                     password: hashedPassword,
+                    phone: phone,
                     role: 'ADMIN'
                 }
             })
@@ -30,7 +31,7 @@ export default function userAuthRepository() {
             });
     }
 
-    function createStaffAsync(email, firstName, lastName, hashedPassword) {
+    function createStaffAsync(email, firstName, lastName, hashedPassword, phone) {
         return prisma.user
             .create({
                 data: {
@@ -38,6 +39,7 @@ export default function userAuthRepository() {
                     firstName: firstName,
                     lastName: lastName,
                     password: hashedPassword,
+                    phone: phone,
                     role: 'STAFF'
                 }
             })
@@ -46,7 +48,7 @@ export default function userAuthRepository() {
             });
     }
 
-    function createCustomerAsync(email, firstName, lastName, hashedPassword) {
+    function createCustomerAsync(email, firstName, lastName, hashedPassword, phone) {
         return prisma.user
             .create({
                 data: {
@@ -54,6 +56,7 @@ export default function userAuthRepository() {
                     firstName: firstName,
                     lastName: lastName,
                     password: hashedPassword,
+                    phone: phone,
                     role: 'CUSTOMER'
                 }
             })
@@ -66,7 +69,7 @@ export default function userAuthRepository() {
     // workflow
     ////////////////////////
 
-    async function signupAsync(email, firstName, lastName, password, role) {
+    async function signupAsync(email, firstName, lastName, password, phone, role) {
         if (isNullOrEmpty(role) || !availableRoles.includes(role))
             throw new Error(
                 'a role must be provided for a user (either ADMIN, CUSTOMER, or STAFF)'
@@ -92,12 +95,14 @@ export default function userAuthRepository() {
         // hash and persist the password, don't bother with salting
         const hashedPassword = hashPassword(password);
 
+        validatePhone(phone);
+
         // finally persist user
         const result = await {
             ADMIN: createAdminAsync,
             CUSTOMER: createCustomerAsync,
             STAFF: createStaffAsync
-        }[role](email, firstName, lastName, hashedPassword);
+        }[role](email, firstName, lastName, hashedPassword, phone);
 
         console.log(`created user with result: `, result);
 
@@ -170,4 +175,15 @@ function validatePassword(password) {
                 'password must contain a combination of letters and numbers'
             );
     }
+}
+
+function validatePhone(phone) {
+    if (isNullOrEmpty(phone))
+        throw new Error('A phone number is required (none was provided)');
+        
+    if (phone.length !== 10)
+        throw new Error('Phone number must be exactly 10 digits');
+   
+    if (!/^\d+$/.test(phone))
+        throw new Error('Phone number must contain only numbers');
 }

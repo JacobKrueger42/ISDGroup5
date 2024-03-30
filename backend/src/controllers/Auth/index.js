@@ -9,9 +9,9 @@ import { userAuthRepository } from '#services';
 
 export async function signup(req, res, next) {
     try {
-        const { email, firstName, lastName, password, role } = req.body;
+        const { email, firstName, lastName, password, phone, role } = req.body;
         const { signupAsync, loginAsync } = userAuthRepository();
-        await signupAsync(email, firstName, lastName, password, role);
+        await signupAsync(email, firstName, lastName, password, phone, role);
 
         // by logging in with the provided creds after signup we implicitly
         // assert that signup was successful - this is a lazy approach

@@ -17,7 +17,8 @@ export default function RegisterPage() {
         firstName: '',
         lastName: '',
         email: '',
-        password: ''
+        password: '',
+        phone: ''
     });
 
     const handleChange = e => {
@@ -34,7 +35,8 @@ export default function RegisterPage() {
             formData.firstName,
             formData.lastName,
             formData.email,
-            formData.password
+            formData.password,
+            formData.phone
         );
     };
 
@@ -92,6 +94,18 @@ export default function RegisterPage() {
                             label='Password'
                             type='password'
                             value={formData.password}
+                            onChange={handleChange}
+                            fullWidth
+                            required
+                            disabled={isLoading}
+                            error={!!error}
+                            sx={{ marginBottom: '1rem' }}
+                        />
+                        <TextField
+                            name='phone'
+                            label='Phone'
+                            type='tel'
+                            value={formData.phone}
                             onChange={handleChange}
                             fullWidth
                             required

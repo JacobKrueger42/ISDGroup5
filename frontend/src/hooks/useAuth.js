@@ -28,7 +28,7 @@ export default function useAuth() {
         }
     }
 
-    async function registerAsync(firstName, lastName, email, password) {
+    async function registerAsync(firstName, lastName, email, password, phone) {
         console.info('registering new user');
         try {
             setLoading(true);
@@ -37,6 +37,7 @@ export default function useAuth() {
                 lastName: lastName,
                 email: email,
                 password: password,
+                phone: phone,
                 role: 'CUSTOMER'
             });
 

@@ -22,6 +22,7 @@ model User {
   firstName     String   
   lastName      String   
   role          String
+  phone         String
   // MD5  hash, not plaintext, no salt for simplicity in this implementation
   password String
   
