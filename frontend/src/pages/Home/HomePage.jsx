@@ -1,11 +1,13 @@
 import { useAuth } from '#hooks';
-import { Alert, CardActions } from '@mui/material';
+import { AppBar, Toolbar, Alert, CardActions } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import { useState, useEffect } from 'react';
+import MenuAppBar from '../../components/MenuAppBar';
+import homepageBanner from '../../assets/images/homepageBanner.jpg';
 import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
@@ -17,12 +19,6 @@ export default function HomePage() {
     useEffect(() => {
         (async () => {
             const user = await getUserAsync();
-
-            if (!user) {
-                console.warn('user not logged in, redirecting to login page');
-                navigate('/login');
-            }
-
             setUser(user);
         })();
     }, []);
@@ -33,30 +29,55 @@ export default function HomePage() {
     };
 
     return (
-        <Card sx={{ minWidth: 500 }} variant='outlined'>
-            <CardHeader title='IoT Bay' />
-            <CardContent>
-                <Typography variant='body1'>
-                    Welcome {user?.firstName ?? '<Unknown>'}, 👋
-                </Typography>
-            </CardContent>
-            {error && (
-                <Alert sx={{ margin: 4 }} severity='error'>
-                    {error.message}
-                </Alert>
-            )}
-            <CardActions>
-                <Button
-                    variant='contained'
-                    size='medium'
-                    color='primary'
-                    fullWidth
-                    disabled={isLoading}
-                    onClick={handleLogout}
-                >
-                    Logout
-                </Button>
-            </CardActions>
-        </Card>
+        <>
+            <MenuAppBar user={user} onLogout={handleLogout} logoutAsync={logoutAsync} isLoading={isLoading} />
+            <div style={{ 
+            display: 'flex', // Using flex display
+            flexDirection: 'row', // Align children in a row
+            alignItems: 'stretch', // Stretch items to fill the container height
+            height: '40vh', // Full viewport height
+            justifyContent: 'space-between', // This will add space between the flex items
+            }}>
+                <Card sx={{ 
+                    flexGrow: 1, // Allow card to grow to fill the space
+                    width: 'calc(50% - 10px)',
+                }} variant='outlined'>
+                    <CardHeader title='IoT Bay' />
+                    <CardContent>
+                        <Typography variant='body1'>
+                            Welcome {user?.firstName ?? '<Unknown>'}, 👋
+                        </Typography>
+                    </CardContent>
+                    {error && (
+                        <Alert sx={{ margin: 4 }} severity='error'>
+                            {error.message}
+                        </Alert>
+                    )}
+                    <CardContent>
+
+                        <Typography variant="body2" color="text.secondary">
+                        Bringing you the best products for all things IoT
+                        </Typography>
+                    </CardContent>
+                    <CardActions style={{ justifyContent: 'center' }}>
+                 
+                        <Button variant="contained">Shop Now</Button>
+                    </CardActions>
+                    
+                </Card>
+                <img 
+                    src={homepageBanner} 
+                    alt="Homepage Banner" 
+                    style={{ 
+                        flexGrow: 1, // Allow image to grow to fill the space
+                        width: '50%', // Start with 50% of the space
+                        height: '100%', // Full height of the container
+                        objectFit: 'cover', // Cover the space without stretching the image
+                    }} 
+                />
+                
+            </div>
+            
+        </>
     );
 }
