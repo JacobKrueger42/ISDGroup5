@@ -1,3 +1,5 @@
+import { useAuth } from '#hooks';
+import { useEffect } from 'react';
 import { AppBar, Toolbar, CardActions } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -9,12 +11,20 @@ import MenuAppBar from '../../components/MenuAppBar';
 import anonBanner from '../../assets/images/bannerPlaceholder.jpg';
 import { useNavigate } from 'react-router-dom';
 
-export default function AnonPage() {
+
+const AnonPage = () => {
+    const { getUserAsync } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
-
-    }, []);
+      (async () => {
+        const user = await getUserAsync();
+        if (user) {
+          navigate('/home'); // If there's a user, redirect to the HomePage
+        }
+        // No else block needed; stay on this page if not authenticated
+      })();
+    }, [getUserAsync, navigate]);
 
     const handleShopNow = () => {
         navigate('/shop'); 
@@ -39,7 +49,7 @@ export default function AnonPage() {
                         <Typography variant='body2' color="text.secondary">
                             Discover how our cutting-edge IoT solutions can transform your daily life.
                         </Typography>
-                        </CardContent>
+                    </CardContent>
                     <CardActions style={{ justifyContent: 'center' }}>
                         <Button variant="contained" onClick={handleShopNow}>Shop Now</Button>
                     </CardActions>
@@ -57,4 +67,6 @@ export default function AnonPage() {
             </div>
         </>
     );
-}
+};
+
+export default AnonPage;
