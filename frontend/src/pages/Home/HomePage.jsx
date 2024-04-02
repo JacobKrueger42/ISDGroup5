@@ -57,7 +57,8 @@ export default function HomePage() {
                                 : 'Welcome, please login or create an account'}
                         </Typography>
                     </CardContent>
-                    {error && (
+                    {/* don't show auth errors if the user isn't logged in - keep the landing page clean */}
+                    {user && error && (
                         <Alert sx={{ margin: 4 }} severity='error'>
                             {error.message}
                         </Alert>

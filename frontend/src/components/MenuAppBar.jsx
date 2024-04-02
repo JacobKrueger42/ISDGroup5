@@ -2,20 +2,25 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MenuIcon from '@mui/icons-material/Menu';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function MenuAppBar({ user, logoutAsync, isLoading }) {
     const [anchorEl, setAnchorEl] = useState(null);
+    const navigate = useNavigate();
 
     const handleLogoutClick = async () => {
         await logoutAsync();
         handleClose();
     };
+
+    console.log(user);
 
     const handleMenu = event => {
         setAnchorEl(event.currentTarget);
@@ -87,6 +92,22 @@ export default function MenuAppBar({ user, logoutAsync, isLoading }) {
                             </Menu>
                         </div>
                     )}
+                    {!user && (
+                        <Button
+                            disabled={isLoading}
+                            onClick={() => navigate('/login')}
+                        >
+                            Login
+                        </Button>
+                    )}
+                    <Button
+                        color='inherit'
+                        sx={{ color: '#fff' }}
+                        disabled={isLoading}
+                        onClick={() => navigate('/login')}
+                    >
+                        Login
+                    </Button>
                 </Toolbar>
             </AppBar>
         </Box>
