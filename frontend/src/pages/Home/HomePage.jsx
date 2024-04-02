@@ -52,7 +52,9 @@ export default function HomePage() {
                     <CardHeader title='IoT Bay' />
                     <CardContent>
                         <Typography variant='body1'>
-                            Welcome {user?.firstName ?? '<Unknown>'}, 👋
+                            {user
+                                ? `Welcome ${user.firstName}, 👋`
+                                : 'Welcome, please login or create an account'}
                         </Typography>
                     </CardContent>
                     {error && (
@@ -66,7 +68,12 @@ export default function HomePage() {
                         </Typography>
                     </CardContent>
                     <CardActions style={{ justifyContent: 'center' }}>
-                        <Button variant='contained'>Shop Now</Button>
+                        <Button
+                            variant='contained'
+                            onClick={() => console.log('shopping 🛒')}
+                        >
+                            Shop Now
+                        </Button>
                     </CardActions>
                 </Card>
                 <img
