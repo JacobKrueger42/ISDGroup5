@@ -20,8 +20,6 @@ export default function MenuAppBar({ user, logoutAsync, isLoading }) {
         handleClose();
     };
 
-    console.log(user);
-
     const handleMenu = event => {
         setAnchorEl(event.currentTarget);
     };
@@ -94,20 +92,14 @@ export default function MenuAppBar({ user, logoutAsync, isLoading }) {
                     )}
                     {!user && (
                         <Button
+                            color='inherit'
+                            sx={{ color: '#fff' }}
                             disabled={isLoading}
                             onClick={() => navigate('/login')}
                         >
                             Login
                         </Button>
                     )}
-                    <Button
-                        color='inherit'
-                        sx={{ color: '#fff' }}
-                        disabled={isLoading}
-                        onClick={() => navigate('/login')}
-                    >
-                        Login
-                    </Button>
                 </Toolbar>
             </AppBar>
         </Box>
