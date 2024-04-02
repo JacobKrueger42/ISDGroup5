@@ -7,7 +7,7 @@ import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import { useState, useEffect } from 'react';
 import MenuAppBar from '../../components/MenuAppBar';
-import homepageBanner from '../../assets/images/homepageBanner.jpg';
+import { bannerPlaceholder } from '#assets';
 
 export default function HomePage() {
     const [user, setUser] = useState(null);
@@ -70,7 +70,7 @@ export default function HomePage() {
                     </CardActions>
                 </Card>
                 <img
-                    src={homepageBanner}
+                    src={bannerPlaceholder}
                     alt='Homepage Banner'
                     style={{
                         flexGrow: 1, // Allow image to grow to fill the space
