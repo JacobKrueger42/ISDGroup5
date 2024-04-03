@@ -17,7 +17,7 @@ export default function AnonPage() {
     useEffect(() => {
         (async () => {
             const user = await getUserAsync();
-            if (!user) navigate('/home');
+            if (user) navigate('/home');
         })();
     }, []);
 
