@@ -1,29 +1,34 @@
-import { AppBar, Toolbar, CardActions } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
+import CardActions from '@mui/material/CardActions';
 import { useEffect } from 'react';
 import MenuAppBar from '../../components/MenuAppBar';
-import anonBanner from '../../assets/images/bannerPlaceholder.jpg';
+import { bannerPlaceholder } from '#assets';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '#hooks';
 
 export default function AnonPage() {
     const navigate = useNavigate();
+    const { getUserAsync } = useAuth();
 
     useEffect(() => {
-
+        (async () => {
+            const user = await getUserAsync();
+            if (!user) navigate('/home');
+        })();
     }, []);
 
     const handleShopNow = () => {
-        navigate('/shop'); 
+        navigate('/shop');
     };
 
     return (
         <>
             <MenuAppBar />
-            <div style={{ 
+            <div style={{
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'stretch',
@@ -44,15 +49,15 @@ export default function AnonPage() {
                         <Button variant="contained" onClick={handleShopNow}>Shop Now</Button>
                     </CardActions>
                 </Card>
-                <img 
-                    src={anonBanner} 
-                    alt="Anon Page Banner" 
-                    style={{ 
+                <img
+                    src={bannerPlaceholder}
+                    alt="Anon Page Banner"
+                    style={{
                         flexGrow: 1,
                         width: '50%',
                         height: '100%',
                         objectFit: 'cover',
-                    }} 
+                    }}
                 />
             </div>
         </>
