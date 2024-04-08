@@ -23,13 +23,13 @@ export async function signup(req, res, next) {
             if (err) next(err);
 
             // populate session
-            req.session.userId = user.Id;
+            req.session.userId = user.id;
 
             req.session.save(err => {
                 if (err) next(err);
 
                 res.json({
-                    redirect_uri: '/welcome'
+                    redirect_uri: '/home'
                 });
             });
         });
