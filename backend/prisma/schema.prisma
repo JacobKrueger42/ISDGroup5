@@ -29,7 +29,7 @@ model User {
 
   // metadata
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // an "IOT device" item is considered a product
@@ -48,7 +48,7 @@ model Product {
 
   // metadata
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model CatalogueEntry {
@@ -70,5 +70,5 @@ model CatalogueEntry {
 
   // metadata
   createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
