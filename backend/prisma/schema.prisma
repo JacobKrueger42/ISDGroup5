@@ -12,62 +12,61 @@ datasource db {
 
 // test model
 model Counter {
-  id    Int     @id @default(autoincrement())
+  id    Int @id @default(autoincrement())
   value Int
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
-  email         String   @unique
-  firstName     String   
-  lastName      String
+  id        Int    @id @default(autoincrement())
+  email     String @unique
+  firstName String
+  lastName  String
   // one of ['ADMIN', 'STAFF', 'CUSTOMER'];   
-  role          String
-  phone         String
+  role      String
+  phone     String
   // MD5  hash, not plaintext, no salt for simplicity in this implementation
-  password String
-  
+  password  String
+
   // metadata
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
 
-
 // an "IOT device" item is considered a product
 // a product must be created before being added to the catalogue
 // a product is not automatically in the catalogue
 model Product {
-  id                Int      @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
   catalogue CatalogueEntry?
 
   // UPC is a globally unique product identifier, similar to a SKU
   // max-length of 12 chars (sqlite maps to TEXT without limits as varchar would allow)
-  uniqueProductCode String   @unique
+  uniqueProductCode String @unique
   name              String
   brandName         String
-  
+
   // metadata
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
 }
 
 model CatalogueEntry {
-  id        Int @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  product Product @relation(fields: [productId], references: [id])
-  productId       Int @unique
+  product           Product @relation(fields: [productId], references: [id])
+  productId         Int     @unique
   // the UPC of a product is used for searching across both the products and products WITHIN the catalogue
   // to simplify this implementation the field is copied from the product into the catalogue entry on create
   // since a product UPC isn't editable, this is fairly immutable by design but could be enforced better
-  uniqueProductCode String   @unique
+  uniqueProductCode String  @unique
 
   // price to customer in AUD
-  price             Int
+  price           Int
   // one of ['TOOLS AND TEST EQUIPMENT', 'SOUND AND VIDEO', 'CABLES AND CONNECTORS', 'COMPONENTS AND ELECTROMECHANICAL', 'POWER AND BATTERIES', 'HOBBIES AND GADGETS', '3D PRINTING', 'SECURITY AND SURVEILLANCE', 'COMPUTING AND COMMUNICATION', 'KITS, SCIENCE AND LEARNING', 'OUTDOORS AND AUTOMOTIVE']
   // I'm mentally considering this as something similar to JayCar, so using their categories seems like a good starting point (take from https://www.jaycar.com.au/)
-  productCategory   String
-  stockQuantity     Int
+  productCategory String
+  stockQuantity   Int
 
   // metadata
   createdAt DateTime @default(now())
