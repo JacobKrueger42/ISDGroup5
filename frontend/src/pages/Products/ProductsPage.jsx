@@ -1,100 +1,264 @@
-import { useAuth } from '#hooks';
-import { Alert, CardActions } from '@mui/material';
+import { AppShell, EnhancedTableHead, EnhancedTableRow } from '#components';
+import { useEnhancedTable } from '#hooks';
+
+import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
-import { useState, useEffect } from 'react';
-import MenuAppBar from '../../components/MenuAppBar';
-import { bannerPlaceholder } from '#assets';
-import { useNavigate } from 'react-router-dom';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+
+// demo header data
+const headCells = [
+    {
+        id: 'name',
+        numeric: false,
+        disablePadding: true,
+        label: 'Dessert (100g serving)'
+    },
+    {
+        id: 'calories',
+        numeric: true,
+        disablePadding: false,
+        label: 'Calories'
+    },
+    {
+        id: 'fat',
+        numeric: true,
+        disablePadding: false,
+        label: 'Fat (g)'
+    },
+    {
+        id: 'carbs',
+        numeric: true,
+        disablePadding: false,
+        label: 'Carbs (g)'
+    },
+    {
+        id: 'protein',
+        numeric: true,
+        disablePadding: false,
+        label: 'Protein (g)'
+    }
+];
+
+// demo data
+const rows = [
+    {
+        id: 1,
+        name: 'Cupcake',
+        calories: 305,
+        fat: 3.7,
+        carbs: 67,
+        protein: 4.3
+    },
+    { id: 2, name: 'Donut', calories: 452, fat: 25.0, carbs: 51, protein: 4.9 },
+    {
+        id: 3,
+        name: 'Eclair',
+        calories: 262,
+        fat: 16.0,
+        carbs: 24,
+        protein: 6.0
+    },
+    {
+        id: 4,
+        name: 'Frozen yoghurt',
+        calories: 159,
+        fat: 6.0,
+        carbs: 24,
+        protein: 4.0
+    },
+    {
+        id: 5,
+        name: 'Gingerbread',
+        calories: 356,
+        fat: 16.0,
+        carbs: 49,
+        protein: 3.9
+    },
+    {
+        id: 6,
+        name: 'Honeycomb',
+        calories: 408,
+        fat: 3.2,
+        carbs: 87,
+        protein: 6.5
+    },
+    {
+        id: 7,
+        name: 'Ice cream sandwich',
+        calories: 237,
+        fat: 9.0,
+        carbs: 37,
+        protein: 4.3
+    },
+    {
+        id: 8,
+        name: 'Jelly Bean',
+        calories: 375,
+        fat: 0.0,
+        carbs: 94,
+        protein: 0.0
+    },
+    {
+        id: 9,
+        name: 'KitKat',
+        calories: 518,
+        fat: 26.0,
+        carbs: 65,
+        protein: 7.0
+    },
+    {
+        id: 10,
+        name: 'Lollipop',
+        calories: 392,
+        fat: 0.2,
+        carbs: 98,
+        protein: 0.0
+    },
+    {
+        id: 11,
+        name: 'Marshmallow',
+        calories: 318,
+        fat: 0,
+        carbs: 81,
+        protein: 2.0
+    },
+    {
+        id: 12,
+        name: 'Nougat',
+        calories: 360,
+        fat: 19.0,
+        carbs: 9,
+        protein: 37.0
+    },
+    { id: 13, name: 'Oreo', calories: 437, fat: 18.0, carbs: 63, protein: 4.0 }
+];
 
 export default function ProductsPage() {
-    const [user, setUser] = useState(null);
-    const navigate = useNavigate();
-    const { isLoading, error, getUserAsync, logoutAsync } = useAuth();
-
-    useEffect(() => {
-        (async () => {
-            const user = await getUserAsync();
-
-            console.log('not logged in, redirecting to anon page');
-            if (!user) navigate('/');
-
-            setUser(user);
-        })();
-    }, []);
-
-    const handleShopNow = () => {
-        navigate('/shop');
-    };
-
-    const handleLogout = async e => {
-        e.preventDefault();
-        await logoutAsync();
-    };
+    const {
+        order,
+        orderBy,
+        selected,
+        page,
+        rowsPerPage,
+        emptyRows,
+        visibleRows,
+        handleRequestSort,
+        isSelected,
+        handleClick,
+        handleChangePage,
+        handleChangeRowsPerPage,
+        handleSelectAllClick
+    } = useEnhancedTable(headCells, rows);
 
     return (
-        <>
-            <MenuAppBar
-                user={user}
-                onLogout={handleLogout}
-                logoutAsync={logoutAsync}
-                isLoading={isLoading}
-            />
-            <div
-                style={{
-                    display: 'flex', // Using flex display
-                    flexDirection: 'row', // Align children in a row
-                    alignItems: 'stretch', // Stretch items to fill the container height
-                    height: '40vh', // Full viewport height
-                    justifyContent: 'space-between' // This will add space between the flex items
-                }}
-            >
-                <Card
-                    sx={{
-                        flexGrow: 1, // Allow card to grow to fill the space
-                        width: 'calc(50% - 10px)'
-                    }}
-                    variant='outlined'
-                >
-                    <CardHeader title='IoT Bay' />
-                    <CardContent>
-                        <Typography variant='body1'>
-                            {user
-                                ? `Welcome ${user.firstName}, 👋`
-                                : 'Welcome, please login or create an account'}
-                        </Typography>
-                    </CardContent>
-                    {/* don't show auth errors if the user isn't logged in - keep the landing page clean */}
-                    {user && error && (
-                        <Alert sx={{ margin: 4 }} severity='error'>
-                            {error.message}
-                        </Alert>
-                    )}
-                    <CardContent>
-                        <Typography variant='body2' color='text.secondary'>
-                            Bringing you the best products for all things IoT
-                        </Typography>
-                    </CardContent>
-                    <CardActions style={{ justifyContent: 'center' }}>
-                        <Button variant='contained' onClick={handleShopNow}>
-                            Shop Now
-                        </Button>
-                    </CardActions>
-                </Card>
-                <img
-                    src={bannerPlaceholder}
-                    alt='Homepage Banner'
-                    style={{
-                        flexGrow: 1, // Allow image to grow to fill the space
-                        width: '50%', // Start with 50% of the space
-                        height: '100%', // Full height of the container
-                        objectFit: 'cover' // Cover the space without stretching the image
-                    }}
+        <AppShell>
+            <Card variant='outlined'>
+                <CardHeader title='Inventory Management - Products' />
+                <CardContent>
+                    <Typography
+                        align='left'
+                        variant='body'
+                        color='text.secondary'
+                    >
+                        Here you can manage products tracked by the system.
+                        Products listed here can be added to the public product
+                        catalogue.
+                    </Typography>
+                </CardContent>
+
+                {/* TODO: move this to the table head */}
+                <CardActions>
+                    <Button
+                        variant='contained'
+                        onClick={e => console.log('create new product', e)}
+                    >
+                        Add
+                    </Button>
+
+                    <Button
+                        variant='contained'
+                        onClick={e => console.log('updating products', e)}
+                    >
+                        Update
+                    </Button>
+
+                    <Button
+                        variant='contained'
+                        color='error'
+                        onClick={e => console.log('deleting product', e)}
+                    >
+                        Delete
+                    </Button>
+                </CardActions>
+            </Card>
+
+            <Card>
+                <EnhancedTableHead
+                    headCells={headCells}
+                    numSelected={selected.length}
+                    order={order}
+                    orderBy={orderBy}
+                    onSelectAllClick={handleSelectAllClick}
+                    onRequestSort={handleRequestSort}
+                    rowCount={rows.length}
                 />
-            </div>
-        </>
+                <TableContainer>
+                    <Table
+                        sx={{ minWidth: 750 }}
+                        aria-labelledby='tableTitle'
+                        size='medium'
+                    >
+                        <EnhancedTableHead
+                            numSelected={selected.length}
+                            order={order}
+                            orderBy={orderBy}
+                            onSelectAllClick={handleSelectAllClick}
+                            onRequestSort={handleRequestSort}
+                            rowCount={rows.length}
+                        />
+                        <TableBody>
+                            {visibleRows.map((row, index) => {
+                                return (
+                                    <EnhancedTableRow
+                                        row={row}
+                                        index={index}
+                                        key={index}
+                                        handleClick={handleClick}
+                                        isSelected={isSelected}
+                                    />
+                                );
+                            })}
+                            {emptyRows > 0 && (
+                                <TableRow
+                                    style={{
+                                        height: 53 * emptyRows
+                                    }}
+                                >
+                                    <TableCell colSpan={6} />
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component='div'
+                    count={rows.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </Card>
+        </AppShell>
     );
 }
