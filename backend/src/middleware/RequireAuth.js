@@ -2,7 +2,7 @@ import HttpStatus from 'http-status-codes';
 
 export default async function requireAuth(req, res, next, callback) {
     if (typeof callback !== 'function') {
-        console.error('a valid callback must be supplied to this middelware');
+        console.error('a valid callback must be supplied to this middleware');
         next(new Error('Authorisation invalid'));
     }
 
