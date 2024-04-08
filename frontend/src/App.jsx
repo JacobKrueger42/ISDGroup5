@@ -1,5 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { LoginPage, RegisterPage, NotFoundPage, HomePage } from '#pages';
+import {
+    LoginPage,
+    RegisterPage,
+    NotFoundPage,
+    HomePage,
+    ProductsPage
+} from '#pages';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AnonPage from './pages/Landing/landing';
 
@@ -25,6 +31,7 @@ function App() {
                     <Route path='/home' exact element={<HomePage />} />
                     <Route path='/login' element={<LoginPage />} />
                     <Route path='/register' element={<RegisterPage />} />
+                    <Route path='/products' element={<ProductsPage />} />
                     <Route path='/not-found' element={<NotFoundPage />} />
                     <Route path='/*' element={<NotFoundPage />} />
                 </Routes>
