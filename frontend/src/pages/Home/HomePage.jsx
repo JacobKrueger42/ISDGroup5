@@ -8,17 +8,27 @@ import Typography from '@mui/material/Typography';
 import { useState, useEffect } from 'react';
 import MenuAppBar from '../../components/MenuAppBar';
 import { bannerPlaceholder } from '#assets';
+import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
     const [user, setUser] = useState(null);
+    const navigate = useNavigate();
     const { isLoading, error, getUserAsync, logoutAsync } = useAuth();
 
     useEffect(() => {
         (async () => {
             const user = await getUserAsync();
+
+            console.log('not logged in, redirecting to anon page');
+            if (!user) navigate('/');
+
             setUser(user);
         })();
     }, []);
+
+    const handleShopNow = () => {
+        navigate('/shop');
+    };
 
     const handleLogout = async e => {
         e.preventDefault();
@@ -71,7 +81,7 @@ export default function HomePage() {
                     <CardActions style={{ justifyContent: 'center' }}>
                         <Button
                             variant='contained'
-                            onClick={() => console.log('shopping 🛒')}
+                            onClick={handleShopNow}
                         >
                             Shop Now
                         </Button>
