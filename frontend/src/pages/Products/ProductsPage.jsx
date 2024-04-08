@@ -202,15 +202,6 @@ export default function ProductsPage() {
             </Card>
 
             <Card>
-                <EnhancedTableHead
-                    headCells={headCells}
-                    numSelected={selected.length}
-                    order={order}
-                    orderBy={orderBy}
-                    onSelectAllClick={handleSelectAllClick}
-                    onRequestSort={handleRequestSort}
-                    rowCount={rows.length}
-                />
                 <TableContainer>
                     <Table
                         sx={{ minWidth: 750 }}
@@ -218,6 +209,7 @@ export default function ProductsPage() {
                         size='medium'
                     >
                         <EnhancedTableHead
+                            headCells={headCells}
                             numSelected={selected.length}
                             order={order}
                             orderBy={orderBy}
