@@ -7,14 +7,20 @@ const passwordOptions = Object.freeze({
     requireAlphaNumeric: true
 });
 
-const availableRoles = ['ADMIN', 'STAFF', 'CUSTOMER'];
-
 export default function userAuthRepository() {
+    const availableRoles = ['ADMIN', 'STAFF', 'CUSTOMER'];
+
     ////////////////////////
     // lifecycle
     ////////////////////////
 
-    function createAdminAsync(email, firstName, lastName, hashedPassword, phone) {
+    function createAdminAsync(
+        email,
+        firstName,
+        lastName,
+        hashedPassword,
+        phone
+    ) {
         return prisma.user
             .create({
                 data: {
@@ -31,7 +37,13 @@ export default function userAuthRepository() {
             });
     }
 
-    function createStaffAsync(email, firstName, lastName, hashedPassword, phone) {
+    function createStaffAsync(
+        email,
+        firstName,
+        lastName,
+        hashedPassword,
+        phone
+    ) {
         return prisma.user
             .create({
                 data: {
@@ -48,7 +60,13 @@ export default function userAuthRepository() {
             });
     }
 
-    function createCustomerAsync(email, firstName, lastName, hashedPassword, phone) {
+    function createCustomerAsync(
+        email,
+        firstName,
+        lastName,
+        hashedPassword,
+        phone
+    ) {
         return prisma.user
             .create({
                 data: {
@@ -69,7 +87,14 @@ export default function userAuthRepository() {
     // workflow
     ////////////////////////
 
-    async function signupAsync(email, firstName, lastName, password, phone, role) {
+    async function signupAsync(
+        email,
+        firstName,
+        lastName,
+        password,
+        phone,
+        role
+    ) {
         if (isNullOrEmpty(role) || !availableRoles.includes(role))
             throw new Error(
                 'a role must be provided for a user (either ADMIN, CUSTOMER, or STAFF)'
@@ -153,7 +178,8 @@ export default function userAuthRepository() {
         loginAsync,
         logoutAsync,
         resetPasswordAsync,
-        getUserAsync
+        getUserAsync,
+        availableRoles
     };
 }
 
@@ -180,10 +206,10 @@ function validatePassword(password) {
 function validatePhone(phone) {
     if (isNullOrEmpty(phone))
         throw new Error('A phone number is required (none was provided)');
-        
+
     if (phone.length !== 10)
         throw new Error('Phone number must be exactly 10 digits');
-   
+
     if (!/^\d+$/.test(phone))
         throw new Error('Phone number must contain only numbers');
 }
