@@ -7,9 +7,9 @@ const passwordOptions = Object.freeze({
     requireAlphaNumeric: true
 });
 
-const availableRoles = ['ADMIN', 'STAFF', 'CUSTOMER'];
-
 export default function userAuthRepository() {
+    const availableRoles = ['ADMIN', 'STAFF', 'CUSTOMER'];
+
     ////////////////////////
     // lifecycle
     ////////////////////////
@@ -178,7 +178,8 @@ export default function userAuthRepository() {
         loginAsync,
         logoutAsync,
         resetPasswordAsync,
-        getUserAsync
+        getUserAsync,
+        availableRoles
     };
 }
 

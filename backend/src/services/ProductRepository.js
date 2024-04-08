@@ -6,13 +6,19 @@ export default function productRepository() {
     // lifecycle
     ////////////////////////
 
-    function insertProductAsync(uniqueProductCode, name, brandName) {
+    function insertProductAsync(
+        uniqueProductCode,
+        name,
+        brandName,
+        description
+    ) {
         return prisma.product
             .create({
                 data: {
                     uniqueProductCode: uniqueProductCode,
                     name: name,
-                    brandName: brandName
+                    brandName: brandName,
+                    description: description
                 }
             })
             .catch(error => {
@@ -80,6 +86,7 @@ export default function productRepository() {
     }
 
     function getProductByIdAsync(id) {
+        if (isNullOrEmpty(id)) throw new Error('no id provided to get product');
         return prisma.product.findUnique({
             where: {
                 id: id
@@ -87,7 +94,31 @@ export default function productRepository() {
         });
     }
 
+    function getAllProductsAsync(skip, take) {
+        if (!skip || !take)
+            throw new Error('"skip" and "take" must be defined');
+
+        if (skip < 0) throw new Error('"skip" value must be at least 0');
+        if (take < 1) throw new Error('"take" value must be at least 1');
+
+        return prisma.product.findMany({
+            skip: skip,
+            take: take,
+            orderBy: {
+                title: 'desc',
+                createdAt: 'desc' // tie-breaker for similar titles
+            }
+        });
+    }
+
+    function getTotalProductsCount() {
+        return prisma.product.count();
+    }
+
     function getProductByUniqueProductCodeAsync(uniqueProductCode) {
+        if (isNullOrEmpty(uniqueProductCode))
+            throw new Error('no UPC provided to get product');
+
         return prisma.product.findUnique({
             where: {
                 uniqueProductCode: uniqueProductCode
@@ -99,21 +130,27 @@ export default function productRepository() {
     // workflow
     ////////////////////////
 
-    async function createProductAsync(uniqueProductCode, name, brandName) {
-        if (
-            isNullOrEmpty(uniqueProductCode) ||
-            isNullOrEmpty(name) ||
-            isNullOrEmpty(brandName)
-        ) {
-            throw new Error(
-                'a UPC, name, and brand name must be provided to create a new product'
-            );
-        }
+    async function createProductAsync(
+        uniqueProductCode,
+        name,
+        brandName,
+        description
+    ) {
+        if (isNullOrEmpty(uniqueProductCode))
+            throw new Error('a UPC must be provided');
+        if (isNullOrEmpty(name)) throw new Error('a name must be provided');
+        if (isNullOrEmpty(brandName))
+            throw new Error('a brandName must be provided');
+        if (isNullOrEmpty(description))
+            throw new Error('a description must be provided');
 
         // trim inputs and normalise inputs
         const _uniqueProductCode = uniqueProductCode.trim().toUpperCase();
         const _name = name.trim().toLowerCase();
         const _brandName = brandName.trim().toLowerCase();
+
+        // description can be anything the client provides so long as it exists
+        const _description = description.trim();
 
         if (_uniqueProductCode.length !== 12)
             throw new Error('a UPC must be 12 characters');
@@ -132,11 +169,14 @@ export default function productRepository() {
         const result = await insertProductAsync(
             _uniqueProductCode,
             _name,
-            _brandName
+            _brandName,
+            _description
         );
 
         console.log(`created product with result: `, result);
         // TODO: generate access log
+
+        return result.id;
     }
 
     async function updateProductAsync(id, name, brandName, catalogueId) {
@@ -188,6 +228,10 @@ export default function productRepository() {
             // await editProductCatalogueAsync(id, catalogueId);
             // TODO: generate access log
         }
+
+        // log an update to the console if any field changed
+        (name || brandName || catalogueId) &&
+            console.log(`updated product with id '${id}'`);
     }
 
     async function removeProductAsync(id) {
@@ -211,6 +255,10 @@ export default function productRepository() {
     return {
         createProductAsync,
         removeProductAsync,
-        updateProductAsync
+        updateProductAsync,
+        getProductByIdAsync,
+        getProductByUniqueProductCodeAsync,
+        getAllProductsAsync,
+        getTotalProductsCount
     };
 }
