@@ -45,6 +45,7 @@ model Product {
   uniqueProductCode String @unique
   name              String
   brandName         String
+  description       String
 
   // metadata
   createdAt DateTime @default(now())
