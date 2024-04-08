@@ -8,7 +8,7 @@
         "dev": "npx node src/app.js --use_strict",
         "migrate": "npx prisma migrate dev",
         "generate": "npx prisma generate types",
-        "format": "npx prettier . --write",
+        "format": "npx prisma format && prettier . --write",
         "prepare": "husky"
     },
     "dependencies": {
