@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '#hooks';
-// import { useAuth, useAuthorisedPage } from '#hooks';
+import { useAuth, useAuthorisedPage } from '#hooks';
 import { MenuAppBar } from '#components';
+import Stack from '@mui/material/Stack';
 
 export default function AppShell({ children }) {
     const [user, setUser] = useState(null);
 
     // executing the hook applies the page auth requirement
-    // useAuthorisedPage();
+    useAuthorisedPage();
 
     const { isLoading, getUserAsync, logoutAsync } = useAuth();
 
@@ -24,25 +24,15 @@ export default function AppShell({ children }) {
     };
 
     return (
-        <>
+        <Stack spacing={2}>
             <MenuAppBar
                 user={user}
                 onLogout={handleLogout}
                 logoutAsync={logoutAsync}
                 isLoading={isLoading}
             />
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'stretch',
-                    height: '40vh',
-                    justifyContent: 'space-between'
-                }}
-            >
-                {/* page content */}
-                {children}
-            </div>
-        </>
+            {/* page content */}
+            {children}
+        </Stack>
     );
 }
