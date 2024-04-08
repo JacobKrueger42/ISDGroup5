@@ -4,10 +4,10 @@ import {
     RegisterPage,
     NotFoundPage,
     HomePage,
-    ProductsPage
+    ProductsPage,
+    AnonPage
 } from '#pages';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import AnonPage from './pages/Landing/landing';
 
 function App() {
     // we can change this later, just setting it up for now

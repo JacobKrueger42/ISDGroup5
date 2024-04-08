@@ -3,5 +3,13 @@ import { default as RegisterPage } from '../pages/Register/register.jsx';
 import { default as NotFoundPage } from '../pages/NotFound/NotFound.jsx';
 import { default as HomePage } from '../pages/Home/HomePage.jsx';
 import { default as ProductsPage } from '../pages/Products/ProductsPage.jsx';
+import { default as AnonPage } from '../pages/Landing/landing.jsx';
 
-export { LoginPage, RegisterPage, NotFoundPage, HomePage, ProductsPage };
+export {
+    LoginPage,
+    RegisterPage,
+    NotFoundPage,
+    HomePage,
+    ProductsPage,
+    AnonPage
+};
