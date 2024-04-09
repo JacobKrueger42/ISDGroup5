@@ -1,8 +1,9 @@
+import { useAuth } from '#hooks';
+import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
-import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -34,7 +35,12 @@ export default function Sidebar({ navigationItems }) {
 }
 
 function DrawItems({ setOpen, items }) {
+    const { isLoading, user } = useAuth();
     const navigate = useNavigate();
+
+    const customerItems = items?.filter(item => item.role === 'CUSTOMER') ?? [];
+    const staffItems = items?.filter(item => item.role === 'STAFF') ?? [];
+    const adminItems = items?.filter(item => item.role === 'ADMIN') ?? [];
 
     return (
         <Box
@@ -53,44 +59,27 @@ function DrawItems({ setOpen, items }) {
                 <CloseIcon />
             </IconButton>
             <List>
-                {items &&
-                    items
-                        .filter(item => item.role === 'CUSTOMER')
-                        .map((item, index) => (
-                            <DrawItem
-                                item={item}
-                                key={index}
-                                navigate={navigate}
-                            />
-                        ))}
+                {customerItems.map((item, index) => (
+                    <DrawItem item={item} key={index} navigate={navigate} />
+                ))}
             </List>
             <Divider />
-            <Typography variant='overline'>Staff</Typography>
+            {staffItems.length > 0 && (
+                <Typography variant='overline'>Staff</Typography>
+            )}
             <List>
-                {items &&
-                    items
-                        .filter(item => item.role === 'STAFF')
-                        .map((item, index) => (
-                            <DrawItem
-                                item={item}
-                                key={index}
-                                navigate={navigate}
-                            />
-                        ))}
+                {staffItems.map((item, index) => (
+                    <DrawItem item={item} key={index} navigate={navigate} />
+                ))}
             </List>
             <Divider />
-            <Typography variant='overline'>Admin</Typography>
+            {adminItems.length > 0 && (
+                <Typography variant='overline'>Admin</Typography>
+            )}
             <List>
-                {items &&
-                    items
-                        .filter(item => item.role === 'ADMIN')
-                        .map((item, index) => (
-                            <DrawItem
-                                item={item}
-                                key={index}
-                                navigate={navigate}
-                            />
-                        ))}
+                {adminItems.map((item, index) => (
+                    <DrawItem item={item} key={index} navigate={navigate} />
+                ))}
             </List>
         </Box>
     );
