@@ -3,7 +3,7 @@ import { useAuth, useAuthorisedPage } from '#hooks';
 import { MenuAppBar } from '#components';
 import Stack from '@mui/material/Stack';
 
-export default function AppShell({ children }) {
+export default function AuthorisedPageShell({ children }) {
     const [user, setUser] = useState(null);
 
     // executing the hook applies the page auth requirement

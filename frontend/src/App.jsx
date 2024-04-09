@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import {
+    AuthorisedPageShell,
     LoginPage,
     RegisterPage,
     NotFoundPage,
@@ -9,7 +10,7 @@ import {
 } from '#pages';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-function App() {
+export function App() {
     // we can change this later, just setting it up for now
     const theme = createTheme({
         palette: {
@@ -29,7 +30,15 @@ function App() {
             <BrowserRouter>
                 <Routes>
                     <Route path='/' exact element={<AnonPage />} />
-                    <Route path='/home' exact element={<HomePage />} />
+                    <Route
+                        path='/home'
+                        exact
+                        element={
+                            <AuthorisedPageShell>
+                                <HomePage />
+                            </AuthorisedPageShell>
+                        }
+                    />
                     <Route path='/login' element={<LoginPage />} />
                     <Route path='/register' element={<RegisterPage />} />
                     <Route path='/products' element={<ProductsPage />} />
@@ -40,5 +49,3 @@ function App() {
         </ThemeProvider>
     );
 }
-
-export default App;
