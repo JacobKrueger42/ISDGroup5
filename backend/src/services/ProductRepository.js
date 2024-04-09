@@ -95,7 +95,12 @@ export default function productRepository() {
     }
 
     function getAllProductsAsync(skip, take) {
-        if (!skip || !take)
+        if (
+            skip === undefined ||
+            take === undefined ||
+            skip === null ||
+            take === null
+        )
             throw new Error('"skip" and "take" must be defined');
 
         if (skip < 0) throw new Error('"skip" value must be at least 0');
@@ -105,8 +110,7 @@ export default function productRepository() {
             skip: skip,
             take: take,
             orderBy: {
-                title: 'desc',
-                createdAt: 'desc' // tie-breaker for similar titles
+                name: 'desc'
             }
         });
     }
