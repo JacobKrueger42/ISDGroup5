@@ -16,9 +16,12 @@ export default function useAuth(options) {
 
     useEffect(() => {
         (async () => {
-            if (opts.skipLoading) return;
-            const user = await getUserAsync();
-            setUser(user);
+            if (opts.skipLoading) {
+                setLoading(false);
+            } else {
+                const user = await getUserAsync();
+                setUser(user);
+            }
         })();
     }, []);
 
