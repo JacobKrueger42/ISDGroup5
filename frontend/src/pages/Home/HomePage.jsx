@@ -1,3 +1,4 @@
+import { bannerPlaceholder } from '#assets';
 import { useAuth } from '#hooks';
 import { Alert, CardActions } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -5,10 +6,9 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
-import { useState, useEffect } from 'react';
-import MenuAppBar from '../../components/MenuAppBar';
-import { bannerPlaceholder } from '#assets';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import MenuAppBar from '../../components/MenuAppBar';
 
 export default function HomePage() {
     const [user, setUser] = useState(null);
@@ -79,10 +79,7 @@ export default function HomePage() {
                         </Typography>
                     </CardContent>
                     <CardActions style={{ justifyContent: 'center' }}>
-                        <Button
-                            variant='contained'
-                            onClick={handleShopNow}
-                        >
+                        <Button variant='contained' onClick={handleShopNow}>
                             Shop Now
                         </Button>
                     </CardActions>

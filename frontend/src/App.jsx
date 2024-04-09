@@ -15,10 +15,11 @@ function App() {
         palette: {
             primary: {
                 main: '#46AD8D',
-                contrastText: '#fff' //button text white instead of black
+                contrastText: '#E7FAF3' //button text white instead of black
             },
             background: {
-                default: '#394764'
+                default: '#394764',
+                paper: '#E7FAF3'
             }
         }
     });
