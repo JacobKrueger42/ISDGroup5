@@ -90,48 +90,31 @@ function GenerateRoutes(controller, name, app, opts) {
     const methods = Object.keys(controller);
     const formattedName = name.toLowerCase();
 
-    const routes = [];
-
     methods.forEach(method => {
         const routeConfig =
             {
-                list: ['get', `/${formattedName}/list`, 1],
-                count: ['get', `/${formattedName}/count`, 1],
-                detail: ['get', `/${formattedName}/:id`, 2],
-                get: ['get', `/${formattedName}`, 3],
-                create: ['post', `/${formattedName}`, 1],
-                update: ['post', `/${formattedName}/:id/update`, 2],
-                remove: ['delete', `/${formattedName}/:id`, 2]
+                list: ['get', `/${formattedName}/list`],
+                count: ['get', `/${formattedName}/count`],
+                detail: ['get', `/${formattedName}/:id/detail`],
+                get: ['get', `/${formattedName}`],
+                create: ['post', `/${formattedName}/create`],
+                update: ['post', `/${formattedName}/:id/update`],
+                remove: ['delete', `/${formattedName}/:id/remove`]
             }[method] ?? null;
 
         if (!routeConfig)
             throw new Error(`unrecognized route: ${formattedName}.${method}`);
 
-        const [httpAction, path, specificity] = routeConfig;
-
-        routes.push({ httpAction, path, method, specificity });
-    });
-
-    // register the routes
-    routes.sort(specificityComparer).forEach(route => {
-        const { httpAction, path, method } = route;
+        const [httpAction, path] = routeConfig;
 
         // setup handler
         const handler = controller[method];
 
+        // register the routes
         app[httpAction](path, handler);
         opts.verbose &&
             console.log(
                 `    ${httpAction.toUpperCase()} ${path} -> ${formattedName}.${method}`
             );
     });
-}
-
-function specificityComparer(a, b) {
-    // inputs are prev. and next route - deconstruct
-    const { specificity: specificityA } = a;
-    const { specificity: specificityB } = b;
-
-    // (a, b) => a - b => sorts in asc order
-    return specificityA - specificityB;
 }
