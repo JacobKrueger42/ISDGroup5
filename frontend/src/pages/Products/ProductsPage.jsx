@@ -1,4 +1,4 @@
-import { AppShell, EnhancedTableHead, EnhancedTableRow } from '#components';
+import { EnhancedTableHead, EnhancedTableRow } from '#components';
 import { useEnhancedTable } from '#hooks';
 
 import CardActions from '@mui/material/CardActions';
@@ -160,7 +160,7 @@ export default function ProductsPage() {
     } = useEnhancedTable(headCells, rows);
 
     return (
-        <AppShell>
+        <>
             <Card variant='outlined'>
                 <CardHeader title='Inventory Management - Products' />
                 <CardContent>
@@ -251,6 +251,6 @@ export default function ProductsPage() {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Card>
-        </AppShell>
+        </>
     );
 }

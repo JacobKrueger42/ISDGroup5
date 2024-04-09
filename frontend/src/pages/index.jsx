@@ -1,4 +1,5 @@
 import { default as AuthorisedPageShell } from './AuthorisedPageShell.jsx';
+import { default as AnonPageShell } from './AnonPageShell.jsx';
 
 import { default as LoginPage } from './Login/login.jsx';
 import { default as RegisterPage } from './Register/register.jsx';
@@ -9,6 +10,7 @@ import { default as AnonPage } from './Landing/landing.jsx';
 
 export {
     AuthorisedPageShell,
+    AnonPageShell,
     LoginPage,
     RegisterPage,
     NotFoundPage,

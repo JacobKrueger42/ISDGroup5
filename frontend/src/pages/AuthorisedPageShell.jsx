@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { useAuth, useAuthorisedPage } from '#hooks';
 import { MenuAppBar } from '#components';
+import { useAuth, useAuthorisedPage } from '#hooks';
 import Stack from '@mui/material/Stack';
+import { useEffect, useState } from 'react';
 
 export default function AuthorisedPageShell({ children }) {
     const [user, setUser] = useState(null);
@@ -28,7 +28,6 @@ export default function AuthorisedPageShell({ children }) {
             <MenuAppBar
                 user={user}
                 onLogout={handleLogout}
-                logoutAsync={logoutAsync}
                 isLoading={isLoading}
             />
             {/* page content */}
