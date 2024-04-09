@@ -1,24 +1,14 @@
 import { bannerPlaceholder } from '#assets';
-import { useAuth } from '#hooks';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function AnonPage() {
     const navigate = useNavigate();
-    const { getUserAsync } = useAuth();
-
-    useEffect(() => {
-        (async () => {
-            const user = await getUserAsync();
-            if (user) navigate('/home');
-        })();
-    }, []);
 
     const handleShopNow = () => {
         navigate('/shop');

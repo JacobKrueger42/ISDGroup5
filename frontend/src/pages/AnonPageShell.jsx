@@ -7,14 +7,11 @@ import { useNavigate } from 'react-router-dom';
 export default function AuthorisedPageShell({ children }) {
     const navigate = useNavigate();
 
-    const { isLoading, getUserAsync } = useAuth();
+    const { isLoading, user } = useAuth();
 
     useEffect(() => {
-        (async () => {
-            const user = await getUserAsync();
-            if (user) navigate('/home');
-        })();
-    }, []);
+        if (user) navigate('/home');
+    }, [user]);
 
     return (
         <Stack spacing={2}>

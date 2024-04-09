@@ -1,22 +1,12 @@
 import { MenuAppBar } from '#components';
 import { useAuth, useAuthorisedPage } from '#hooks';
 import Stack from '@mui/material/Stack';
-import { useEffect, useState } from 'react';
 
 export default function AuthorisedPageShell({ children }) {
-    const [user, setUser] = useState(null);
-
     // executing the hook applies the page auth requirement
     useAuthorisedPage();
 
-    const { isLoading, getUserAsync, logoutAsync } = useAuth();
-
-    useEffect(() => {
-        (async () => {
-            const user = await getUserAsync();
-            setUser(user);
-        })();
-    }, []);
+    const { isLoading, user, logoutAsync } = useAuth();
 
     const handleLogout = async e => {
         e.preventDefault();

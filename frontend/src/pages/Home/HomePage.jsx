@@ -6,25 +6,12 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import MenuAppBar from '../../components/MenuAppBar';
 
 export default function HomePage() {
-    const [user, setUser] = useState(null);
     const navigate = useNavigate();
-    const { isLoading, error, getUserAsync, logoutAsync } = useAuth();
-
-    useEffect(() => {
-        (async () => {
-            const user = await getUserAsync();
-
-            console.log('not logged in, redirecting to anon page');
-            if (!user) navigate('/');
-
-            setUser(user);
-        })();
-    }, []);
+    const { isLoading, error, user, logoutAsync } = useAuth();
 
     const handleShopNow = () => {
         navigate('/shop');
