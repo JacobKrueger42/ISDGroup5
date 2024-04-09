@@ -38,7 +38,6 @@ export default function AddProductForm({ open, onClose, onSubmit, error }) {
                     margin='normal'
                 />
                 <TextField
-                    autoFocus
                     name='name'
                     label='Name'
                     fullWidth
@@ -48,7 +47,6 @@ export default function AddProductForm({ open, onClose, onSubmit, error }) {
                     margin='normal'
                 />
                 <TextField
-                    autoFocus
                     name='brandName'
                     label='Brand Name'
                     fullWidth
@@ -58,7 +56,6 @@ export default function AddProductForm({ open, onClose, onSubmit, error }) {
                     margin='normal'
                 />
                 <TextField
-                    autoFocus
                     name='description'
                     label='Description'
                     fullWidth

@@ -60,7 +60,13 @@ export default function useProducts() {
         return res;
     }
 
-    async function updateProductAsync({ id, name, brandName, catalogueId }) {
+    async function updateProductAsync({
+        id,
+        name,
+        brandName,
+        description,
+        catalogueId
+    }) {
         let res;
         try {
             setLoading(true);
@@ -68,6 +74,7 @@ export default function useProducts() {
             res = await post(`product/${id}/update`, {
                 name: name,
                 brandName: brandName,
+                description: description,
                 catalogueId: catalogueId
             });
 

@@ -42,8 +42,6 @@ export default function ProductsPage() {
         error
     } = useProducts();
 
-    console.log('products', products);
-
     const mapToRow = product => {
         return {
             id: product.id,
@@ -80,8 +78,7 @@ export default function ProductsPage() {
 
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
-        const res = await createProductAsync(formJson);
-        console.log('response', res);
+        await createProductAsync(formJson);
         if (error === null) setOpenAddProduct(false);
     };
 
@@ -99,8 +96,7 @@ export default function ProductsPage() {
 
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
-        const res = await updateProductAsync({ id: selected[0], ...formJson });
-        console.log('response', res);
+        await updateProductAsync({ id: selected[0], ...formJson });
         if (error === null) setOpenAddProduct(false);
     };
 
