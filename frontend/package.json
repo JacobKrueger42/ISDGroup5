@@ -35,6 +35,7 @@
         "vite": "^5.1.4"
     },
     "imports": {
+        "#utils": "./src/utils/index.js",
         "#hooks": "./src/hooks/index.js",
         "#pages": "./src/pages/index.jsx",
         "#assets": "./src/assets/index.js",
