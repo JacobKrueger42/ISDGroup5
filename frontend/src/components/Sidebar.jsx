@@ -44,7 +44,9 @@ function DrawItems({ setOpen, items }) {
     const customerItems = items?.filter(item => item.role === 'CUSTOMER') ?? [];
     const staffItems =
         items?.filter(
-            item => user?.role === 'STAFF' && item.role === 'STAFF'
+            item =>
+                (user?.role === 'ADMIN' || user?.role === 'STAFF') &&
+                item.role === 'STAFF'
         ) ?? [];
     const adminItems =
         items?.filter(

@@ -4,6 +4,7 @@ export default async function requireAuth(req, res, next, callback) {
     if (typeof callback !== 'function') {
         console.error('a valid callback must be supplied to this middleware');
         next(new Error('Authorisation invalid'));
+        return;
     }
 
     if (!req?.session?.userId) {
@@ -21,5 +22,6 @@ export default async function requireAuth(req, res, next, callback) {
         // typically we would assert the user ID isn't bogus
         // but I'm not adding caching to this project or extra db lookups
         await callback();
+        next();
     }
 }
