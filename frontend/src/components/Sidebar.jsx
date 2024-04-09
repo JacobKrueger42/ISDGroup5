@@ -1,6 +1,7 @@
 import { useAuth } from '#hooks';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
+import StorefrontIcon from '@mui/icons-material/Storefront';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
@@ -10,6 +11,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
+import Skeleton from '@mui/material/Skeleton';
+import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -39,47 +42,80 @@ function DrawItems({ setOpen, items }) {
     const navigate = useNavigate();
 
     const customerItems = items?.filter(item => item.role === 'CUSTOMER') ?? [];
-    const staffItems = items?.filter(item => item.role === 'STAFF') ?? [];
-    const adminItems = items?.filter(item => item.role === 'ADMIN') ?? [];
+    const staffItems =
+        items?.filter(
+            item => user?.role === 'STAFF' && item.role === 'STAFF'
+        ) ?? [];
+    const adminItems =
+        items?.filter(
+            item => user?.role === 'ADMIN' && item.role === 'ADMIN'
+        ) ?? [];
 
     return (
         <Box
             sx={{ width: 250, padding: 4 }}
             role='presentation'
-            display='flex'
-            flexDirection='column'
             onClick={() => setOpen(false)}
         >
-            <IconButton
-                size='small'
-                color='inherit'
-                sx={{ mr: 2, alignSelf: 'flex-end' }}
-                onClick={() => setOpen(!open)}
+            <Stack
+                direction='row'
+                spacing={2}
+                flexWrap='wrap'
+                alignItems='center'
+                sx={{ mb: 4 }}
             >
-                <CloseIcon />
-            </IconButton>
+                <StorefrontIcon />
+                <Typography variant='h6' sx={{ flexGrow: 1 }}>
+                    IoT Bay
+                </Typography>
+                <IconButton
+                    size='small'
+                    color='inherit'
+                    onClick={() => setOpen(!open)}
+                >
+                    <CloseIcon />
+                </IconButton>
+            </Stack>
             <List>
-                {customerItems.map((item, index) => (
-                    <DrawItem item={item} key={index} navigate={navigate} />
-                ))}
+                {customerItems.map((item, index) =>
+                    isLoading ? (
+                        <Skeleton key={index}>
+                            <DrawItem item={item} navigate={navigate} />
+                        </Skeleton>
+                    ) : (
+                        <DrawItem item={item} key={index} navigate={navigate} />
+                    )
+                )}
             </List>
-            <Divider />
+            {staffItems.length > 0 && <Divider />}
             {staffItems.length > 0 && (
                 <Typography variant='overline'>Staff</Typography>
             )}
             <List>
-                {staffItems.map((item, index) => (
-                    <DrawItem item={item} key={index} navigate={navigate} />
-                ))}
+                {staffItems.map((item, index) =>
+                    isLoading ? (
+                        <Skeleton key={index}>
+                            <DrawItem item={item} navigate={navigate} />
+                        </Skeleton>
+                    ) : (
+                        <DrawItem item={item} key={index} navigate={navigate} />
+                    )
+                )}
             </List>
-            <Divider />
+            {adminItems.length > 0 && <Divider />}
             {adminItems.length > 0 && (
                 <Typography variant='overline'>Admin</Typography>
             )}
             <List>
-                {adminItems.map((item, index) => (
-                    <DrawItem item={item} key={index} navigate={navigate} />
-                ))}
+                {adminItems.map((item, index) =>
+                    isLoading ? (
+                        <Skeleton key={index}>
+                            <DrawItem item={item} navigate={navigate} />
+                        </Skeleton>
+                    ) : (
+                        <DrawItem item={item} key={index} navigate={navigate} />
+                    )
+                )}
             </List>
         </Box>
     );
