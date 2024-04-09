@@ -3,5 +3,13 @@ import { default as AppShell } from '../components/AppShell.jsx';
 import { default as EnhancedTableHead } from '../components/EnhancedTableHead.jsx';
 import { default as EnhancedTableRow } from '../components/EnhancedTableRow.jsx';
 import { default as Sidebar } from '../components/Sidebar.jsx';
+import { default as ProfileMenu } from '../components/ProfileMenu.jsx';
 
-export { MenuAppBar, AppShell, EnhancedTableHead, EnhancedTableRow, Sidebar };
+export {
+    MenuAppBar,
+    AppShell,
+    EnhancedTableHead,
+    EnhancedTableRow,
+    Sidebar,
+    ProfileMenu
+};
