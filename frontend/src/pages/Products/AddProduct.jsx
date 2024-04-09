@@ -7,7 +7,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 
-export default function AddProductForm({ open, onClose, onSubmit, error }) {
+export default function AddProductForm({
+    open,
+    onClose,
+    onSubmit,
+    error,
+    isLoading
+}) {
     return (
         <Dialog
             open={open}
@@ -67,10 +73,15 @@ export default function AddProductForm({ open, onClose, onSubmit, error }) {
                 />
             </DialogContent>
             <DialogActions>
-                <Button variant='contained' color='warning' onClick={onClose}>
+                <Button
+                    disabled={isLoading}
+                    variant='contained'
+                    color='warning'
+                    onClick={onClose}
+                >
                     Cancel
                 </Button>
-                <Button variant='contained' type='submit'>
+                <Button disabled={isLoading} variant='contained' type='submit'>
                     Submit
                 </Button>
             </DialogActions>

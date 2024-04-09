@@ -39,6 +39,7 @@ export default function ProductsPage() {
         totalCount,
         createProductAsync,
         updateProductAsync,
+        isLoading,
         error
     } = useProducts();
 
@@ -79,7 +80,8 @@ export default function ProductsPage() {
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         await createProductAsync(formJson);
-        if (error === null) setOpenAddProduct(false);
+
+        if (!!error) setOpenAddProduct(false);
     };
 
     //////////////////
@@ -97,7 +99,7 @@ export default function ProductsPage() {
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         await updateProductAsync({ id: selected[0], ...formJson });
-        if (error === null) setOpenAddProduct(false);
+        if (!!error) setOpenUpdateProduct(false);
     };
 
     return (
@@ -119,6 +121,7 @@ export default function ProductsPage() {
                         open={openAddProduct}
                         onClose={() => setOpenAddProduct(false)}
                         onSubmit={onAddProductSubmit}
+                        isLoading={isLoading}
                         error={error}
                     />
 
@@ -127,6 +130,7 @@ export default function ProductsPage() {
                         onClose={() => setOpenUpdateProduct(false)}
                         onSubmit={onUpdateProductSubmit}
                         error={error}
+                        isLoading={isLoading}
                         getExisting={getFirstOrDefaultSelectedProduct}
                     />
                 </CardContent>

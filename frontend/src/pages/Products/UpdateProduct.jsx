@@ -12,7 +12,8 @@ export default function UpdateProduct({
     onClose,
     onSubmit,
     getExisting,
-    error
+    error,
+    isLoading
 }) {
     const existing = getExisting();
 
@@ -67,10 +68,15 @@ export default function UpdateProduct({
                         variant='contained'
                         color='warning'
                         onClick={onClose}
+                        disabled={isLoading}
                     >
                         Cancel
                     </Button>
-                    <Button variant='contained' type='submit'>
+                    <Button
+                        variant='contained'
+                        type='submit'
+                        disabled={isLoading}
+                    >
                         Submit
                     </Button>
                 </DialogActions>
