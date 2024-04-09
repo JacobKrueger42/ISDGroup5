@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 
-export default function useEnhancedTable(headCells, rows) {
+export default function useEnhancedTable(rows) {
     // ordering
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('calories');
@@ -16,7 +16,9 @@ export default function useEnhancedTable(headCells, rows) {
         return rows
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .sort(getComparator(order, orderBy));
-    }, [order, orderBy, page, rowsPerPage]);
+        // including rows in the deps array is a little hacky as we negate
+        // the memo almost anytime we touch a row object
+    }, [order, orderBy, page, rowsPerPage, rows]);
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
@@ -28,7 +30,7 @@ export default function useEnhancedTable(headCells, rows) {
         setOrderBy(property);
     };
 
-    const handleClick = (event, id) => {
+    const onRowClick = (event, id) => {
         const selectedIndex = selected.indexOf(id);
         let newSelected = [];
 
@@ -80,7 +82,7 @@ export default function useEnhancedTable(headCells, rows) {
         // methods
         handleRequestSort,
         isSelected,
-        handleClick,
+        onRowClick,
         handleChangePage,
         handleChangeRowsPerPage,
         handleSelectAllClick
