@@ -1,3 +1,3 @@
 export function isNullOrEmpty(value) {
-    return value === null || value.trim() === '';
+    return value === null || value === undefined || value.trim() === '';
 }
