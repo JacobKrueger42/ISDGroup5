@@ -1,19 +1,15 @@
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
+import { titleCase } from '#utils';
 
-export default function EnhancedTableRow({
-    row,
-    index,
-    handleClick,
-    isSelected
-}) {
+export default function EnhancedTableRow({ row, index, onClick, isSelected }) {
     const isItemSelected = isSelected(row.id);
 
     return (
         <TableRow
             hover
-            onClick={event => handleClick(event, row.id)}
+            onClick={event => onClick(event, row.id)}
             role='checkbox'
             aria-checked={isItemSelected}
             tabIndex={-1}
@@ -30,12 +26,11 @@ export default function EnhancedTableRow({
                 scope='row'
                 padding='none'
             >
-                {row.name}
+                {row.uniqueProductCode}
             </TableCell>
-            <TableCell align='right'>{row.calories}</TableCell>
-            <TableCell align='right'>{row.fat}</TableCell>
-            <TableCell align='right'>{row.carbs}</TableCell>
-            <TableCell align='right'>{row.protein}</TableCell>
+
+            <TableCell>{titleCase(row.name)}</TableCell>
+            <TableCell>{titleCase(row.brandName)}</TableCell>
         </TableRow>
     );
 }
