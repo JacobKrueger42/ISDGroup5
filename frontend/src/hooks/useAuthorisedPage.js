@@ -4,16 +4,16 @@ import { useAuth } from '#hooks';
 
 export default function useAuthorisedPage() {
     const navigate = useNavigate();
-    const { getUserAsync } = useAuth();
+    const { user } = useAuth();
 
     useEffect(() => {
         (async () => {
-            const user = await getUserAsync();
-
-            console.log('not logged in, redirecting to anon page');
-            if (!user) navigate('/');
+            if (!user) {
+                console.log('not logged in, redirecting to anon page');
+                navigate('/');
+            }
         })();
-    }, []);
+    }, [user]);
 
     return {};
 }

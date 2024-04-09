@@ -1,3 +1,4 @@
+import { bannerPlaceholder } from '#assets';
 import { useAuth } from '#hooks';
 import { Alert, CardActions } from '@mui/material';
 import Button from '@mui/material/Button';
@@ -5,44 +6,18 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
-import { useState, useEffect } from 'react';
-import MenuAppBar from '../../components/MenuAppBar';
-import { bannerPlaceholder } from '#assets';
 import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
-    const [user, setUser] = useState(null);
     const navigate = useNavigate();
-    const { isLoading, error, getUserAsync, logoutAsync } = useAuth();
-
-    useEffect(() => {
-        (async () => {
-            const user = await getUserAsync();
-
-            console.log('not logged in, redirecting to anon page');
-            if (!user) navigate('/');
-
-            setUser(user);
-        })();
-    }, []);
+    const { error, user } = useAuth();
 
     const handleShopNow = () => {
         navigate('/shop');
     };
 
-    const handleLogout = async e => {
-        e.preventDefault();
-        await logoutAsync();
-    };
-
     return (
         <>
-            <MenuAppBar
-                user={user}
-                onLogout={handleLogout}
-                logoutAsync={logoutAsync}
-                isLoading={isLoading}
-            />
             <div
                 style={{
                     display: 'flex', // Using flex display
@@ -79,10 +54,7 @@ export default function HomePage() {
                         </Typography>
                     </CardContent>
                     <CardActions style={{ justifyContent: 'center' }}>
-                        <Button
-                            variant='contained'
-                            onClick={handleShopNow}
-                        >
+                        <Button variant='contained' onClick={handleShopNow}>
                             Shop Now
                         </Button>
                     </CardActions>

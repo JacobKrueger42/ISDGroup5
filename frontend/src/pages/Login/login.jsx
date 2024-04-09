@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function LoginPage() {
-    const { isLoading, error, loginAsync } = useAuth();
+    const { isLoading, error, loginAsync } = useAuth({ skipLoading: true });
 
     const [formData, setFormData] = useState({
         email: '',

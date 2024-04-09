@@ -1,13 +1,29 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useFetch } from '#hooks';
 
-export default function useAuth() {
+const defaultOptions = { skipLoading: false };
+
+export default function useAuth(options) {
+    const opts = options ?? defaultOptions;
+
+    const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     const { get, post } = useFetch();
+
+    useEffect(() => {
+        (async () => {
+            if (opts.skipLoading) {
+                setLoading(false);
+            } else {
+                const user = await getUserAsync();
+                setUser(user);
+            }
+        })();
+    }, []);
 
     async function loginAsync(email, password) {
         console.info('logging in');
@@ -85,7 +101,7 @@ export default function useAuth() {
     return {
         isLoading,
         error,
-        getUserAsync,
+        user,
         loginAsync,
         logoutAsync,
         registerAsync,
