@@ -30,7 +30,7 @@ export default function productRepository() {
         return prisma.product
             .update({
                 where: {
-                    id: id
+                    id: Number(id)
                 },
                 data: {
                     name: name
@@ -45,7 +45,7 @@ export default function productRepository() {
         return prisma.product
             .update({
                 where: {
-                    id: id
+                    id: Number(id)
                 },
                 data: {
                     brandName: brandName
@@ -60,7 +60,7 @@ export default function productRepository() {
         return prisma.product
             .update({
                 where: {
-                    id: id
+                    id: Number(id)
                 },
                 data: {
                     catalogue: catalogue
@@ -77,7 +77,7 @@ export default function productRepository() {
         return prisma.product
             .delete({
                 where: {
-                    id: id
+                    id: Number(id)
                 }
             })
             .catch(error =>
@@ -89,7 +89,7 @@ export default function productRepository() {
         if (isNullOrEmpty(id)) throw new Error('no id provided to get product');
         return prisma.product.findUnique({
             where: {
-                id: id
+                id: Number(id)
             }
         });
     }
