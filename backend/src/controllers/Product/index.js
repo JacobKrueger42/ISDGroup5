@@ -62,13 +62,6 @@ export async function create(req, res, next) {
                 const { uniqueProductCode, name, brandName, description } =
                     req.body;
 
-                console.log('req body: ', {
-                    uniqueProductCode,
-                    name,
-                    brandName,
-                    description
-                });
-
                 const { createProductAsync } = productRepository();
                 const productId = await createProductAsync(
                     uniqueProductCode,
