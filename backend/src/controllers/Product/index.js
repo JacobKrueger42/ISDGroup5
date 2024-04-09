@@ -1,5 +1,6 @@
-import { productRepository } from '#services';
 import { requireRole } from '#middleware';
+import { productRepository } from '#services';
+import HttpStatus from 'http-status-codes';
 
 // paginated
 // not to be confused with catalogue!
@@ -76,7 +77,11 @@ export async function create(req, res, next) {
             ['STAFF', 'ADMIN']
         );
     } catch (error) {
-        next(error);
+        res.status(HttpStatus.BAD_REQUEST).json({
+            path: req.path,
+            detailed_error_message: error.message,
+            message: 'Cannot create a product with the given details'
+        });
     }
 }
 
@@ -87,16 +92,21 @@ export async function update(req, res, next) {
             res,
             next,
             async () => {
+                const id = req.params.id;
                 const { name, brandName, catalogueId } = req.body;
                 const { updateProductAsync } = productRepository();
-                await updateProductAsync(name, brandName, catalogueId);
+                await updateProductAsync(id, name, brandName, catalogueId);
 
                 res.send('OK');
             },
             ['STAFF', 'ADMIN']
         );
     } catch (error) {
-        next(error);
+        res.status(HttpStatus.BAD_REQUEST).json({
+            path: req.path,
+            detailed_error_message: error.message,
+            message: 'Cannot update the product with the given details'
+        });
     }
 }
 

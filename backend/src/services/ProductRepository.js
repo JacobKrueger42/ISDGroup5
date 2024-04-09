@@ -30,7 +30,7 @@ export default function productRepository() {
         return prisma.product
             .update({
                 where: {
-                    id: id
+                    id: Number(id)
                 },
                 data: {
                     name: name
@@ -45,7 +45,7 @@ export default function productRepository() {
         return prisma.product
             .update({
                 where: {
-                    id: id
+                    id: Number(id)
                 },
                 data: {
                     brandName: brandName
@@ -60,7 +60,7 @@ export default function productRepository() {
         return prisma.product
             .update({
                 where: {
-                    id: id
+                    id: Number(id)
                 },
                 data: {
                     catalogue: catalogue
@@ -77,7 +77,7 @@ export default function productRepository() {
         return prisma.product
             .delete({
                 where: {
-                    id: id
+                    id: Number(id)
                 }
             })
             .catch(error =>
@@ -89,7 +89,7 @@ export default function productRepository() {
         if (isNullOrEmpty(id)) throw new Error('no id provided to get product');
         return prisma.product.findUnique({
             where: {
-                id: id
+                id: Number(id)
             }
         });
     }
@@ -144,9 +144,7 @@ export default function productRepository() {
             throw new Error('a UPC must be provided');
         if (isNullOrEmpty(name)) throw new Error('a name must be provided');
         if (isNullOrEmpty(brandName))
-            throw new Error('a brandName must be provided');
-        if (isNullOrEmpty(description))
-            throw new Error('a description must be provided');
+            throw new Error('a brand name must be provided');
 
         // trim inputs and normalise inputs
         const _uniqueProductCode = uniqueProductCode.trim().toUpperCase();
@@ -154,7 +152,7 @@ export default function productRepository() {
         const _brandName = brandName.trim().toLowerCase();
 
         // description can be anything the client provides so long as it exists
-        const _description = description.trim();
+        const _description = description?.trim() ?? '';
 
         if (_uniqueProductCode.length !== 12)
             throw new Error('a UPC must be 12 characters');

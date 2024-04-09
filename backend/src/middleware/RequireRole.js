@@ -1,4 +1,3 @@
-import HttpStatus from 'http-status-codes';
 import { requireAuth } from '#middleware';
 import { userAuthRepository } from '#services';
 
@@ -32,11 +31,10 @@ export default async function requireRole(req, res, next, callback, roles) {
             );
             next(new Error('Authorisation invalid'));
         } else if (!roles.includes(user.role)) {
-            const forbiddenMessage = `Invalid role, cannot access "${req.path}"`;
+            const forbiddenMessage = `Invalid role, user "${user.id}" cannot access "${req.path}"`;
             console.log(forbiddenMessage);
             next(new Error(forbiddenMessage));
         } else {
-            console.log('callback triggered');
             await callback();
             next();
         }
