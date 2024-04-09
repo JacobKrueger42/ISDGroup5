@@ -11,7 +11,14 @@ import MenuAppBar from '../../components/MenuAppBar';
 
 export default function HomePage() {
     const navigate = useNavigate();
-    const { isLoading, error, user, logoutAsync } = useAuth();
+    // const { isLoading, error, user, logoutAsync } = useAuth();
+
+    const { isLoading, error, user, logoutAsync } = {
+        isLoading: false,
+        error: null,
+        user: null,
+        logoutAsync: () => {}
+    };
 
     const handleShopNow = () => {
         navigate('/shop');

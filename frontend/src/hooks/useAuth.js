@@ -9,7 +9,7 @@ export default function useAuth(options) {
 
     const [user, setUser] = useState(null);
     const [error, setError] = useState(null);
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     const { get, post } = useFetch();

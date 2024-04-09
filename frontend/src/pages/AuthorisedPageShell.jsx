@@ -1,23 +1,27 @@
 import { MenuAppBar } from '#components';
-import { useAuth, useAuthorisedPage } from '#hooks';
+import { useAuth } from '#hooks';
 import Stack from '@mui/material/Stack';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function AuthorisedPageShell({ children }) {
-    // executing the hook applies the page auth requirement
-    useAuthorisedPage();
-
+    const navigate = useNavigate();
     const { isLoading, user, logoutAsync } = useAuth();
 
-    const handleLogout = async e => {
-        e.preventDefault();
-        await logoutAsync();
-    };
+    useEffect(() => {
+        if (isLoading) return;
+
+        if (!user) {
+            console.log('not logged in, redirecting to anon page');
+            navigate('/');
+        }
+    });
 
     return (
         <Stack spacing={2}>
             <MenuAppBar
                 user={user}
-                onLogout={handleLogout}
+                onLogout={logoutAsync}
                 isLoading={isLoading}
             />
             {/* page content */}
