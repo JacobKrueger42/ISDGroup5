@@ -7,29 +7,17 @@ import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-import MenuAppBar from '../../components/MenuAppBar';
 
 export default function HomePage() {
     const navigate = useNavigate();
-    const { isLoading, error, user, logoutAsync } = useAuth();
+    const { error, user } = useAuth();
 
     const handleShopNow = () => {
         navigate('/shop');
     };
 
-    const handleLogout = async e => {
-        e.preventDefault();
-        await logoutAsync();
-    };
-
     return (
         <>
-            <MenuAppBar
-                user={user}
-                onLogout={handleLogout}
-                logoutAsync={logoutAsync}
-                isLoading={isLoading}
-            />
             <div
                 style={{
                     display: 'flex', // Using flex display

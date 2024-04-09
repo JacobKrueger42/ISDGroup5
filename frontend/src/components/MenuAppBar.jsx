@@ -8,7 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 
-export default function MenuAppBar({ user, logoutAsync, isLoading }) {
+export default function MenuAppBar({ user, onLogout, isLoading }) {
     const navigate = useNavigate();
 
     const sidebarMenu = [
@@ -24,7 +24,7 @@ export default function MenuAppBar({ user, logoutAsync, isLoading }) {
     const profileMenu = [
         { text: 'Profile', link: '/profile' },
         { text: 'My Account', link: '/account' },
-        { text: 'Logout', onClick: logoutAsync }
+        { text: 'Logout', onClick: onLogout }
     ];
 
     return (

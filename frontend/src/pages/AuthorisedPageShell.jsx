@@ -15,7 +15,7 @@ export default function AuthorisedPageShell({ children }) {
             console.log('not logged in, redirecting to anon page');
             navigate('/');
         }
-    });
+    }, [user]);
 
     return (
         <Stack spacing={2}>
