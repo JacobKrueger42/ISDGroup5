@@ -7,7 +7,7 @@ export default function useProducts() {
     const [products, setProducts] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
 
-    const { get, post } = useFetch();
+    const { get, post, remove } = useFetch();
 
     useEffect(() => {
         (async () => {
@@ -66,9 +66,19 @@ export default function useProducts() {
         return result;
     }
 
+    async function removeProductAsync({ id }) {
+        const result = makeServerChange(
+            async () => await remove(`product/${id}/remove`),
+            res => console.log('removed product with result: ', res)
+        );
+
+        return result;
+    }
+
     return {
         createProductAsync,
         updateProductAsync,
+        removeProductAsync,
         products,
         totalCount,
         isLoading

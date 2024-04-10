@@ -39,6 +39,7 @@ export default function ProductsPage() {
         totalCount,
         createProductAsync,
         updateProductAsync,
+        removeProductAsync,
         isLoading
     } = useProducts();
 
@@ -64,7 +65,7 @@ export default function ProductsPage() {
         onRowClick,
         handleChangePage,
         handleChangeRowsPerPage,
-        handleSelectAllClick
+        onSelectAllClick
     } = useEnhancedTable(products.map(mapToRow));
 
     //////////////////
@@ -73,7 +74,7 @@ export default function ProductsPage() {
 
     const [openAddProduct, setOpenAddProduct] = useState(false);
 
-    const onAddProductSubmit = async event => {
+    const onAddProductSubmitAsync = async event => {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
@@ -98,7 +99,7 @@ export default function ProductsPage() {
     const getFirstOrDefaultSelectedProduct = () =>
         products.find(p => p.id === selected[0]);
 
-    const onUpdateProductSubmit = async event => {
+    const onUpdateProductSubmitAsync = async event => {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
@@ -115,6 +116,16 @@ export default function ProductsPage() {
     const onCloseUpdateProduct = () => {
         setOpenUpdateProduct(false);
         setError(null);
+    };
+
+    //////////////////
+    // Delete product
+    //////////////////
+
+    const onDeleteProductAsync = async event => {
+        event.preventDefault();
+        const existing = getFirstOrDefaultSelectedProduct();
+        await removeProductAsync({ id: existing.id });
     };
 
     return (
@@ -135,7 +146,7 @@ export default function ProductsPage() {
                     <AddProductForm
                         open={openAddProduct}
                         onClose={onCloseAddProduct}
-                        onSubmit={onAddProductSubmit}
+                        onSubmit={onAddProductSubmitAsync}
                         isLoading={isLoading}
                         error={error}
                     />
@@ -143,7 +154,7 @@ export default function ProductsPage() {
                     <UpdateProduct
                         open={openUpdateProduct}
                         onClose={onCloseUpdateProduct}
-                        onSubmit={onUpdateProductSubmit}
+                        onSubmit={onUpdateProductSubmitAsync}
                         error={error}
                         isLoading={isLoading}
                         getExisting={getFirstOrDefaultSelectedProduct}
@@ -161,10 +172,7 @@ export default function ProductsPage() {
                     <Button
                         variant='contained'
                         disabled={selected.length !== 1}
-                        onClick={() => {
-                            console.log(selected);
-                            setOpenUpdateProduct(true);
-                        }}
+                        onClick={() => setOpenUpdateProduct(true)}
                     >
                         Update
                     </Button>
@@ -173,7 +181,7 @@ export default function ProductsPage() {
                         variant='contained'
                         color='error'
                         disabled={selected.length !== 1}
-                        onClick={e => console.log('deleting product', e)}
+                        onClick={onDeleteProductAsync}
                     >
                         Delete
                     </Button>
@@ -189,10 +197,10 @@ export default function ProductsPage() {
                     >
                         <EnhancedTableHead
                             headCells={headCells}
-                            numSelected={selected.length}
+                            selected={selected}
                             order={order}
                             orderBy={orderBy}
-                            onSelectAllClick={handleSelectAllClick}
+                            onSelectAllClick={onSelectAllClick}
                             onRequestSort={handleRequestSort}
                             rowCount={totalCount}
                         />
