@@ -3,12 +3,22 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
 
-// currently bugged and sorts in reverse idky
 // search input allowing free text input but suggests options
 // will group by category if it exists, else fallback to alphabetical order
-export default function SearchInput({ options }) {
+export default function SearchInput({ options, searchTerm, setSearchTerm }) {
     const hasCategory =
         options?.length > 0 && Object.keys(options[0]).includes('category');
+
+    const onChange = (event, newValue, reason) => {
+        if (
+            event.type === 'keydown' &&
+            (event.key === 'Backspace' || event.key === 'Delete') &&
+            reason === 'removeOption'
+        ) {
+            return;
+        }
+        setSearchTerm(newValue);
+    };
 
     return (
         <Stack spacing={4} direction='row' alignItems='center'>
@@ -18,9 +28,9 @@ export default function SearchInput({ options }) {
 
             <Autocomplete
                 freeSolo
-                id='free-solo-2-demo'
-                disableClearable
-                options={options.map(option => option.name)}
+                value={searchTerm}
+                onChange={onChange}
+                options={options.map(option => option.name).sort()}
                 groupBy={option =>
                     hasCategory ? option.category : option[0].toUpperCase()
                 }

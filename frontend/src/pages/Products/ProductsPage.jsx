@@ -69,7 +69,9 @@ export default function ProductsPage() {
         handleChangePage,
         handleChangeRowsPerPage,
         onSelectAllClick,
-        clearSelection
+        clearSelection,
+        searchTerm,
+        setSearchTerm
     } = useEnhancedTable(products.map(mapToRow));
 
     //////////////////
@@ -153,7 +155,11 @@ export default function ProductsPage() {
                                 <SearchInput options={[]} />
                             </Skeleton>
                         ) : (
-                            <SearchInput options={products} />
+                            <SearchInput
+                                options={products}
+                                searchTerm={searchTerm}
+                                setSearchTerm={setSearchTerm}
+                            />
                         )}
                     </Stack>
 

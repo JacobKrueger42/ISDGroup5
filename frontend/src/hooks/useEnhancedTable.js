@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 
 export default function useEnhancedTable(rows) {
     // ordering
@@ -12,13 +12,18 @@ export default function useEnhancedTable(rows) {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
 
+    // search
+    const [searchTerm, setSearchTerm] = useState(null);
+
     const visibleRows = useMemo(() => {
         return rows
+            .filter(row => (!searchTerm ? row : row.name === searchTerm))
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .sort(getComparator(order, orderBy));
+
         // including rows in the deps array is a little hacky as we negate
         // the memo almost anytime we touch a row object
-    }, [order, orderBy, page, rowsPerPage, rows]);
+    }, [order, orderBy, page, rowsPerPage, rows, searchTerm]);
 
     // Avoid a layout jump when reaching the last page with empty rows.
     const emptyRows =
@@ -85,7 +90,10 @@ export default function useEnhancedTable(rows) {
         handleChangePage,
         handleChangeRowsPerPage,
         onSelectAllClick,
-        clearSelection
+        clearSelection,
+        // search interaction
+        searchTerm,
+        setSearchTerm
     };
 }
 
