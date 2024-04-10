@@ -203,8 +203,20 @@ export default function catalogueRepository() {
             console.log(`updated catalogue entry with id '${id}'`);
     }
 
+    async function removeCatalogueEntryAsync(id) {
+        if (isNullOrEmpty(id))
+            throw new Error(
+                'an id must be provided to delete a catalogue entry'
+            );
+
+        await deleteCatalogueEntryAsync(id);
+
+        // TODO: generate access log
+        console.log(`deleted catalogue entry with id '${id}'`);
+    }
+
     return {
-        deleteCatalogueEntryAsync,
+        removeCatalogueEntryAsync,
         getCatalogueEntryByIdAsync,
         createCatalogueEntryAsync,
         updateCatalogueEntryAsync,
