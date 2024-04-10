@@ -26,7 +26,7 @@ export default function productRepository() {
             });
     }
 
-    async function editProductNameAsync(id, name) {
+    function editProductNameAsync(id, name) {
         return prisma.product
             .update({
                 where: {
@@ -41,7 +41,7 @@ export default function productRepository() {
             );
     }
 
-    async function editProductBrandNameAsync(id, brandName) {
+    function editProductBrandNameAsync(id, brandName) {
         return prisma.product
             .update({
                 where: {
@@ -56,7 +56,7 @@ export default function productRepository() {
             );
     }
 
-    async function editProductCatalogueAsync(id, catalogue) {
+    function editProductCatalogueAsync(id, catalogue) {
         return prisma.product
             .update({
                 where: {
@@ -71,7 +71,7 @@ export default function productRepository() {
             );
     }
 
-    async function deleteProductAsync(id) {
+    function deleteProductAsync(id) {
         await getProductByIdAsync(id);
 
         return prisma.product
