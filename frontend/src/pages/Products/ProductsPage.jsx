@@ -17,6 +17,7 @@ import SearchInput from '../../components/SearchInput';
 import AddProductForm from './AddProduct';
 import UpdateProduct from './UpdateProduct';
 import Stack from '@mui/material/Stack';
+import Skeleton from '@mui/material/Skeleton';
 
 const headCells = [
     {
@@ -147,7 +148,13 @@ export default function ProductsPage() {
                             Products listed here can be added to the public
                             product catalogue.
                         </Typography>
-                        <SearchInput options={visibleRows} />
+                        {isLoading ? (
+                            <Skeleton>
+                                <SearchInput options={[]} />
+                            </Skeleton>
+                        ) : (
+                            <SearchInput options={products} />
+                        )}
                     </Stack>
 
                     <AddProductForm
