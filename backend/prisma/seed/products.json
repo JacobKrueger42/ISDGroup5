@@ -1,0 +1,302 @@
+[
+	{
+		"uniqueProductCode": "_M0N5T3R5D13",
+		"name": "Monster's Eye",
+		"brandName": "RoR2Gear",
+		"description": "Gaze into the abyss with this eerie artifact. Provides a glimpse of otherworldly powers."
+	},
+	{
+		"uniqueProductCode": "__SH4D0WF15T",
+		"name": "Shadowfist",
+		"brandName": "RoR2Gear",
+		"description": "Unleash the shadows with this legendary gauntlet. Grants mastery over darkness."
+	},
+	{
+		"uniqueProductCode": "___H4PPYF33T",
+		"name": "Happy Feet",
+		"brandName": "RoR2Gear",
+		"description": "Dance your way through danger with these enchanted shoes. Increases speed and agility."
+	},
+	{
+		"uniqueProductCode": "______V01D3R",
+		"name": "Void Reaver",
+		"brandName": "RoR2Gear",
+		"description": "Harness the power of the void with this ancient blade. Cuts through reality itself."
+	},
+	{
+		"uniqueProductCode": "B1O5T1NGR41V",
+		"name": "Boasting Grave",
+		"brandName": "RoR2Gear",
+		"description": "Speak with the spirits of the fallen using this spectral amulet. Beware of haunting echoes."
+	},
+	{
+		"uniqueProductCode": "__FL4M3R3V3R",
+		"name": "Flame Reverie",
+		"brandName": "RoR2Gear",
+		"description": "Ignite your soul's passion with this fiery charm. Emits an aura of blazing determination."
+	},
+	{
+		"uniqueProductCode": "THUND3R5T0RM",
+		"name": "Thunderstorm",
+		"brandName": "RoR2Gear",
+		"description": "Summon the fury of the heavens with this electrifying staff. Shockwaves shake the earth."
+	},
+	{
+		"uniqueProductCode": "___N1GH7M4R3",
+		"name": "Nightmare",
+		"brandName": "RoR2Gear",
+		"description": "Haunt your foes' dreams with this cursed pendant. Inflicts visions of dread and despair."
+	},
+	{
+		"uniqueProductCode": "__W1N73RC0D3",
+		"name": "Winter's Code",
+		"brandName": "RoR2Gear",
+		"description": "Unlock the secrets of frost magic with this ancient tome. Freezes time and space."
+	},
+	{
+		"uniqueProductCode": "S1L3NT5H4D0W",
+		"name": "Silent Shadow",
+		"brandName": "RoR2Gear",
+		"description": "Blend into the darkness with this stealthy cloak. Grants invisibility at will."
+	},
+	{
+		"uniqueProductCode": "_R41NBR1NG3R",
+		"name": "Rainbringer",
+		"brandName": "RoR2Gear",
+		"description": "Call forth storms with this weather-controlling scepter. Deluges foes in torrential rain."
+	},
+	{
+		"uniqueProductCode": "_SP3LLB1ND3R",
+		"name": "Spellbinder",
+		"brandName": "RoR2Gear",
+		"description": "Weave arcane energies with this enchanted wand. Casts spells beyond mortal comprehension."
+	},
+	{
+		"uniqueProductCode": "__ST0N3H34RT",
+		"name": "Stoneheart",
+		"brandName": "RoR2Gear",
+		"description": "Fortify your spirit with this resilient artifact. Grants immunity to physical harm."
+	},
+	{
+		"uniqueProductCode": "___M1NDM3LTR",
+		"name": "Mind Melter",
+		"brandName": "RoR2Gear",
+		"description": "Bend minds to your will with this psionic headband. Induces psychic chaos in enemies."
+	},
+	{
+		"uniqueProductCode": "__V0L74G3B0W",
+		"name": "Voltag3 Bow",
+		"brandName": "RoR2Gear",
+		"description": "Charge up electrical arrows with this bow of lightning. Zaps foes with shocking precision."
+	},
+	{
+		"uniqueProductCode": "_D34THD34L3R",
+		"name": "Deathdealer",
+		"brandName": "RoR2Gear",
+		"description": "Deal death from afar with this deadly rifle. Fires rounds infused with dark energy."
+	},
+	{
+		"uniqueProductCode": "____B14DB1T3",
+		"name": "Blad3bite",
+		"brandName": "RoR2Gear",
+		"description": "Slice through enemies with this razor-sharp sword. Leaves a trail of blood and steel."
+	},
+	{
+		"uniqueProductCode": "CH4N73DL1GHT",
+		"name": "Chained Light",
+		"brandName": "RoR2Gear",
+		"description": "Bind foes with luminous chains using this celestial weapon. Radiates divine energy."
+	},
+	{
+		"uniqueProductCode": "___F41RYS0UL",
+		"name": "Fairy Soul",
+		"brandName": "RoR2Gear",
+		"description": "Befriend forest spirits with this enchanted charm. Summons helpful fae allies."
+	},
+	{
+		"uniqueProductCode": "W1TCH5C4ULDR",
+		"name": "Witch's Cauldron",
+		"brandName": "RoR2Gear",
+		"description": "Brew potent elixirs with this mystical pot. Grants magical concoctions."
+	},
+	{
+		"uniqueProductCode": "__G0BL1N5T3W",
+		"name": "Goblin's Tew",
+		"brandName": "RoR2Gear",
+		"description": "Haggle with goblins using this enchanted coin. Grants access to secret markets."
+	},
+	{
+		"uniqueProductCode": "__W1N63DR0B3",
+		"name": "Windrobe",
+		"brandName": "RoR2Gear",
+		"description": "Glide through the air with this enchanted cape. Harnesses the winds for swift travel."
+	},
+	{
+		"uniqueProductCode": "_H34R7H5T0N3",
+		"name": "Heartstone",
+		"brandName": "RoR2Gear",
+		"description": "Channel life energy with this pulsating crystal. Heals wounds and strengthens resolve."
+	},
+	{
+		"uniqueProductCode": "_BLOOD5H1V3R",
+		"name": "Bloodshiver",
+		"brandName": "RoR2Gear",
+		"description": "Send chills down spines with this cursed dagger. Drains life essence from foes."
+	},
+	{
+		"uniqueProductCode": "__M1RAG3M4SK",
+		"name": "Mirage Mask",
+		"brandName": "RoR2Gear",
+		"description": "Illude enemies with this deceptive mask. Creates mirages to confuse attackers."
+	},
+	{
+		"uniqueProductCode": "___SOUL5T0N3",
+		"name": "Soulstone",
+		"brandName": "RoR2Gear",
+		"description": "Trap souls within this gem to harness their power. Amplifies magical abilities."
+	},
+	{
+		"uniqueProductCode": "_SH1F73RH3LM",
+		"name": "Shifter Helm",
+		"brandName": "RoR2Gear",
+		"description": "Alter your form with this shape-shifting helmet. Grants abilities of various creatures."
+	},
+	{
+		"uniqueProductCode": "_B14STR3C0RD",
+		"name": "Blast Record",
+		"brandName": "RoR2Gear",
+		"description": "Unleash explosive energy with this arcane vinyl. Plays songs of destruction."
+	},
+	{
+		"uniqueProductCode": "__L1F37HR34D",
+		"name": "Lifethread",
+		"brandName": "RoR2Gear",
+		"description": "Weave the fabric of life with this enchanted needle. Restores vitality and vigor."
+	},
+	{
+		"uniqueProductCode": "_M0LK3NBR4ND",
+		"name": "Molkenbrand",
+		"brandName": "RoR2Gear",
+		"description": "Mark your enemies with this cursed sigil. Inflicts lingering damage over time."
+	},
+	{
+		"uniqueProductCode": "S1LV3RSTR1K3",
+		"name": "Silverstrike",
+		"brandName": "RoR2Gear",
+		"description": "Pierce through defenses with this celestial spear. Deals critical damage to foes."
+	},
+	{
+		"uniqueProductCode": "__T1M3L0CK3R",
+		"name": "Timelocker",
+		"brandName": "RoR2Gear",
+		"description": "Control time itself with this ancient hourglass. Temporarily freezes reality."
+	},
+	{
+		"uniqueProductCode": "_G0BL1NF0RG3",
+		"name": "Goblinforge",
+		"brandName": "RoR2Gear",
+		"description": "Craft legendary weapons at this enchanted forge. Requires rare materials."
+	},
+	{
+		"uniqueProductCode": "_DR4G0N5C4L3",
+		"name": "Dragoncale",
+		"brandName": "RoR2Gear",
+		"description": "Armor yourself with scales of ancient dragons. Grants fire resistance and intimidation."
+	},
+	{
+		"uniqueProductCode": "__V01D5H4D0W",
+		"name": "Voidshadow",
+		"brandName": "RoR2Gear",
+		"description": "Embrace darkness with this shadowy mantle. Blends into shadows and confuses enemies."
+	},
+	{
+		"uniqueProductCode": "__F3Y3L4NC3R",
+		"name": "Feyelancer",
+		"brandName": "RoR2Gear",
+		"description": "Befriend woodland spirits with this mystical lance. Summons nature's wrath."
+	},
+	{
+		"uniqueProductCode": "R41NB0W5C4L3",
+		"name": "Rainbowscale",
+		"brandName": "RoR2Gear",
+		"description": "Wear the scales of a rainbow serpent. Grants colorful protection and blessings."
+	},
+	{
+		"uniqueProductCode": "___M1ND5P1K3",
+		"name": "Mindspike",
+		"brandName": "RoR2Gear",
+		"description": "Pierce through mental barriers with this psychic lance. Shatters illusions and defenses."
+	},
+	{
+		"uniqueProductCode": "H3LLF1R3BR4N",
+		"name": "Hellfirebrand",
+		"brandName": "RoR2Gear",
+		"description": "Ignite infernos with this demonic sword. Burns foes to ashes with unholy flames."
+	},
+	{
+		"uniqueProductCode": "_SH4D0WFL4R3",
+		"name": "Shadowflare",
+		"brandName": "RoR2Gear",
+		"description": "Unleash chaotic darkness with this cursed relic. Spreads corruption and chaos."
+	},
+	{
+		"uniqueProductCode": "_W1TCH35BREW",
+		"name": "Witches Brew",
+		"brandName": "RoR2Gear",
+		"description": "Brew potent elixirs with this mystical cauldron. Grants magical concoctions."
+	},
+	{
+		"uniqueProductCode": "__GR1M5H4D0W",
+		"name": "Grimshadow",
+		"brandName": "RoR2Gear",
+		"description": "Embrace darkness with this cursed cloak. Saps life force from nearby enemies."
+	},
+	{
+		"uniqueProductCode": "___S0UL5T0RM",
+		"name": "Soulstorm",
+		"brandName": "RoR2Gear",
+		"description": "Summon raging spirits with this haunted amulet. Unleashes spectral chaos."
+	},
+	{
+		"uniqueProductCode": "__CH41NB14D3",
+		"name": "Chainblade",
+		"brandName": "RoR2Gear",
+		"description": "Wield a blade of bound souls with this cursed weapon. Slices through reality."
+	},
+	{
+		"uniqueProductCode": "B14Z1NGBLA5T",
+		"name": "Blazing Blast",
+		"brandName": "RoR2Gear",
+		"description": "Unleash fiery explosions with this volatile cannon. Engulfs enemies in flames."
+	},
+	{
+		"uniqueProductCode": "SH1FT1NGM1R4",
+		"name": "Shifting Mirage",
+		"brandName": "RoR2Gear",
+		"description": "Confuse enemies with illusions using this arcane gem. Projects shifting realities."
+	},
+	{
+		"uniqueProductCode": "_D34THM4RK3R",
+		"name": "Deathmarker",
+		"brandName": "RoR2Gear",
+		"description": "Mark enemies for death with this cursed sigil. Draws in dark spirits to finish foes."
+	},
+	{
+		"uniqueProductCode": "_M4G1C4LM4SK",
+		"name": "Magical Mask",
+		"brandName": "RoR2Gear",
+		"description": "Channel arcane energies with this enchanted mask. Grants mystical abilities."
+	},
+	{
+		"uniqueProductCode": "W1TCH35C4ULD",
+		"name": "Witches Cauldron",
+		"brandName": "RoR2Gear",
+		"description": "Brew powerful potions with this mystical cauldron. Grants magical effects."
+	},
+	{
+		"uniqueProductCode": "DR4G0NF1R3BR",
+		"name": "Dragonfirebrand",
+		"brandName": "RoR2Gear",
+		"description": "Harness dragon flames with this fiery sword. Engulfs foes in searing heat."
+	}
+]

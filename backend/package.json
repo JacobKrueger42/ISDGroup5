@@ -8,6 +8,7 @@
         "dev": "npx node src/app.js --use_strict",
         "migrate": "npx prisma migrate dev",
         "generate": "npx prisma generate types",
+        "seed": "npx prisma db seed",
         "format": "npx prisma format && prettier . --write",
         "prepare": "husky"
     },
@@ -23,6 +24,9 @@
         "lint-staged": "^15.2.2",
         "prettier": "3.2.5",
         "prisma": "^5.10.2"
+    },
+    "prisma": {
+        "seed": "node prisma/seed.js"
     },
     "imports": {
         "#middleware": "./src/middleware/index.js",

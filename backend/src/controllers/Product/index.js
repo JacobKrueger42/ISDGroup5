@@ -18,7 +18,10 @@ export async function list(req, res, next) {
 
                 const { getAllProductsAsync, getTotalProductsCount } =
                     productRepository();
-                const products = await getAllProductsAsync(skip, take);
+                const products = await getAllProductsAsync(
+                    Number(skip),
+                    Number(take)
+                );
 
                 const total = await getTotalProductsCount();
 
@@ -92,10 +95,14 @@ export async function update(req, res, next) {
             res,
             next,
             async () => {
-                const id = req.params.id;
                 const { name, brandName, catalogueId } = req.body;
                 const { updateProductAsync } = productRepository();
-                await updateProductAsync(id, name, brandName, catalogueId);
+                await updateProductAsync(
+                    req.params.id,
+                    name,
+                    brandName,
+                    catalogueId
+                );
 
                 res.send('OK');
             },
@@ -118,7 +125,7 @@ export async function remove(req, res, next) {
             next,
             async () => {
                 const { removeProductAsync } = productRepository();
-                await removeProductAsync(req.query.id);
+                await removeProductAsync(req.params.id);
 
                 res.send('OK');
             },

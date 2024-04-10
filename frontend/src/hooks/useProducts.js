@@ -1,35 +1,29 @@
-import { useState, useEffect } from 'react';
-import { useFetch } from '#hooks';
+import { useFetch, useServer } from '#hooks';
+import { useEffect, useState } from 'react';
 
 export default function useProducts() {
+    const { isLoading, shouldRefresh, makeServerChange } = useServer();
+
     const [products, setProducts] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
-    const [error, setError] = useState(null);
-    const [isLoading, setLoading] = useState(true);
 
-    // TODO: support DELETE verb
-    const { get, post } = useFetch();
+    const { get, post, remove } = useFetch();
 
     useEffect(() => {
         (async () => {
-            const products = await getProductsAsync();
-            setProducts(products.results);
-            setTotalCount(products.totalCount);
+            const disableRefresh = true;
+            makeServerChange(
+                // client side pagination for simplicity
+                async () => await get('product/list?take=50'),
+                products => {
+                    console.log(`loaded ${products.totalCount} products`);
+                    setProducts(products.results);
+                    setTotalCount(products.totalCount);
+                },
+                disableRefresh
+            );
         })();
-    }, []);
-
-    async function getProductsAsync() {
-        try {
-            setLoading(true);
-            // TODO: pagination
-            const products = await get('product/list');
-            setLoading(false);
-            return products;
-        } catch (error) {
-            setError(error);
-            setLoading(false);
-        }
-    }
+    }, [shouldRefresh]);
 
     async function createProductAsync({
         uniqueProductCode,
@@ -37,27 +31,18 @@ export default function useProducts() {
         brandName,
         description
     }) {
-        console.info('creating new product');
+        const result = makeServerChange(
+            async () =>
+                await post('product/create', {
+                    uniqueProductCode: uniqueProductCode,
+                    name: name,
+                    brandName: brandName,
+                    description: description
+                }),
+            res => console.log(`created product with result: `, res)
+        );
 
-        let res;
-        try {
-            setLoading(true);
-
-            res = await post('product/create', {
-                uniqueProductCode: uniqueProductCode,
-                name: name,
-                brandName: brandName,
-                description: description
-            });
-
-            setError(null);
-            setLoading(false);
-        } catch (error) {
-            setError(error);
-            setLoading(false);
-        }
-
-        return res;
+        return result;
     }
 
     async function updateProductAsync({
@@ -67,33 +52,35 @@ export default function useProducts() {
         description,
         catalogueId
     }) {
-        let res;
-        try {
-            setLoading(true);
+        const result = makeServerChange(
+            async () =>
+                await post(`product/${id}/update`, {
+                    name: name,
+                    brandName: brandName,
+                    description: description,
+                    catalogueId: catalogueId
+                }),
+            res => console.log('updated product with result: ', res)
+        );
 
-            res = await post(`product/${id}/update`, {
-                name: name,
-                brandName: brandName,
-                description: description,
-                catalogueId: catalogueId
-            });
+        return result;
+    }
 
-            setError(null);
-            setLoading(false);
-        } catch (error) {
-            setError(error);
-            setLoading(false);
-        }
+    async function removeProductAsync({ id }) {
+        const result = makeServerChange(
+            async () => await remove(`product/${id}/remove`),
+            res => console.log('removed product with result: ', res)
+        );
 
-        return res;
+        return result;
     }
 
     return {
         createProductAsync,
         updateProductAsync,
+        removeProductAsync,
         products,
         totalCount,
-        error,
         isLoading
     };
 }
