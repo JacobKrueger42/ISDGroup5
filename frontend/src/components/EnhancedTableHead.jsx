@@ -25,9 +25,6 @@ export default function EnhancedTableHead({
                 <TableCell padding='checkbox'>
                     <Checkbox
                         color='primary'
-                        indeterminate={
-                            selected.length > 0 && selected.length < rowCount
-                        }
                         checked={rowCount > 0 && selected.length === rowCount}
                         onChange={onSelectAllClick}
                         inputProps={{
