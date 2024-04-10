@@ -56,18 +56,18 @@ export default function productRepository() {
             );
     }
 
-    function deleteProductAsync(id) {
+    async function deleteProductAsync(id) {
         await getProductByIdAsync(id);
 
-        return prisma.product
-            .delete({
+        try {
+            return await prisma.product.delete({
                 where: {
                     id: Number(id)
                 }
-            })
-            .catch(error =>
-                console.error(`error deleting product '${id}':`, error)
-            );
+            });
+        } catch (error) {
+            return console.error(`error deleting product '${id}':`, error);
+        }
     }
 
     function getProductByIdAsync(id) {
@@ -211,8 +211,7 @@ export default function productRepository() {
         }
 
         // log an update to the console if any field changed
-        (name || brandName) &&
-            console.log(`updated product with id '${id}'`);
+        (name || brandName) && console.log(`updated product with id '${id}'`);
     }
 
     async function removeProductAsync(id) {
