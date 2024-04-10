@@ -18,7 +18,10 @@ export async function list(req, res, next) {
 
                 const { getAllProductsAsync, getTotalProductsCount } =
                     productRepository();
-                const products = await getAllProductsAsync(skip, take);
+                const products = await getAllProductsAsync(
+                    Number(skip),
+                    Number(take)
+                );
 
                 const total = await getTotalProductsCount();
 
