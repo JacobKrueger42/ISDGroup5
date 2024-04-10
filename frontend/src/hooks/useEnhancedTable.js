@@ -10,7 +10,7 @@ export default function useEnhancedTable(rows) {
 
     // pagination
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const visibleRows = useMemo(() => {
         return rows
@@ -60,14 +60,9 @@ export default function useEnhancedTable(rows) {
 
     const isSelected = id => selected.indexOf(id) !== -1;
 
-    const handleSelectAllClick = event => {
-        if (event.target.checked) {
-            const newSelected = rows.map(n => n.id);
-            setSelected(newSelected);
-            return;
-        }
-
-        setSelected([]);
+    const onSelectAllClick = () => {
+        if (selected.length > 0) setSelected([]);
+        else setSelected(rows.map(n => n.id));
     };
 
     return {
@@ -85,7 +80,7 @@ export default function useEnhancedTable(rows) {
         onRowClick,
         handleChangePage,
         handleChangeRowsPerPage,
-        handleSelectAllClick
+        onSelectAllClick
     };
 }
 
