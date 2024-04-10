@@ -3,8 +3,6 @@ import { useEnhancedTable, useProducts } from '#hooks';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
-import { useState } from 'react';
-
 import CardContent from '@mui/material/CardContent';
 import CardHeader from '@mui/material/CardHeader';
 import Table from '@mui/material/Table';
@@ -14,7 +12,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-
+import { useState } from 'react';
 import AddProductForm from './AddProduct';
 import UpdateProduct from './UpdateProduct';
 
