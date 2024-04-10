@@ -26,7 +26,7 @@ export default function productRepository() {
             });
     }
 
-    async function editProductNameAsync(id, name) {
+    function editProductNameAsync(id, name) {
         return prisma.product
             .update({
                 where: {
@@ -41,7 +41,7 @@ export default function productRepository() {
             );
     }
 
-    async function editProductBrandNameAsync(id, brandName) {
+    function editProductBrandNameAsync(id, brandName) {
         return prisma.product
             .update({
                 where: {
@@ -56,33 +56,18 @@ export default function productRepository() {
             );
     }
 
-    async function editProductCatalogueAsync(id, catalogue) {
-        return prisma.product
-            .update({
-                where: {
-                    id: Number(id)
-                },
-                data: {
-                    catalogue: catalogue
-                }
-            })
-            .catch(error =>
-                console.error(`error updating product '${id}':`, error)
-            );
-    }
-
     async function deleteProductAsync(id) {
         await getProductByIdAsync(id);
 
-        return prisma.product
-            .delete({
+        try {
+            return await prisma.product.delete({
                 where: {
                     id: Number(id)
                 }
-            })
-            .catch(error =>
-                console.error(`error deleting product '${id}':`, error)
-            );
+            });
+        } catch (error) {
+            return console.error(`error deleting product '${id}':`, error);
+        }
     }
 
     function getProductByIdAsync(id) {
@@ -181,7 +166,7 @@ export default function productRepository() {
         return result.id;
     }
 
-    async function updateProductAsync(id, name, brandName, catalogueId) {
+    async function updateProductAsync(id, name, brandName) {
         if (isNullOrEmpty(id))
             throw new Error('an id must be provided to update a product');
 
@@ -225,15 +210,8 @@ export default function productRepository() {
             // TODO: generate access log
         }
 
-        if (catalogueId) {
-            throw new Error('not implemented');
-            // await editProductCatalogueAsync(id, catalogueId);
-            // TODO: generate access log
-        }
-
         // log an update to the console if any field changed
-        (name || brandName || catalogueId) &&
-            console.log(`updated product with id '${id}'`);
+        (name || brandName) && console.log(`updated product with id '${id}'`);
     }
 
     async function removeProductAsync(id) {

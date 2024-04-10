@@ -1,5 +1,7 @@
+// TODO: create DTOs that include the product data where needed
+
 import { requireRole } from '#middleware';
-import { productRepository } from '#services';
+import { catalogueRepository } from '#services';
 import HttpStatus from 'http-status-codes';
 
 // paginated
@@ -16,17 +18,20 @@ export async function list(req, res, next) {
                 const take = req.query.take ?? 25;
                 const skip = pageNumber * take;
 
-                const { getAllProductsAsync, getTotalProductsCount } =
-                    productRepository();
-                const products = await getAllProductsAsync(
+                const {
+                    getAllCatalogueEntryAsync,
+                    getTotalCatalogueEntryCount
+                } = catalogueRepository();
+
+                const catalogueEntries = await getAllCatalogueEntryAsync(
                     Number(skip),
                     Number(take)
                 );
 
-                const total = await getTotalProductsCount();
+                const total = await getTotalCatalogueEntryCount();
 
                 return res.json({
-                    results: products,
+                    results: catalogueEntries,
                     totalCount: total
                 });
             },
@@ -44,9 +49,11 @@ export async function detail(req, res, next) {
             res,
             next,
             async () => {
-                const { getProductByIdAsync } = productRepository();
-                const product = await getProductByIdAsync(req.query.id);
-                return res.json(product);
+                const { getCatalogueEntryByIdAsync } = catalogueRepository();
+                const catalogueEntry = await getCatalogueEntryByIdAsync(
+                    req.query.id
+                );
+                return res.json(catalogueEntry);
             },
             ['STAFF', 'ADMIN']
         );
@@ -62,19 +69,19 @@ export async function create(req, res, next) {
             res,
             next,
             async () => {
-                const { uniqueProductCode, name, brandName, description } =
+                const { productId, price, productCategory, stockQuantity } =
                     req.body;
 
-                const { createProductAsync } = productRepository();
-                const productId = await createProductAsync(
-                    uniqueProductCode,
-                    name,
-                    brandName,
-                    description
+                const { createCatalogueEntryAsync } = catalogueRepository();
+                const catalogueEntryId = await createCatalogueEntryAsync(
+                    productId,
+                    price,
+                    productCategory,
+                    stockQuantity
                 );
 
                 res.json({
-                    productId: productId
+                    catalogueEntryId: catalogueEntryId
                 });
             },
             ['STAFF', 'ADMIN']
@@ -83,7 +90,7 @@ export async function create(req, res, next) {
         res.status(HttpStatus.BAD_REQUEST).json({
             path: req.path,
             detailed_error_message: error.message,
-            message: 'Cannot create a product with the given details'
+            message: 'Cannot create a catalogue entry with the given details'
         });
     }
 }
@@ -95,9 +102,14 @@ export async function update(req, res, next) {
             res,
             next,
             async () => {
-                const { name, brandName, catalogueId } = req.body;
-                const { updateProductAsync } = productRepository();
-                await updateProductAsync(req.params.id, name, brandName);
+                const { price, stockQuantity, category } = req.body;
+                const { updateCatalogueEntryAsync } = catalogueRepository();
+                await updateCatalogueEntryAsync(
+                    req.params.id,
+                    price,
+                    stockQuantity,
+                    category
+                );
 
                 res.send('OK');
             },
@@ -107,7 +119,7 @@ export async function update(req, res, next) {
         res.status(HttpStatus.BAD_REQUEST).json({
             path: req.path,
             detailed_error_message: error.message,
-            message: 'Cannot update the product with the given details'
+            message: 'Cannot update the catalogue entry with the given details'
         });
     }
 }
@@ -119,8 +131,8 @@ export async function remove(req, res, next) {
             res,
             next,
             async () => {
-                const { removeProductAsync } = productRepository();
-                await removeProductAsync(req.params.id);
+                const { removeCatalogueEntryAsync } = catalogueRepository();
+                await removeCatalogueEntryAsync(req.params.id);
 
                 res.send('OK');
             },
