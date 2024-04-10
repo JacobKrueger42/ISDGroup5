@@ -13,7 +13,8 @@ export default function useProducts() {
         (async () => {
             const disableRefresh = true;
             makeServerChange(
-                async () => await get('product/list'),
+                // client side pagination for simplicity
+                async () => await get('product/list?take=50'),
                 products => {
                     console.log(`loaded ${products.totalCount} products`);
                     setProducts(products.results);
