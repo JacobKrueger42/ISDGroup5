@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import { useFetch, useServer } from '#hooks';
+import { useEffect, useState } from 'react';
 
 export default function useProducts() {
     const { isLoading, shouldRefresh, makeServerChange } = useServer();
