@@ -11,7 +11,7 @@ export default function EnhancedTableHead({
     onSelectAllClick,
     order,
     orderBy,
-    numSelected,
+    selected,
     rowCount,
     onRequestSort
 }) {
@@ -26,9 +26,9 @@ export default function EnhancedTableHead({
                     <Checkbox
                         color='primary'
                         indeterminate={
-                            numSelected > 0 && numSelected < rowCount
+                            selected.length > 0 && selected.length < rowCount
                         }
-                        checked={rowCount > 0 && numSelected === rowCount}
+                        checked={rowCount > 0 && selected.length === rowCount}
                         onChange={onSelectAllClick}
                         inputProps={{
                             'aria-label': 'select all desserts'
