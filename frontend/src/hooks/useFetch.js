@@ -54,10 +54,19 @@ export default function useFetch() {
         }).then(handleResponse);
     }
 
+    // aka. delete - but avoiding the delete keyword
+    function remove(url) {
+        return fetch(makeUrl(url), {
+            ...DefaultRequestOptions,
+            method: 'DELETE'
+        }).then(handleResponse);
+    }
+
     return {
         get,
         post,
-        patch
+        patch,
+        remove
     };
 }
 
