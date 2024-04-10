@@ -63,6 +63,23 @@ export default function catalogueRepository() {
             );
     }
 
+    async function deleteCatalogueEntryAsync(id) {
+        await getCatalogueEntryByIdAsync(id);
+
+        try {
+            return await prisma.catalogueEntry.delete({
+                where: {
+                    id: Number(id)
+                }
+            });
+        } catch (error) {
+            return console.error(
+                `error deleting catalogue entry '${id}':`,
+                error
+            );
+        }
+    }
+
     function getCatalogueEntryByIdAsync(id) {
         if (isNullOrEmpty(id))
             throw new Error('no id provided to get catalogue entry');
@@ -109,7 +126,7 @@ export default function catalogueRepository() {
         stockQuantity
     }) {
         if (isNullOrEmpty(productId))
-            throw new Error('an id must be provided to find a product');
+            throw new Error('an id must be provided to find a catalogue entry');
 
         const existing = await getProductByIdAsync(id);
 
@@ -118,7 +135,10 @@ export default function catalogueRepository() {
                 `cannot create a catalogue entry without a product (product '${id}' not found)`
             );
 
-        if (price < 0) throw new Error('cannot price a product below 0$');
+        if (price < 0)
+            throw new Error(
+                "cannot price a product's catalogue entry below 0$"
+            );
 
         if (stockQuantity < 0) throw new Error('cannot create negative stock');
 
@@ -151,11 +171,17 @@ export default function catalogueRepository() {
 
         const existing = await getCatalogueEntryByIdAsync(id);
 
-        if (!existing) throw new Error(`cannot find a product with id '${id}'`);
+        if (!existing)
+            throw new Error(
+                `cannot create a catalogue entry without a product (product '${id}' not found)`
+            );
 
         // update each field that may have changed
         if (price) {
-            if (price < 0) throw new Error('cannot price a product below 0$');
+            if (price < 0)
+                throw new Error(
+                    "cannot price a product's catalogue entry below 0$"
+                );
             await editCatalogueEntryPriceAsync(id, price);
             // TODO: generate access log
         }
@@ -178,6 +204,7 @@ export default function catalogueRepository() {
     }
 
     return {
+        deleteCatalogueEntryAsync,
         getCatalogueEntryByIdAsync,
         createCatalogueEntryAsync,
         updateCatalogueEntryAsync,

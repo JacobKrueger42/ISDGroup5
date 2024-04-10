@@ -97,12 +97,7 @@ export async function update(req, res, next) {
             async () => {
                 const { name, brandName, catalogueId } = req.body;
                 const { updateProductAsync } = productRepository();
-                await updateProductAsync(
-                    req.params.id,
-                    name,
-                    brandName,
-                    catalogueId
-                );
+                await updateProductAsync(req.params.id, name, brandName);
 
                 res.send('OK');
             },
