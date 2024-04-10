@@ -34,13 +34,14 @@ const headCells = [
 ];
 
 export default function ProductsPage() {
+    const [error, setError] = useState(null);
+
     const {
         products,
         totalCount,
         createProductAsync,
         updateProductAsync,
-        isLoading,
-        error
+        isLoading
     } = useProducts();
 
     const mapToRow = product => {
@@ -79,9 +80,15 @@ export default function ProductsPage() {
 
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
-        await createProductAsync(formJson);
+        const { success, error } = await createProductAsync(formJson);
 
-        if (!!error) setOpenAddProduct(false);
+        if (success) onCloseAddProduct();
+        else setError(error);
+    };
+
+    const onCloseAddProduct = () => {
+        setOpenAddProduct(false);
+        setError(null);
     };
 
     //////////////////
@@ -98,8 +105,18 @@ export default function ProductsPage() {
 
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
-        await updateProductAsync({ id: selected[0], ...formJson });
-        if (!!error) setOpenUpdateProduct(false);
+        const success = await updateProductAsync({
+            id: selected[0],
+            ...formJson
+        });
+
+        if (success) onCloseUpdateProduct();
+        else setError(error);
+    };
+
+    const onCloseUpdateProduct = () => {
+        setOpenUpdateProduct(false);
+        setError(null);
     };
 
     return (
@@ -119,7 +136,7 @@ export default function ProductsPage() {
 
                     <AddProductForm
                         open={openAddProduct}
-                        onClose={() => setOpenAddProduct(false)}
+                        onClose={onCloseAddProduct}
                         onSubmit={onAddProductSubmit}
                         isLoading={isLoading}
                         error={error}
@@ -127,7 +144,7 @@ export default function ProductsPage() {
 
                     <UpdateProduct
                         open={openUpdateProduct}
-                        onClose={() => setOpenUpdateProduct(false)}
+                        onClose={onCloseUpdateProduct}
                         onSubmit={onUpdateProductSubmit}
                         error={error}
                         isLoading={isLoading}
