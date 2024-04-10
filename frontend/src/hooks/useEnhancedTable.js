@@ -61,8 +61,12 @@ export default function useEnhancedTable(rows) {
     const isSelected = id => selected.indexOf(id) !== -1;
 
     const onSelectAllClick = () => {
-        if (selected.length > 0) setSelected([]);
+        if (selected.length > 0) clearSelection();
         else setSelected(rows.map(n => n.id));
+    };
+
+    const clearSelection = () => {
+        setSelected([]);
     };
 
     return {
@@ -80,7 +84,8 @@ export default function useEnhancedTable(rows) {
         onRowClick,
         handleChangePage,
         handleChangeRowsPerPage,
-        onSelectAllClick
+        onSelectAllClick,
+        clearSelection
     };
 }
 

@@ -13,8 +13,10 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import SearchInput from '../../components/SearchInput';
 import AddProductForm from './AddProduct';
 import UpdateProduct from './UpdateProduct';
+import Stack from '@mui/material/Stack';
 
 const headCells = [
     {
@@ -65,7 +67,8 @@ export default function ProductsPage() {
         onRowClick,
         handleChangePage,
         handleChangeRowsPerPage,
-        onSelectAllClick
+        onSelectAllClick,
+        clearSelection
     } = useEnhancedTable(products.map(mapToRow));
 
     //////////////////
@@ -126,6 +129,7 @@ export default function ProductsPage() {
         event.preventDefault();
         const existing = getFirstOrDefaultSelectedProduct();
         await removeProductAsync({ id: existing.id });
+        clearSelection();
     };
 
     return (
@@ -133,15 +137,18 @@ export default function ProductsPage() {
             <Card variant='outlined'>
                 <CardHeader title='Inventory Management - Products' />
                 <CardContent>
-                    <Typography
-                        align='left'
-                        variant='body'
-                        color='text.secondary'
-                    >
-                        Here you can manage products tracked by the system.
-                        Products listed here can be added to the public product
-                        catalogue.
-                    </Typography>
+                    <Stack spacing={2}>
+                        <Typography
+                            align='left'
+                            variant='body'
+                            color='text.secondary'
+                        >
+                            Here you can manage products tracked by the system.
+                            Products listed here can be added to the public
+                            product catalogue.
+                        </Typography>
+                        <SearchInput options={visibleRows} />
+                    </Stack>
 
                     <AddProductForm
                         open={openAddProduct}
