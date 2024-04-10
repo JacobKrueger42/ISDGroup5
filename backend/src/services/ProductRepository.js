@@ -56,21 +56,6 @@ export default function productRepository() {
             );
     }
 
-    function editProductCatalogueAsync(id, catalogue) {
-        return prisma.product
-            .update({
-                where: {
-                    id: Number(id)
-                },
-                data: {
-                    catalogue: catalogue
-                }
-            })
-            .catch(error =>
-                console.error(`error updating product '${id}':`, error)
-            );
-    }
-
     function deleteProductAsync(id) {
         await getProductByIdAsync(id);
 
@@ -181,7 +166,7 @@ export default function productRepository() {
         return result.id;
     }
 
-    async function updateProductAsync(id, name, brandName, catalogueId) {
+    async function updateProductAsync(id, name, brandName) {
         if (isNullOrEmpty(id))
             throw new Error('an id must be provided to update a product');
 
@@ -225,14 +210,8 @@ export default function productRepository() {
             // TODO: generate access log
         }
 
-        if (catalogueId) {
-            throw new Error('not implemented');
-            // await editProductCatalogueAsync(id, catalogueId);
-            // TODO: generate access log
-        }
-
         // log an update to the console if any field changed
-        (name || brandName || catalogueId) &&
+        (name || brandName) &&
             console.log(`updated product with id '${id}'`);
     }
 
