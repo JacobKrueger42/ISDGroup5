@@ -9,7 +9,7 @@ generator client {
 // enable ERD diagrams
 generator erd {
   provider = "prisma-erd-generator"
-  output = "../ERD.png"
+  output = "../../docs/prisma-ERD.png"
   theme = "dark"
 }
 
@@ -38,6 +38,11 @@ model User {
   // metadata
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+
+  // relations
+  orders          Order[]
+  paymentDetails  PaymentDetail[]
 }
 
 // an "IOT device" item is considered a product
@@ -65,10 +70,12 @@ model CatalogueEntry {
 
   product           Product @relation(fields: [productId], references: [id])
   productId         Int     @unique
+
   // the UPC of a product is used for searching across both the products and products WITHIN the catalogue
   // to simplify this implementation the field is copied from the product into the catalogue entry on create
   // since a product UPC isn't editable, this is fairly immutable by design but could be enforced better
-  uniqueProductCode String  @unique
+  // however, uniqueness is not enforced by the ORM, as the app may later archive and re-add a product with the same UPC
+  uniqueProductCode String
 
   // price to customer in AUD
   price           Int
@@ -76,6 +83,118 @@ model CatalogueEntry {
   // I'm mentally considering this as something similar to JayCar, so using their categories seems like a good starting point (take from https://www.jaycar.com.au/)
   productCategory String
   stockQuantity   Int
+
+  orderItems  OrderItem[]  
+
+  // support soft-deleting instead of hard deltion to ensure orders can always refer back to the original catalogue entry
+  isArchived    Boolean
+
+  // metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model AuditLog {
+  id Int @id @default(autoincrement())
+
+  eventDescription  String
+
+  // enum list: [ AUTH, CATALOGUE, PRODUCT, PAYMENT_DETAILS, PAYMENT_CONFIRMATION, ORDER, SHIPPING_DETAIL ]
+  topicName         String
+  loggedAt          DateTime @default(now())
+
+  // weak referential integrity to avoid complicating
+  // the user entity
+  userId            Int
+}
+
+
+model PaymentDetail {
+  id Int @id @default(autoincrement())
+
+  provider      String
+  method        String
+  expiresAt     String
+
+  user          User @relation(fields: [userId], references: [id])
+  userId        Int
+
+  // metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+
+  // started is when we init the order server-side and persist the shopping cart
+  // enum: [ ERROR, CHECKED_OUT, PAYMENT_CONFIRMED, EMAIL_CONFIRMED, PENDING_SHIPPING, SHIPPED, SHIPPING, DELIVERED  ]
+  status            String
+  errorMessage      String
+
+  user              User    @relation(fields: [userId], references: [id])
+  userId            Int
+
+  // relations
+  paymentConfirmation PaymentConfirmation?
+  shippingDetail      ShippingDetail?
+  orderItems          OrderItem[]
+
+  // metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model OrderItem {
+  id Int @id @default(autoincrement())
+
+  unitQuantity    Int
+  unitCost        Int
+
+  order Order @relation(fields: [orderId], references: [id])
+  orderId  Int
+
+  catalogueEntry CatalogueEntry @relation(fields: [catalogueEntryId], references: [id])
+  catalogueEntryId  Int
+}
+
+model PaymentConfirmation {
+  id Int @id @default(autoincrement())
+
+  amount        Int
+  confirmedAt   DateTime
+  // reference to 3rd party payment system (faked in this system)
+  reference     String
+  provider      String
+  method        String
+
+  // enum: [ ERROR, PENDING, CONFIRMED]
+  status       String
+  errorMessage String
+
+  order             Order @relation(fields: [orderId], references: [id])
+  orderId           Int     @unique
+
+  // metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ShippingDetail {
+  id Int @id @default(autoincrement())
+
+  trackingId      String
+  deliverService  String
+  shippedAt       DateTime
+  estDeliveryAt   DateTime
+  
+  // address is not normalised here to simplify the implementation
+  deliveryAddress   String
+
+  order             Order @relation(fields: [orderId], references: [id])
+  orderId           Int     @unique
 
   // metadata
   createdAt DateTime @default(now())
