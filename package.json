@@ -1,0 +1,9 @@
+{
+	"name": "ISDGroup5",
+	"private": true,
+	"version": "r0",
+	"scripts": {
+		"docs": "mmdc -i docs/softwareArchitecture.md -o docs/softwareArchitecture.out.md -b transparent -e png",
+		"dev": "echo not implemented"
+	}
+}
