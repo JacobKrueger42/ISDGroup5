@@ -63,6 +63,7 @@ export default function catalogueRepository() {
             );
     }
 
+    // TODO: make this a soft delete for data integrity of order system
     async function deleteCatalogueEntryAsync(id) {
         await getCatalogueEntryByIdAsync(id);
 
