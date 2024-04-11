@@ -29,7 +29,7 @@ export async function signup(req, res, next) {
                 if (err) next(err);
 
                 res.json({
-                    redirect_uri: '/welcome'
+                    redirect_uri: '/login'
                 });
             });
         });
