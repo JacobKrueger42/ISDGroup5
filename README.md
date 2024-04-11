@@ -9,8 +9,6 @@
     </a>
 </p>
 
-> Some example text
-
 ## Quick start
 
 > This project uses `npm` to manage dependencies and run scripts. Ensure you have a recent version installed (`9.5.x+`). npm is a dependency of [NodeJs](https://nodejs.org/en/download).
