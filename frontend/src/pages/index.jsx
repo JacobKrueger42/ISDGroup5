@@ -7,6 +7,7 @@ import { default as NotFoundPage } from './NotFound/NotFound.jsx';
 import { default as HomePage } from './Home/HomePage.jsx';
 import { default as ProductsPage } from './Products/ProductsPage.jsx';
 import { default as AnonPage } from './Landing/landing.jsx';
+import { default as AccountPage } from './Account/account.jsx';
 
 export {
     AuthorisedPageShell,
@@ -16,5 +17,6 @@ export {
     NotFoundPage,
     HomePage,
     ProductsPage,
-    AnonPage
+    AnonPage,
+    AccountPage
 };
