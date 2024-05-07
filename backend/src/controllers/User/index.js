@@ -12,6 +12,7 @@ export async function get(req, res, next) {
                 lastName: user.lastName,
                 displayName: `${user.firstName} ${user.lastName}`,
                 id: user.id,
+                phone: user.phone,
                 role: user.role
             });
         } catch (error) {
