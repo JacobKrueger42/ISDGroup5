@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
     Card,
     CardContent,
@@ -6,9 +7,37 @@ import {
     Button
 } from '@mui/material';
 import { useAuth } from '#hooks';
+import UpdateAccount from './UpdateAccount';
 
 export default function AccountPage() {
-    const { user } = useAuth();
+    const { user, error, updateUserAsync, getUserAsync, setUser } = useAuth();
+
+    const [openUpdateProduct, setOpenUpdateProduct] = useState(false);
+
+    const onCloseUpdateProduct = () => {
+        setOpenUpdateProduct(false);
+    };
+
+    const handleUpdateButtonClick = () => {
+        setOpenUpdateProduct(true);
+    };
+
+    const handleSubmit = async event => {
+        event.preventDefault();
+
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        const success = await updateUserAsync({
+            id: user.id,
+            ...formJson
+        });
+
+        if (success) {
+            onCloseUpdateProduct();
+            const user = await getUserAsync();
+            setUser(user);
+        }
+    };
 
     if (user) {
         return (
@@ -16,7 +45,7 @@ export default function AccountPage() {
                 <Card
                     sx={{
                         textAlign: 'left',
-                        minWidth: '550px'
+                        maxWidth: '550px'
                     }}
                 >
                     <CardContent
@@ -35,7 +64,6 @@ export default function AccountPage() {
                             margin='normal'
                             disabled
                         />
-                        <hr></hr>
                         <TextField
                             label='Last Name'
                             value={user.lastName}
@@ -43,7 +71,6 @@ export default function AccountPage() {
                             margin='normal'
                             disabled
                         />
-                        <hr></hr>
                         <TextField
                             label='Email'
                             value={user.email}
@@ -51,7 +78,6 @@ export default function AccountPage() {
                             margin='normal'
                             disabled
                         />
-                        <hr></hr>
                         <TextField
                             label='Phone Number'
                             defaultValue={user.phone}
@@ -62,9 +88,9 @@ export default function AccountPage() {
                     </CardContent>
                     <CardContent>
                         <Button
-                            sx={{ marginRight: '10px' }}
                             variant='contained'
                             color='primary'
+                            onClick={handleUpdateButtonClick}
                         >
                             Update Information
                         </Button>
@@ -73,6 +99,14 @@ export default function AccountPage() {
                         </Button>
                     </CardContent>
                 </Card>
+
+                <UpdateAccount
+                    open={openUpdateProduct}
+                    onClose={onCloseUpdateProduct}
+                    error={error}
+                    user={user}
+                    onSubmit={handleSubmit}
+                />
             </>
         );
     }

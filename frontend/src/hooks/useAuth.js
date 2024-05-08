@@ -98,6 +98,28 @@ export default function useAuth(options) {
         }
     }
 
+    async function updateUserAsync({ id, firstName, lastName, email, phone }) {
+        console.info('Updating user');
+        try {
+            setLoading(true);
+            const res = await post(`user/${id}/update`, {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone
+            });
+
+            setError(null);
+            setLoading(false);
+
+            console.log(res);
+            return true;
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
+    }
+
     return {
         isLoading,
         error,
@@ -105,6 +127,9 @@ export default function useAuth(options) {
         loginAsync,
         logoutAsync,
         registerAsync,
-        resetPasswordAsync
+        resetPasswordAsync,
+        updateUserAsync,
+        getUserAsync,
+        setUser
     };
 }
