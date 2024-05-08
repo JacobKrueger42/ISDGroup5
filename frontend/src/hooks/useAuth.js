@@ -12,7 +12,7 @@ export default function useAuth(options) {
     const [isLoading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    const { get, post } = useFetch();
+    const { get, post, remove } = useFetch();
 
     useEffect(() => {
         (async () => {
@@ -120,6 +120,20 @@ export default function useAuth(options) {
         }
     }
 
+    async function removeUserAsync(id) {
+        try {
+            setLoading(true);
+            console.log('Id' + id);
+            const result = await remove(`user/${id}/remove`);
+            logoutAsync();
+            setLoading(false);
+            console.log(result);
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
+    }
+
     return {
         isLoading,
         error,
@@ -130,6 +144,7 @@ export default function useAuth(options) {
         resetPasswordAsync,
         updateUserAsync,
         getUserAsync,
-        setUser
+        setUser,
+        removeUserAsync
     };
 }

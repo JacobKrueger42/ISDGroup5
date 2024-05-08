@@ -4,15 +4,27 @@ import {
     CardContent,
     Typography,
     TextField,
-    Button
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle
 } from '@mui/material';
 import { useAuth } from '#hooks';
 import UpdateAccount from './UpdateAccount';
 
 export default function AccountPage() {
-    const { user, error, updateUserAsync, getUserAsync, setUser } = useAuth();
+    const {
+        user,
+        error,
+        updateUserAsync,
+        getUserAsync,
+        setUser,
+        removeUserAsync
+    } = useAuth();
 
     const [openUpdateProduct, setOpenUpdateProduct] = useState(false);
+    const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
 
     const onCloseUpdateProduct = () => {
         setOpenUpdateProduct(false);
@@ -20,6 +32,19 @@ export default function AccountPage() {
 
     const handleUpdateButtonClick = () => {
         setOpenUpdateProduct(true);
+    };
+
+    const onCloseDeleteConfirmation = () => {
+        setOpenDeleteConfirmation(false);
+    };
+
+    const handleDeleteButtonClick = () => {
+        setOpenDeleteConfirmation(true);
+    };
+
+    const handleDeleteConfirm = async () => {
+        await removeUserAsync(user.id);
+        console.log('Deleted the user id');
     };
 
     const handleSubmit = async event => {
@@ -94,7 +119,11 @@ export default function AccountPage() {
                         >
                             Update Information
                         </Button>
-                        <Button variant='contained' color='error'>
+                        <Button
+                            variant='contained'
+                            color='error'
+                            onClick={handleDeleteButtonClick}
+                        >
                             Delete Account
                         </Button>
                     </CardContent>
@@ -107,6 +136,27 @@ export default function AccountPage() {
                     user={user}
                     onSubmit={handleSubmit}
                 />
+                <Dialog
+                    open={openDeleteConfirmation}
+                    onClose={onCloseDeleteConfirmation}
+                >
+                    <DialogTitle>Delete Account</DialogTitle>
+                    <DialogContent>
+                        Are you sure you want to delete your account?
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={onCloseDeleteConfirmation}>
+                            Cancel
+                        </Button>
+                        <Button
+                            variant='contained'
+                            color='error'
+                            onClick={handleDeleteConfirm}
+                        >
+                            Yes
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </>
         );
     }
