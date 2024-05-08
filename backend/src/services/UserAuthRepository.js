@@ -173,12 +173,44 @@ export default function userAuthRepository() {
         });
     }
 
+    function editUserAsync(userId, firstName, lastName, email, phone) {
+        return prisma.user
+            .update({
+                where: {
+                    id: Number(userId)
+                },
+                data: {
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    phone: phone
+                }
+            })
+            .catch(error =>
+                console.error(`Error updating user '${userId}':`, error)
+            );
+    }
+
+    async function updateUserAsync(id, firstName, lastName, email, phone) {
+        if (isNullOrEmpty(id)) throw new Error('Id not provided');
+        console.log('Id given' + id);
+
+        validatePhone(phone);
+
+        validateEmail(email);
+
+        await editUserAsync(id, firstName, lastName, email, phone);
+
+        console.log(`Updated user with id '${id}'`);
+    }
+
     return {
         signupAsync,
         loginAsync,
         logoutAsync,
         resetPasswordAsync,
         getUserAsync,
+        updateUserAsync,
         availableRoles
     };
 }
@@ -212,4 +244,17 @@ function validatePhone(phone) {
 
     if (!/^\d+$/.test(phone))
         throw new Error('Phone number must contain only numbers');
+}
+
+function validateEmail(email) {
+    if (isNullOrEmpty(email)) throw new Error('An email must be provided');
+
+    if (!isValidEmail(email)) {
+        throw new Error('Invalid email format');
+    }
+}
+
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
 }
