@@ -57,3 +57,24 @@ export async function update(req, res, next) {
         });
     }
 }
+
+export async function remove(req, res, next) {
+    console.log('At remove ');
+    try {
+        await requireRole(
+            req,
+            res,
+            next,
+            async () => {
+                const { removeUserAsync } = userAuthRepository();
+                await removeUserAsync(req.params.id);
+
+                console.log('Removed ');
+                res.send('OK');
+            },
+            ['CUSTOMER', 'STAFF', 'ADMIN']
+        );
+    } catch (error) {
+        next(error);
+    }
+}

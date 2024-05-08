@@ -204,6 +204,27 @@ export default function userAuthRepository() {
         console.log(`Updated user with id '${id}'`);
     }
 
+    async function removeUserAsync(id) {
+        if (isNullOrEmpty(id))
+            throw new Error('An id must be provided to delete a user');
+
+        await deleteUserAsync(id);
+
+        console.log(`Deleted user with id '${id}'`);
+    }
+
+    async function deleteUserAsync(id) {
+        try {
+            return await prisma.user.delete({
+                where: {
+                    id: Number(id)
+                }
+            });
+        } catch (error) {
+            return console.error(`Error deleting user '${id}':`, error);
+        }
+    }
+
     return {
         signupAsync,
         loginAsync,
@@ -211,6 +232,7 @@ export default function userAuthRepository() {
         resetPasswordAsync,
         getUserAsync,
         updateUserAsync,
+        removeUserAsync,
         availableRoles
     };
 }
