@@ -24,9 +24,9 @@ export default function CataloguePage() {
     const { catalogue } = useCatalogue();
 
     return (
-        <Box sx={{ height: 800 }}>
+        <Box sx={{ flexGrow: 1 }}>
             <Grid
-                sx={{ flexGrow: 1 }}
+                marginTop={10}
                 container
                 spacing={2}
                 alignItems='baseline'

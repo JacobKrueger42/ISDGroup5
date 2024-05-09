@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 
 export default function CatalogueEntryCard({ item, assetFn }) {
     return (
-        <Grid item lg='auto'>
+        <Grid item sm='2' md='5' lg='4'>
             <Card sx={{ maxWidth: 345 }}>
                 <CardMedia
                     sx={{ height: 140, backgroundSize: 'contain' }}
