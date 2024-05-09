@@ -1,19 +1,18 @@
 import { MenuAppBar } from '#components';
 import { useAuth } from '#hooks';
 import Stack from '@mui/material/Stack';
-// import { useEffect } from 'react';
-// import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function AuthorisedPageShell({ children }) {
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
-    const { isLoading } = useAuth();
+    const { isLoading, user } = useAuth();
 
-    // TODO:
-    // useEffect(() => {
-    //     if (isLoading) return;
-    //     if (user) navigate('/home');
-    // }, [user]);
+    useEffect(() => {
+        if (isLoading) return;
+        if (user) navigate('/home');
+    }, [user]);
 
     return (
         <Stack spacing={2}>
