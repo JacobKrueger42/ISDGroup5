@@ -11,7 +11,7 @@ export default function AnonPage() {
     const navigate = useNavigate();
 
     const handleShopNow = () => {
-        navigate('/shop');
+        navigate('/catalogue');
     };
 
     return (

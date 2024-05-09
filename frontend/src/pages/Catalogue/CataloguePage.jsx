@@ -6,7 +6,7 @@ import {
     Pocket_ICBMUrl,
     SpareDronePartsUrl
 } from '#assets';
-import { useProducts } from '#hooks';
+import { useCatalogue } from '#hooks';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import CatalogueEntryCard from './CatalogueEntryCard';
@@ -21,8 +21,7 @@ const mockProductUrls = [
 ];
 
 export default function CataloguePage() {
-    // const { catalogue } = useCatalogue();
-    const { products } = useProducts();
+    const { catalogue } = useCatalogue();
 
     return (
         <Box sx={{ height: 800 }}>
@@ -33,7 +32,7 @@ export default function CataloguePage() {
                 alignItems='baseline'
                 justifyContent='center'
             >
-                {products.map((item, index) => (
+                {catalogue.map((item, index) => (
                     <CatalogueEntryCard
                         item={item}
                         assetFn={mockProductUrlRoulette()}
