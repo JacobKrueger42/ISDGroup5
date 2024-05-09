@@ -1,7 +1,7 @@
 // TODO: create DTOs that include the product data where needed
 
 import { requireRole } from '#middleware';
-import { catalogueRepository } from '#services';
+import { catalogueRepository, productRepository } from '#services';
 import HttpStatus from 'http-status-codes';
 
 // paginated
