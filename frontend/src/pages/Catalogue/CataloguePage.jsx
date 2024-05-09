@@ -1,21 +1,15 @@
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import {
-    LaserScopeUrl,
     DefensiveMicrobotsUrl,
-    HeadStompersUrl,
-    Pocket_ICBMUrl,
     HardlightAfterburnerUrl,
+    HeadStompersUrl,
+    LaserScopeUrl,
+    Pocket_ICBMUrl,
     SpareDronePartsUrl
 } from '#assets';
 import { useProducts } from '#hooks';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import CatalogueEntryCard from './CatalogueEntryCard';
 
 const mockProductUrls = [
     LaserScopeUrl,
@@ -40,7 +34,7 @@ export default function CataloguePage() {
                 justifyContent='center'
             >
                 {products.map((item, index) => (
-                    <CatalogueItem
+                    <CatalogueEntryCard
                         item={item}
                         assetFn={mockProductUrlRoulette()}
                         key={index}
@@ -48,42 +42,6 @@ export default function CataloguePage() {
                 ))}
             </Grid>
         </Box>
-    );
-}
-
-function CatalogueItem({ item, assetFn }) {
-    return (
-        <Grid item lg='auto'>
-            <Card sx={{ maxWidth: 345 }}>
-                <CardMedia
-                    sx={{ height: 140, backgroundSize: 'contain' }}
-                    image={assetFn}
-                    title={item.name}
-                />
-                <CardContent>
-                    <Typography gutterBottom variant='h5' align='left'>
-                        {item.name}
-                    </Typography>
-                    <Typography
-                        variant='body2'
-                        color='text.secondary'
-                        align='left'
-                    >
-                        {item.description}
-                    </Typography>
-                </CardContent>
-                <CardActions>
-                    <Button
-                        size='small'
-                        variant='contained'
-                        startIcon={<AddShoppingCartIcon />}
-                    >
-                        Add to cart
-                    </Button>
-                    <Button size='small'>{item.brandName}</Button>
-                </CardActions>
-            </Card>
-        </Grid>
     );
 }
 
