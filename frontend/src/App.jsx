@@ -7,7 +7,9 @@ import {
     NotFoundPage,
     HomePage,
     ProductsPage,
-    AnonPage
+    AnonPage,
+    AccountPage,
+    AccessLogsPage
 } from '#pages';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -55,6 +57,22 @@ export default function App() {
                         element={
                             <AuthorisedPageShell>
                                 <ProductsPage />
+                            </AuthorisedPageShell>
+                        }
+                    />
+                    <Route
+                        path='/account'
+                        element={
+                            <AuthorisedPageShell>
+                                <AccountPage />
+                            </AuthorisedPageShell>
+                        }
+                    />
+                    <Route
+                        path='/accesslogs'
+                        element={
+                            <AuthorisedPageShell>
+                                <AccessLogsPage />
                             </AuthorisedPageShell>
                         }
                     />

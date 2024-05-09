@@ -154,15 +154,67 @@ export default function userAuthRepository() {
         if (!verifyHashedPassword(password, passwordHash))
             throw new Error('incorrect password');
 
+        createUserAccessLogForLogin(user.id);
+
         return user;
     }
 
-    async function logoutAsync() {
-        // TODO: stub
+    async function createUserAccessLogForLogin(userId) {
+        // log the login date
+        const loginDate = new Date();
+        await prisma.userAccessLog.create({
+            data: {
+                loginDate: loginDate,
+                userId: userId
+            }
+        });
     }
 
-    async function resetPasswordAsync() {
-        // TODO: stub
+    async function updateUserAccessLogForLogout(userId) {
+        const logoutDate = new Date();
+
+        // get the most recent user access log
+        const mostRecentLog = await getMostRecentUserAccessLog(userId);
+
+        if (mostRecentLog) {
+            // update the logout date of the most recent log
+            await prisma.userAccessLog.update({
+                where: {
+                    id: mostRecentLog.id
+                },
+                data: {
+                    logoutDate: logoutDate
+                }
+            });
+        } else {
+            console.log('No recent access log found for the user.');
+        }
+    }
+
+    async function getMostRecentUserAccessLog(userId) {
+        // orders user access log by descending and returns the first one
+        const mostRecentLog = await prisma.userAccessLog.findFirst({
+            where: {
+                userId: userId
+            },
+            orderBy: {
+                loginDate: 'desc'
+            }
+        });
+
+        return mostRecentLog;
+    }
+
+    async function getUserAccessLogs(userId) {
+        // return all user access logs related to user id
+        return prisma.userAccessLog.findMany({
+            where: {
+                userId: Number(userId)
+            },
+            orderBy: {
+                loginDate: 'desc'
+            }
+        });
     }
 
     async function getUserAsync(userId) {
@@ -173,12 +225,68 @@ export default function userAuthRepository() {
         });
     }
 
+    function editUserAsync(userId, firstName, lastName, email, phone) {
+        return prisma.user
+            .update({
+                where: {
+                    id: Number(userId)
+                },
+                data: {
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    phone: phone
+                }
+            })
+            .catch(error =>
+                console.error(`Error updating user '${userId}':`, error)
+            );
+    }
+
+    async function updateUserAsync(id, firstName, lastName, email, phone) {
+        if (isNullOrEmpty(id)) throw new Error('Id not provided');
+        console.log('Id given' + id);
+        // validate phone
+        validatePhone(phone);
+
+        // validate email
+        validateEmail(email);
+
+        // finally update user
+        await editUserAsync(id, firstName, lastName, email, phone);
+
+        console.log(`Updated user with id '${id}'`);
+    }
+
+    async function deleteUserAsync(id) {
+        try {
+            return await prisma.user.delete({
+                where: {
+                    id: Number(id)
+                }
+            });
+        } catch (error) {
+            return console.error(`Error deleting user '${id}':`, error);
+        }
+    }
+
+    async function removeUserAsync(id) {
+        if (isNullOrEmpty(id))
+            throw new Error('An id must be provided to delete a user');
+        // delete user
+        await deleteUserAsync(id);
+
+        console.log(`Deleted user with id '${id}'`);
+    }
+
     return {
         signupAsync,
         loginAsync,
-        logoutAsync,
-        resetPasswordAsync,
         getUserAsync,
+        updateUserAsync,
+        removeUserAsync,
+        updateUserAccessLogForLogout,
+        getUserAccessLogs,
         availableRoles
     };
 }
@@ -212,4 +320,18 @@ function validatePhone(phone) {
 
     if (!/^\d+$/.test(phone))
         throw new Error('Phone number must contain only numbers');
+}
+
+function validateEmail(email) {
+    if (isNullOrEmpty(email)) throw new Error('An email must be provided');
+
+    if (!isValidEmail(email)) {
+        throw new Error('Invalid email format');
+    }
+}
+
+function isValidEmail(email) {
+    // format e.g ran@gmail.com
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
 }

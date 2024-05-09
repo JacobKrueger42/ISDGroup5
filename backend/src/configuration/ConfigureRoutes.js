@@ -97,6 +97,7 @@ function GenerateRoutes(controller, name, app, opts) {
                 count: ['get', `/${formattedName}/count`],
                 detail: ['get', `/${formattedName}/:id/detail`],
                 get: ['get', `/${formattedName}`],
+                getAll: ['get', `/${formattedName}/:id`],
                 create: ['post', `/${formattedName}/create`],
                 update: ['post', `/${formattedName}/:id/update`],
                 remove: ['delete', `/${formattedName}/:id/remove`]

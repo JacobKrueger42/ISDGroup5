@@ -45,6 +45,17 @@ model User {
   paymentDetails  PaymentDetail[]
 }
 
+model UserAccessLog {
+  id Int @id @default(autoincrement())
+
+  loginDate  DateTime
+  logoutDate DateTime?
+
+  // weak referential integrity to avoid complicating
+  // the user entity
+  userId            Int
+}
+
 // an "IOT device" item is considered a product
 // a product must be created before being added to the catalogue
 // a product is not automatically in the catalogue
@@ -95,19 +106,7 @@ model CatalogueEntry {
 }
 
 
-model AuditLog {
-  id Int @id @default(autoincrement())
 
-  eventDescription  String
-
-  // enum list: [ AUTH, CATALOGUE, PRODUCT, PAYMENT_DETAILS, PAYMENT_CONFIRMATION, ORDER, SHIPPING_DETAIL ]
-  topicName         String
-  loggedAt          DateTime @default(now())
-
-  // weak referential integrity to avoid complicating
-  // the user entity
-  userId            Int
-}
 
 
 model PaymentDetail {

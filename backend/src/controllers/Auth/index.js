@@ -74,6 +74,14 @@ export async function login(req, res, next) {
 
 export async function logout(req, res, next) {
     try {
+        const { updateUserAccessLogForLogout } = userAuthRepository();
+        const userId = req.session.userId;
+        console.log(userId);
+
+        // Update user access log for logout
+         await updateUserAccessLogForLogout(userId);
+        
+
         delete req.session.userId;
         req.session.save(err => {
             if (err) next(err);

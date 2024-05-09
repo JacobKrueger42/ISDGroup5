@@ -12,7 +12,7 @@ export default function useAuth(options) {
     const [isLoading, setLoading] = useState(true);
     const navigate = useNavigate();
 
-    const { get, post } = useFetch();
+    const { get, post, remove } = useFetch();
 
     useEffect(() => {
         (async () => {
@@ -24,7 +24,7 @@ export default function useAuth(options) {
             }
         })();
     }, []);
-
+   
     async function loginAsync(email, password) {
         console.info('logging in');
         try {
@@ -98,6 +98,57 @@ export default function useAuth(options) {
         }
     }
 
+    async function updateUserAsync({ id, firstName, lastName, email, phone }) {
+        console.info('Updating user');
+        try {
+            setLoading(true);
+            const res = await post(`user/${id}/update`, {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone
+            });
+
+            setError(null);
+            setLoading(false);
+
+            console.log(res);
+            return true;
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
+    }
+
+    async function removeUserAsync(id) {
+        try {
+            setLoading(true);
+            console.log('Id' + id);
+            const result = await remove(`user/${id}/remove`);
+            logoutAsync();
+            setLoading(false);
+            console.log(result);
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
+    }
+    
+    async function getLogsAsync(id) {
+        try {
+            console.log('at get logs');
+            setLoading(true);
+            const res = await get(`useraccesslog/${id}`);
+            console.log(' after get logs');
+            setLoading(false);
+            console.log(res.results);
+            return res.results;
+        } catch (error) {
+            setError(error);
+            setLoading(false);
+        }
+    }
+
     return {
         isLoading,
         error,
@@ -105,6 +156,11 @@ export default function useAuth(options) {
         loginAsync,
         logoutAsync,
         registerAsync,
-        resetPasswordAsync
+        resetPasswordAsync,
+        updateUserAsync,
+        getUserAsync,
+        setUser,
+        removeUserAsync,
+        getLogsAsync
     };
 }
