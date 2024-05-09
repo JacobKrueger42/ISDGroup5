@@ -1,0 +1,26 @@
+[
+    {
+        "email": "admin@notreal.com",
+        "firstName": "Admin",
+        "lastName": "Administrator",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "0000000000",
+        "role": "ADMIN"
+    },
+    {
+        "email": "staff@notreal.com",
+        "firstName": "Staff",
+        "lastName": "Person",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "3334511811",
+        "role": "STAFF"
+    },
+    {
+        "email": "customer@notreal.com",
+        "firstName": "Customer",
+        "lastName": "Person",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "123123123",
+        "role": "CUSTOMER"
+    }
+]
