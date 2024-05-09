@@ -42,11 +42,12 @@ export default function AccountPage() {
         setOpenDeleteConfirmation(true);
     };
 
+    // Delete
     const handleDeleteConfirm = async () => {
         await removeUserAsync(user.id);
         console.log('Deleted the user id');
     };
-
+    // Update
     const handleSubmit = async event => {
         event.preventDefault();
 
@@ -113,6 +114,9 @@ export default function AccountPage() {
                     </CardContent>
                     <CardContent>
                         <Button
+                            sx={{
+                                marginRight: '10px'
+                            }}
                             variant='contained'
                             color='primary'
                             onClick={handleUpdateButtonClick}
