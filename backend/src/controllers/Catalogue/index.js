@@ -5,7 +5,7 @@ import { catalogueRepository } from '#services';
 import HttpStatus from 'http-status-codes';
 
 // paginated
-// not to be confused with catalogue!
+// not to be confused with product!
 export async function list(req, res, next) {
     try {
         await requireRole(
@@ -35,7 +35,7 @@ export async function list(req, res, next) {
                     totalCount: total
                 });
             },
-            ['STAFF', 'ADMIN']
+            ['CUSTOMER', 'STAFF', 'ADMIN']
         );
     } catch (error) {
         next(error);
@@ -55,7 +55,7 @@ export async function detail(req, res, next) {
                 );
                 return res.json(catalogueEntry);
             },
-            ['STAFF', 'ADMIN']
+            ['CUSTOMER', 'STAFF', 'ADMIN']
         );
     } catch (error) {
         next(error);
@@ -84,7 +84,7 @@ export async function create(req, res, next) {
                     catalogueEntryId: catalogueEntryId
                 });
             },
-            ['STAFF', 'ADMIN']
+            ['CUSTOMER', 'STAFF', 'ADMIN']
         );
     } catch (error) {
         res.status(HttpStatus.BAD_REQUEST).json({
@@ -113,7 +113,7 @@ export async function update(req, res, next) {
 
                 res.send('OK');
             },
-            ['STAFF', 'ADMIN']
+            ['CUSTOMER', 'STAFF', 'ADMIN']
         );
     } catch (error) {
         res.status(HttpStatus.BAD_REQUEST).json({
@@ -136,7 +136,7 @@ export async function remove(req, res, next) {
 
                 res.send('OK');
             },
-            ['STAFF', 'ADMIN']
+            ['CUSTOMER', 'STAFF', 'ADMIN']
         );
     } catch (error) {
         next(error);
