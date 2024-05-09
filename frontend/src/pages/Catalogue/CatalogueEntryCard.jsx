@@ -8,6 +8,9 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 export default function CatalogueEntryCard({ item, assetFn }) {
+    // TODO: lockout this behaviour when user isn't logged in
+    const isDisabled = false;
+
     return (
         <Grid item sm='2' md='5' lg='4'>
             <Card sx={{ maxWidth: 345 }}>
@@ -30,6 +33,7 @@ export default function CatalogueEntryCard({ item, assetFn }) {
                 </CardContent>
                 <CardActions>
                     <Button
+                        disabled={isDisabled}
                         size='small'
                         variant='contained'
                         startIcon={<AddShoppingCartIcon />}
