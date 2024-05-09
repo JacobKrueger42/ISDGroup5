@@ -9,6 +9,7 @@ export default function AuthorisedPageShell({ children }) {
 
     const { isLoading } = useAuth();
 
+    // TODO:
     // useEffect(() => {
     //     if (isLoading) return;
     //     if (user) navigate('/home');
