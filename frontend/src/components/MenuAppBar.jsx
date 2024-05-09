@@ -1,6 +1,7 @@
 import { ProfileMenu, Sidebar } from '#components';
 import HomeIcon from '@mui/icons-material/Home';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import SellIcon from '@mui/icons-material/Sell';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -13,6 +14,12 @@ export default function MenuAppBar({ user, onLogout, isLoading }) {
 
     const sidebarMenu = [
         { text: 'Home', link: '/home', role: 'CUSTOMER', icon: <HomeIcon /> },
+        {
+            text: 'Catalogue',
+            link: '/catalogue',
+            role: 'CUSTOMER',
+            icon: <SellIcon />
+        },
         {
             text: 'Products',
             link: '/products',
