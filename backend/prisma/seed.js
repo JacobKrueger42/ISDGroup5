@@ -5,9 +5,28 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 import products from './seed/products.json' assert { type: 'json' };
+import users from './seed/users.json' assert { type: 'json' };
 
 async function main() {
+    await seedUsers();
     await seedProducts();
+}
+
+async function seedUsers() {
+    // all demo user's seed with password ABC123
+    console.log(`discovered ${users.length} users to seed`);
+
+    for (const user of users) {
+        try {
+            await prisma.user.create({
+                data: { ...user }
+            });
+        } catch (error) {
+            console.log();
+            console.error('❌ error while seeding,', error);
+            console.log();
+        }
+    }
 }
 
 async function seedProducts() {
