@@ -6,6 +6,7 @@ import {
     RegisterPage,
     NotFoundPage,
     HomePage,
+    CataloguePage,
     ProductsPage,
     AnonPage,
     AccountPage,
@@ -52,6 +53,14 @@ export default function App() {
                     />
                     <Route path='/login' element={<LoginPage />} />
                     <Route path='/register' element={<RegisterPage />} />
+                    <Route
+                        path='/catalogue'
+                        element={
+                            <AnonPageShell>
+                                <CataloguePage />
+                            </AnonPageShell>
+                        }
+                    />
                     <Route
                         path='/products'
                         element={
