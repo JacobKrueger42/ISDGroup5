@@ -154,15 +154,67 @@ export default function userAuthRepository() {
         if (!verifyHashedPassword(password, passwordHash))
             throw new Error('incorrect password');
 
+        createUserAccessLogForLogin(user.id);
+
         return user;
     }
 
-    async function logoutAsync() {
-        // TODO: stub
+    async function createUserAccessLogForLogin(userId) {
+        // log the login date
+        const loginDate = new Date();
+        await prisma.userAccessLog.create({
+            data: {
+                loginDate: loginDate,
+                userId: userId
+            }
+        });
     }
 
-    async function resetPasswordAsync() {
-        // TODO: stub
+    async function updateUserAccessLogForLogout(userId) {
+        const logoutDate = new Date();
+
+        // get the most recent user access log
+        const mostRecentLog = await getMostRecentUserAccessLog(userId);
+
+        if (mostRecentLog) {
+            // update the logout date of the most recent log
+            await prisma.userAccessLog.update({
+                where: {
+                    id: mostRecentLog.id
+                },
+                data: {
+                    logoutDate: logoutDate
+                }
+            });
+        } else {
+            console.log('No recent access log found for the user.');
+        }
+    }
+
+    async function getMostRecentUserAccessLog(userId) {
+        // orders user access log by descending and returns the first one
+        const mostRecentLog = await prisma.userAccessLog.findFirst({
+            where: {
+                userId: userId
+            },
+            orderBy: {
+                loginDate: 'desc'
+            }
+        });
+
+        return mostRecentLog;
+    }
+
+    async function getUserAccessLogs(userId) {
+        // return all user access logs related to user id
+        return prisma.userAccessLog.findMany({
+            where: {
+                userId: Number(userId)
+            },
+            orderBy: {
+                loginDate: 'desc'
+            }
+        });
     }
 
     async function getUserAsync(userId) {
@@ -194,23 +246,16 @@ export default function userAuthRepository() {
     async function updateUserAsync(id, firstName, lastName, email, phone) {
         if (isNullOrEmpty(id)) throw new Error('Id not provided');
         console.log('Id given' + id);
-
+        // validate phone
         validatePhone(phone);
 
+        // validate email
         validateEmail(email);
 
+        // finally update user
         await editUserAsync(id, firstName, lastName, email, phone);
 
         console.log(`Updated user with id '${id}'`);
-    }
-
-    async function removeUserAsync(id) {
-        if (isNullOrEmpty(id))
-            throw new Error('An id must be provided to delete a user');
-
-        await deleteUserAsync(id);
-
-        console.log(`Deleted user with id '${id}'`);
     }
 
     async function deleteUserAsync(id) {
@@ -225,14 +270,23 @@ export default function userAuthRepository() {
         }
     }
 
+    async function removeUserAsync(id) {
+        if (isNullOrEmpty(id))
+            throw new Error('An id must be provided to delete a user');
+        // delete user
+        await deleteUserAsync(id);
+
+        console.log(`Deleted user with id '${id}'`);
+    }
+
     return {
         signupAsync,
         loginAsync,
-        logoutAsync,
-        resetPasswordAsync,
         getUserAsync,
         updateUserAsync,
         removeUserAsync,
+        updateUserAccessLogForLogout,
+        getUserAccessLogs,
         availableRoles
     };
 }
@@ -277,6 +331,7 @@ function validateEmail(email) {
 }
 
 function isValidEmail(email) {
+    // format e.g ran@gmail.com
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
