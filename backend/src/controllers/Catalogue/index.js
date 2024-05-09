@@ -1,42 +1,33 @@
 // TODO: create DTOs that include the product data where needed
 
 import { requireRole } from '#middleware';
-import { catalogueRepository } from '#services';
+import { catalogueRepository, productRepository } from '#services';
 import HttpStatus from 'http-status-codes';
 
 // paginated
-// not to be confused with catalogue!
+// not to be confused with product!
 export async function list(req, res, next) {
     try {
-        await requireRole(
-            req,
-            res,
-            next,
-            async () => {
-                // default to the first 25 results
-                const pageNumber = req.query.pageNumber ?? 0;
-                const take = req.query.take ?? 25;
-                const skip = pageNumber * take;
+        // default to the first 25 results
+        const pageNumber = req.query.pageNumber ?? 0;
+        const take = req.query.take ?? 25;
+        const skip = pageNumber * take;
 
-                const {
-                    getAllCatalogueEntryAsync,
-                    getTotalCatalogueEntryCount
-                } = catalogueRepository();
+        // const { getAllCatalogueEntryAsync, getTotalCatalogueEntryCount } =
+        //     catalogueRepository();
+        const { getAllProductsAsync, getTotalProductsCount } =
+            productRepository();
 
-                const catalogueEntries = await getAllCatalogueEntryAsync(
-                    Number(skip),
-                    Number(take)
-                );
+        const items = await getAllProductsAsync(Number(skip), Number(take));
 
-                const total = await getTotalCatalogueEntryCount();
+        const total = await getTotalProductsCount();
 
-                return res.json({
-                    results: catalogueEntries,
-                    totalCount: total
-                });
-            },
-            ['STAFF', 'ADMIN']
-        );
+        // const total = await getTotalCatalogueEntryCount();
+
+        return res.json({
+            results: items,
+            totalCount: total
+        });
     } catch (error) {
         next(error);
     }
@@ -44,19 +35,9 @@ export async function list(req, res, next) {
 
 export async function detail(req, res, next) {
     try {
-        await requireRole(
-            req,
-            res,
-            next,
-            async () => {
-                const { getCatalogueEntryByIdAsync } = catalogueRepository();
-                const catalogueEntry = await getCatalogueEntryByIdAsync(
-                    req.query.id
-                );
-                return res.json(catalogueEntry);
-            },
-            ['STAFF', 'ADMIN']
-        );
+        const { getCatalogueEntryByIdAsync } = catalogueRepository();
+        const catalogueEntry = await getCatalogueEntryByIdAsync(req.query.id);
+        return res.json(catalogueEntry);
     } catch (error) {
         next(error);
     }
@@ -84,7 +65,7 @@ export async function create(req, res, next) {
                     catalogueEntryId: catalogueEntryId
                 });
             },
-            ['STAFF', 'ADMIN']
+            ['CUSTOMER', 'STAFF', 'ADMIN']
         );
     } catch (error) {
         res.status(HttpStatus.BAD_REQUEST).json({
@@ -113,7 +94,7 @@ export async function update(req, res, next) {
 
                 res.send('OK');
             },
-            ['STAFF', 'ADMIN']
+            ['CUSTOMER', 'STAFF', 'ADMIN']
         );
     } catch (error) {
         res.status(HttpStatus.BAD_REQUEST).json({
@@ -136,7 +117,7 @@ export async function remove(req, res, next) {
 
                 res.send('OK');
             },
-            ['STAFF', 'ADMIN']
+            ['CUSTOMER', 'STAFF', 'ADMIN']
         );
     } catch (error) {
         next(error);

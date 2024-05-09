@@ -58,7 +58,7 @@ export async function login(req, res, next) {
                 if (err) next(err);
 
                 res.json({
-                    redirect_uri: '/'
+                    redirect_uri: '/home'
                 });
             });
         });
@@ -79,8 +79,7 @@ export async function logout(req, res, next) {
         console.log(userId);
 
         // Update user access log for logout
-         await updateUserAccessLogForLogout(userId);
-        
+        await updateUserAccessLogForLogout(userId);
 
         delete req.session.userId;
         req.session.save(err => {

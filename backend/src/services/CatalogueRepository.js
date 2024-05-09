@@ -105,10 +105,7 @@ export default function catalogueRepository() {
 
         return prisma.catalogueEntry.findMany({
             skip: skip,
-            take: take,
-            orderBy: {
-                name: 'desc'
-            }
+            take: take
         });
     }
 
