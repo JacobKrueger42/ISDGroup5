@@ -7,8 +7,24 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-
+import {
+    LaserScopeUrl,
+    DefensiveMicrobotsUrl,
+    HeadStompersUrl,
+    Pocket_ICBMUrl,
+    HardlightAfterburnerUrl,
+    SpareDronePartsUrl
+} from '#assets';
 import { useProducts } from '#hooks';
+
+const mockProductUrls = [
+    LaserScopeUrl,
+    DefensiveMicrobotsUrl,
+    HeadStompersUrl,
+    Pocket_ICBMUrl,
+    HardlightAfterburnerUrl,
+    SpareDronePartsUrl
+];
 
 export default function CataloguePage() {
     // const { catalogue } = useCatalogue();
@@ -24,21 +40,25 @@ export default function CataloguePage() {
                 justifyContent='center'
             >
                 {products.map((item, index) => (
-                    <CatalogueItem item={item} key={index} />
+                    <CatalogueItem
+                        item={item}
+                        assetFn={mockProductUrlRoulette()}
+                        key={index}
+                    />
                 ))}
             </Grid>
         </Box>
     );
 }
 
-function CatalogueItem({ item }) {
+function CatalogueItem({ item, assetFn }) {
     return (
         <Grid item lg='auto'>
             <Card sx={{ maxWidth: 345 }}>
                 <CardMedia
-                    sx={{ height: 140 }}
-                    image='/static/images/cards/contemplative-reptile.jpg'
-                    title='green iguana'
+                    sx={{ height: 140, backgroundSize: 'contain' }}
+                    image={assetFn}
+                    title={item.name}
                 />
                 <CardContent>
                     <Typography gutterBottom variant='h5' align='left'>
@@ -65,4 +85,8 @@ function CatalogueItem({ item }) {
             </Card>
         </Grid>
     );
+}
+
+function mockProductUrlRoulette() {
+    return mockProductUrls.sort(() => 0.5 - Math.random())[0];
 }
