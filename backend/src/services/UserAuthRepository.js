@@ -100,8 +100,19 @@ export default function userAuthRepository() {
                 'a role must be provided for a user (either ADMIN, CUSTOMER, or STAFF)'
             );
 
-        if (isNullOrEmpty(email))
-            throw new Error('an email must be provided to sign up');
+        if (isNullOrEmpty(firstName))
+            throw new Error('First name must be provided');
+
+        if (isNullOrEmpty(lastName))
+            throw new Error('Last name must be provided');
+
+        if (isNullOrEmpty(email)) throw new Error('Email must be provided');
+
+        if (isNullOrEmpty(password))
+            throw new Error('Password must be provided');
+
+        if (isNullOrEmpty(phone))
+            throw new Error('Phone number must be provided');
 
         // check for existing user (email unique)
         const existingUser = await prisma.user.findUnique({
@@ -112,7 +123,7 @@ export default function userAuthRepository() {
         });
 
         if (existingUser) throw new Error(`${email} already exists`);
-
+        validateEmail(email);
         // simple password validation - simple assignment
         validatePassword(password);
         const { hashPassword } = PasswordHasher();
@@ -244,11 +255,33 @@ export default function userAuthRepository() {
     }
 
     async function updateUserAsync(id, firstName, lastName, email, phone) {
-        // validate phone
-        validatePhone(phone);
+        if (isNullOrEmpty(firstName))
+            throw new Error('First name must be provided');
+
+        if (isNullOrEmpty(lastName))
+            throw new Error('Last name must be provided');
+
+        if (isNullOrEmpty(email)) throw new Error('Email must be provided');
+
+        if (isNullOrEmpty(phone))
+            throw new Error('Phone number must be provided');
+
+        // check for existing user (email unique)
+        const existingUser = await prisma.user.findUnique({
+            where: {
+                email: email
+            }
+        });
+
+        if (existingUser && existingUser.id != id){
+            throw new Error(`${email} already exists`);
+        }
 
         // validate email
         validateEmail(email);
+
+        // validate phone
+        validatePhone(phone);
 
         // finally update user
         await editUserAsync(id, firstName, lastName, email, phone);
@@ -292,25 +325,25 @@ export default function userAuthRepository() {
 
 function validatePassword(password) {
     if (isNullOrEmpty(password))
-        throw new Error('a password is required (none was provided)');
+        throw new Error('Password is required (none was provided)');
 
     if (password.length < passwordOptions.minLength)
         throw new Error(
-            `password must be at least ${passwordOptions.minLength} characters`
+            `Password must be at least ${passwordOptions.minLength} characters`
         );
 
     if (passwordOptions.requireAlphaNumeric) {
         const reg = new RegExp(/^(?=.*[a-zA-Z])(?=.*\d).{8,}$/);
         if (!reg.test(password))
             throw new Error(
-                'password must contain a combination of letters and numbers'
+                'Password must contain a combination of letters and numbers'
             );
     }
 }
 
 function validatePhone(phone) {
     if (isNullOrEmpty(phone))
-        throw new Error('A phone number is required (none was provided)');
+        throw new Error('Phone number is required (none was provided)');
 
     if (phone.length !== 10)
         throw new Error('Phone number must be exactly 10 digits');

@@ -50,6 +50,7 @@ export default function AccessLogPage() {
     };
 
     const handleSearch = async () => {
+        // only get the date part
         const formattedSearchDate = formatDate(searchDate).split(' ')[0];
         const filtered = logs.filter(log =>
             formatDate(log.loginDate).startsWith(formattedSearchDate)

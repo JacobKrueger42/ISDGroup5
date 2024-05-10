@@ -29,7 +29,6 @@ export default function UpdateAccount({
                     label='First Name'
                     defaultValue={user.firstName}
                     fullWidth
-                    required
                     type='text'
                     error={!!error}
                     margin='normal'
@@ -39,7 +38,6 @@ export default function UpdateAccount({
                     label='Last Name'
                     defaultValue={user.lastName}
                     fullWidth
-                    required
                     type='text'
                     error={!!error}
                     margin='normal'

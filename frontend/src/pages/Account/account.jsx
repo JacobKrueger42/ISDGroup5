@@ -23,15 +23,15 @@ export default function AccountPage() {
         removeUserAsync
     } = useAuth();
 
-    const [openUpdateProduct, setOpenUpdateProduct] = useState(false);
+    const [openUpdateAccount, setOpenUpdateAccount] = useState(false);
     const [openDeleteConfirmation, setOpenDeleteConfirmation] = useState(false);
 
-    const onCloseUpdateProduct = () => {
-        setOpenUpdateProduct(false);
+    const onCloseUpdateAccount = () => {
+        setOpenUpdateAccount(false);
     };
 
     const handleUpdateButtonClick = () => {
-        setOpenUpdateProduct(true);
+        setOpenUpdateAccount(true);
     };
 
     const onCloseDeleteConfirmation = () => {
@@ -59,7 +59,7 @@ export default function AccountPage() {
         });
 
         if (success) {
-            onCloseUpdateProduct();
+            onCloseUpdateAccount();
             const user = await getUserAsync();
             setUser(user);
         }
@@ -134,8 +134,8 @@ export default function AccountPage() {
                 </Card>
 
                 <UpdateAccount
-                    open={openUpdateProduct}
-                    onClose={onCloseUpdateProduct}
+                    open={openUpdateAccount}
+                    onClose={onCloseUpdateAccount}
                     error={error}
                     user={user}
                     onSubmit={handleSubmit}
