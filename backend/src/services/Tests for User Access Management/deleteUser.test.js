@@ -1,7 +1,7 @@
 import { userAuthRepository } from '#services';
 import { prisma } from '#services';
 
-describe('updateUserAsync', () => {
+describe('removeUserAsync', () => {
     test('deletes user with the specified id', async () => {
         // sample user details, assuming user id exists in database
         const userId = 17;
