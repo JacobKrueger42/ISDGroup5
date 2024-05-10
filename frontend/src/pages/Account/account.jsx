@@ -106,7 +106,7 @@ export default function AccountPage() {
                         />
                         <TextField
                             label='Phone Number'
-                            defaultValue={user.phone}
+                            value={user.phone}
                             fullWidth
                             margin='normal'
                             disabled
