@@ -21,6 +21,7 @@ export default function AccessLogPage() {
     const [searchDate, setSearchDate] = useState('');
     const [filteredLogs, setFilteredLogs] = useState([]);
     const [logs, setLogs] = useState([]);
+    const [isSearchPerformed, setIsSearchPerformed] = useState(false);
 
     useEffect(() => {
         (async () => {
@@ -58,6 +59,9 @@ export default function AccessLogPage() {
         setFilteredLogs(filtered);
         if (filtered.length === 0 && formattedSearchDate !== '') {
             setFilteredLogs([]);
+            setIsSearchPerformed(true);
+        } else {
+            setIsSearchPerformed(false);
         }
     };
 
@@ -93,6 +97,12 @@ export default function AccessLogPage() {
                             Search
                         </Button>
                     </Box>
+                    {isSearchPerformed && filteredLogs.length === 0 && (
+                        <Typography variant='body2' sx={{ marginTop: '10px' }}>
+                            No logs found for the selected date. Displaying all
+                            logs.
+                        </Typography>
+                    )}
                 </CardContent>
                 <CardContent sx={{ textAlign: 'left' }}>
                     <TableContainer component={Paper}>
