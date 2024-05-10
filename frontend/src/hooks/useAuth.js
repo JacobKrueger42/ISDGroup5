@@ -24,7 +24,7 @@ export default function useAuth(options) {
             }
         })();
     }, []);
-   
+
     async function loginAsync(email, password) {
         console.info('logging in');
         try {
@@ -123,7 +123,6 @@ export default function useAuth(options) {
     async function removeUserAsync(id) {
         try {
             setLoading(true);
-            console.log('Id' + id);
             const result = await remove(`user/${id}/remove`);
             logoutAsync();
             setLoading(false);
@@ -133,15 +132,12 @@ export default function useAuth(options) {
             setLoading(false);
         }
     }
-    
+
     async function getLogsAsync(id) {
         try {
-            console.log('at get logs');
             setLoading(true);
             const res = await get(`useraccesslog/${id}`);
-            console.log(' after get logs');
             setLoading(false);
-            console.log(res.results);
             return res.results;
         } catch (error) {
             setError(error);

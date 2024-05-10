@@ -29,9 +29,8 @@ export default function MenuAppBar({ user, onLogout, isLoading }) {
     ];
 
     const profileMenu = [
-        { text: 'Profile', link: '/profile' },
         { text: 'My Account', link: '/account' },
-        { text: 'User Access Logs', link: '/accesslogs' },
+        { text: 'My Access Logs', link: '/accesslogs' },
         { text: 'Logout', onClick: onLogout }
     ];
 

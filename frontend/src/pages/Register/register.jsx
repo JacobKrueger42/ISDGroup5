@@ -61,7 +61,6 @@ export default function RegisterPage() {
                             value={formData.firstName}
                             onChange={handleChange}
                             fullWidth
-                            required
                             disabled={isLoading}
                             error={!!error}
                             sx={{ marginBottom: '1rem' }}
@@ -72,7 +71,6 @@ export default function RegisterPage() {
                             value={formData.lastName}
                             onChange={handleChange}
                             fullWidth
-                            required
                             disabled={isLoading}
                             error={!!error}
                             sx={{ marginBottom: '1rem' }}
@@ -80,13 +78,12 @@ export default function RegisterPage() {
                         <TextField
                             name='email'
                             label='Email Address'
-                            type='email'
                             value={formData.email}
                             onChange={handleChange}
                             fullWidth
-                            required
                             disabled={isLoading}
                             error={!!error}
+                            noValidate
                             sx={{ marginBottom: '1rem' }}
                         />
                         <TextField
@@ -96,7 +93,6 @@ export default function RegisterPage() {
                             value={formData.password}
                             onChange={handleChange}
                             fullWidth
-                            required
                             disabled={isLoading}
                             error={!!error}
                             sx={{ marginBottom: '1rem' }}
@@ -108,7 +104,6 @@ export default function RegisterPage() {
                             value={formData.phone}
                             onChange={handleChange}
                             fullWidth
-                            required
                             disabled={isLoading}
                             error={!!error}
                             sx={{ marginBottom: '1rem' }}
