@@ -10,7 +10,8 @@
         "generate": "npx prisma generate types",
         "seed": "npx prisma db seed",
         "format": "npx prisma format && prettier . --write",
-        "prepare": "husky"
+        "prepare": "husky",
+        "test": "jest"
     },
     "dependencies": {
         "@prisma/client": "^5.10.2",
@@ -22,6 +23,7 @@
     "devDependencies": {
         "@mermaid-js/mermaid-cli": "^10.8.0",
         "husky": "^9.0.11",
+        "jest": "^29.7.0",
         "lint-staged": "^15.2.2",
         "prettier": "3.2.5",
         "prisma": "^5.10.2",
@@ -38,5 +40,9 @@
     },
     "lint-staged": {
         "**/*": "prettier --write --ignore-unknown"
-    }
+    },
+    "jest": {
+        "transform": {}
+      }
+    
 }

@@ -244,8 +244,6 @@ export default function userAuthRepository() {
     }
 
     async function updateUserAsync(id, firstName, lastName, email, phone) {
-        if (isNullOrEmpty(id)) throw new Error('Id not provided');
-        console.log('Id given' + id);
         // validate phone
         validatePhone(phone);
 
@@ -271,8 +269,6 @@ export default function userAuthRepository() {
     }
 
     async function removeUserAsync(id) {
-        if (isNullOrEmpty(id))
-            throw new Error('An id must be provided to delete a user');
         // delete user
         await deleteUserAsync(id);
 
@@ -286,6 +282,7 @@ export default function userAuthRepository() {
         updateUserAsync,
         removeUserAsync,
         updateUserAccessLogForLogout,
+        createUserAccessLogForLogin,
         getUserAccessLogs,
         availableRoles
     };
