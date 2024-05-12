@@ -8,9 +8,8 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-// root app styling and styling reset
+// root styling and over-rides
 import './index.css';
-import './App.css';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
