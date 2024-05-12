@@ -8,12 +8,13 @@ import {
 } from '#assets';
 import { useCatalogue } from '#hooks';
 import { Skeleton } from '@mui/material';
-import Box from '@mui/material/Box';
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
+import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import CatalogueProductEntryCard from './CatalogueProductEntryCard';
 import { SearchInput } from '#components';
+
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 
 const mockProductUrls = [
     LaserScopeUrl,
@@ -35,31 +36,27 @@ export default function CataloguePage() {
     } = useCatalogue();
 
     return (
-        <Box sx={{ flexGrow: 1, padding: 2 }}>
-            <Card variant='outlined'>
-                <CardHeader title='Catalogue' />
-
-                {isLoading ? (
-                    <Skeleton>
-                        <SearchInput options={[]} />
-                    </Skeleton>
-                ) : (
-                    <SearchInput
-                        options={catalogue}
-                        searchTerm={searchTerm}
-                        setSearchTerm={setSearchTerm}
-                        label='Looking for something in particular?'
-                    />
-                )}
-            </Card>
-            <Card>
-                <Grid
-                    marginTop={10}
-                    container
-                    spacing={2}
-                    alignItems='baseline'
-                    justifyContent='center'
-                >
+        <PageLayout
+            title='Catalogue'
+            headerContent={
+                <SearchHeader
+                    isLoading={isLoading}
+                    catalogue={catalogue}
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                />
+            }
+        >
+            {isLoading ? (
+                <Skeleton
+                    animation='wave'
+                    sx={{ marginTop: '4rem' }}
+                    variant='rectangular'
+                    width={1000}
+                    height={600}
+                />
+            ) : (
+                <Grid sx={{ marginTop: '4rem' }} container spacing={2}>
                     {catalogue.map((item, index) => (
                         <CatalogueProductEntryCard
                             item={item}
@@ -70,8 +67,50 @@ export default function CataloguePage() {
                         />
                     ))}
                 </Grid>
+            )}
+        </PageLayout>
+    );
+}
+
+function SearchHeader({ isLoading, catalogue, searchTerm, setSearchTerm }) {
+    return isLoading ? (
+        <Skeleton
+            variant='rounded'
+            animation='wave'
+            width={1000}
+            height={100}
+        />
+    ) : (
+        <SearchInput
+            options={catalogue}
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            label='Looking for something in particular?'
+        />
+    );
+}
+
+function PageLayout({ title, headerContent, children }) {
+    return (
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'stretch',
+                marginTop: '4rem',
+                justifyContent: 'space-between'
+            }}
+        >
+            <Typography variant='h2' gutterBottom>
+                {title}
+            </Typography>
+
+            <Card>
+                <CardContent>{headerContent}</CardContent>
             </Card>
-        </Box>
+
+            {children}
+        </div>
     );
 }
 

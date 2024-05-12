@@ -30,7 +30,7 @@ export default function CatalogueProductEntryCard({
                 upc={item.uniqueProductCode}
                 quantity={item.quantity}
             />
-            <Card sx={{ maxWidth: 345 }}>
+            <Card sx={{ maxWidth: 345 }} variant='outlined'>
                 <CardHeader
                     title={item.name}
                     subheader={
