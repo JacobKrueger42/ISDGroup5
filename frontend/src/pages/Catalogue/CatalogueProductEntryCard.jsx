@@ -1,20 +1,53 @@
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import CategoryIcon from '@mui/icons-material/Category';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { CardHeader, IconButton } from '@mui/material';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
+import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
-// import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
+import { useState } from 'react';
+import InfoDialogue from './InfoDialogue';
 
-export default function CatalogueEntryCard({ item, assetFn }) {
-    // TODO: lockout this behaviour when user isn't logged in
-    const isDisabled = false;
+export default function CatalogueProductEntryCard({
+    item,
+    assetFn,
+    disabled,
+    onAddToCart
+}) {
+    const [isOpen, setOpen] = useState(false);
 
     return (
         <Grid item sm={2} md={5} lg={4}>
+            <InfoDialogue
+                open={isOpen}
+                onClose={() => setOpen(false)}
+                title={item.name}
+                upc={item.uniqueProductCode}
+                quantity={item.quantity}
+            />
             <Card sx={{ maxWidth: 345 }}>
+                <CardHeader
+                    title={item.name}
+                    subheader={
+                        <Chip
+                            label={item.category}
+                            color='secondary'
+                            variant='outlined'
+                            icon={<CategoryIcon />}
+                            size='small'
+                        />
+                    }
+                    action={
+                        <IconButton onClick={() => setOpen(true)}>
+                            <MoreVertIcon />
+                        </IconButton>
+                    }
+                />
                 <CardMedia
                     sx={{ height: 140, backgroundSize: 'contain' }}
                     image={assetFn}
@@ -22,8 +55,9 @@ export default function CatalogueEntryCard({ item, assetFn }) {
                 />
                 <CardContent>
                     <Typography gutterBottom variant='h5' align='left'>
-                        {item.name}
+                        {}
                     </Typography>
+
                     <Typography
                         variant='body2'
                         color='text.secondary'
@@ -31,13 +65,22 @@ export default function CatalogueEntryCard({ item, assetFn }) {
                     >
                         {item.description}
                     </Typography>
+                    <Typography
+                        variant='subtitle2'
+                        fontSize='1.25rem'
+                        align='right'
+                    >
+                        ${item.price}
+                    </Typography>
                 </CardContent>
                 <CardActions>
                     <Button
-                        disabled={isDisabled}
+                        disabled={disabled}
                         size='small'
+                        id={item.id}
                         variant='contained'
                         startIcon={<AddShoppingCartIcon />}
+                        onClick={onAddToCart}
                     >
                         Add to cart
                     </Button>
