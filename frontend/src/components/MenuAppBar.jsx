@@ -39,13 +39,15 @@ export default function MenuAppBar({ user, onLogout, isLoading }) {
             <AppBar>
                 <Toolbar>
                     <Sidebar navigationItems={sidebarMenu} />
-                    <Typography
-                        variant='h6'
-                        component='div'
+                    <Button
                         sx={{ flexGrow: 1 }}
+                        variant='text'
+                        onClick={() => navigate('/home')}
                     >
-                        IoT Bay
-                    </Typography>
+                        <Typography variant='h6' color='white'>
+                            IoT Bay
+                        </Typography>
+                    </Button>
                     {user && <ProfileMenu items={profileMenu} />}
                     {!user && (
                         <Button

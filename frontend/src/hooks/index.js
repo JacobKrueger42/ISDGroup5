@@ -1,10 +1,11 @@
-import { default as useFetch } from '../hooks/useFetch.js';
-import { default as useAuth } from '../hooks/useAuth.js';
-import { default as useServer } from '../hooks/useServer.js';
-import { default as useAuthorisedPage } from '../hooks/useAuthorisedPage.js';
-import { default as useEnhancedTable } from '../hooks/useEnhancedTable.js';
-import { default as useCatalogue } from '../hooks/useCatalogue.js';
-import { default as useProducts } from '../hooks/useProducts.js';
+import { default as useFetch } from './useFetch.js';
+import { default as useAuth } from './useAuth.js';
+import { default as useServer } from './useServer.js';
+import { default as useAuthorisedPage } from './useAuthorisedPage.js';
+import { default as useEnhancedTable } from './useEnhancedTable.js';
+import { default as useCatalogue } from './useCatalogue.js';
+import { default as useProducts } from './useProducts.js';
+import { default as useManageProducts } from './useManageProducts.js';
 
 export {
     useFetch,
@@ -12,6 +13,7 @@ export {
     useAuthorisedPage,
     useEnhancedTable,
     useProducts,
+    useManageProducts,
     useCatalogue,
     useServer
 };
