@@ -1,10 +1,14 @@
 import { useFetch, useServer, useAuth } from '#hooks';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import FuzzySearch from 'fuzzy-search';
 
 export default function useCatalogue() {
     const navigate = useNavigate();
     const { user } = useAuth();
+
+    const [searcher, setSearcher] = useState(null);
+    const [searchTerm, setSearchTerm] = useState(null);
 
     const { isLoading, shouldRefresh, makeServerChange } = useServer();
 
@@ -12,43 +16,65 @@ export default function useCatalogue() {
     const [totalCount, setTotalCount] = useState(0);
     const [visibleCatalogue, setVisibleCatalogue] = useState([]);
     const [disableAddToCart, setDisableAddToCart] = useState(true);
-    const [searchTerm, setSearchTerm] = useState(null);
 
     const { get } = useFetch();
 
-    // const visibleRows = useMemo(() => {
-    //     return rows
-    //         .filter(row => (!searchTerm ? row : row.name === searchTerm))
-    //         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    //         .sort(getComparator(order, orderBy));
-
-    //     // including rows in the deps array is a little hacky as we negate
-    //     // the memo almost anytime we touch a row object
-    // }, [order, orderBy, page, rowsPerPage, rows, searchTerm]);
-
     useEffect(() => {
-        // we should only allow users to add to a cart if they're logged in
-        setDisableAddToCart(!user);
+        function LoadCatalogueAsync() {
+            const disableRefresh = true;
+            makeServerChange(
+                // client side pagination for simplicity
+                async () => await get('catalogue/list?take=50'),
+                catalogue => {
+                    console.log(
+                        `loaded ${catalogue.totalCount} catalogue entries`
+                    );
+                    setCatalogue(catalogue.results);
+                    setTotalCount(catalogue.totalCount);
 
-        LoadCatalogue();
+                    // initialise a new searcher instance as the dependencies have changed
+                    setSearcher(
+                        new FuzzySearch(
+                            catalogue.results,
+                            ['name', 'uniqueProductCode'],
+                            {
+                                caseSensitive: true
+                            }
+                        )
+                    );
 
-        // we only care to refresh when we toggle this flag
+                    // same as the catalogue until we have a search term
+                    setVisibleCatalogue(catalogue.results);
+                },
+                disableRefresh
+            );
+        }
+
+        (async () => {
+            // we should only allow users to add to a cart if they're logged in
+            setDisableAddToCart(!user);
+
+            // first page load
+            if (!catalogue) {
+                LoadCatalogueAsync();
+                return;
+            }
+
+            if (searchTerm && searcher) {
+                const filteredResults = searcher.search(
+                    escapeRegExp(searchTerm)
+                );
+                console.log('search results: ', filteredResults);
+                setVisibleCatalogue(filteredResults);
+            } else {
+                // reset to the original content without prompting a network call
+                setVisibleCatalogue(catalogue);
+            }
+        })();
+
+        // we only care to refresh when we toggle either of these flags
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [shouldRefresh]);
-
-    async function LoadCatalogue() {
-        const disableRefresh = true;
-        makeServerChange(
-            // client side pagination for simplicity
-            async () => await get('catalogue/list?take=50'),
-            catalogue => {
-                console.log(`loaded ${catalogue.totalCount} catalogue entries`);
-                setCatalogue(catalogue.results);
-                setTotalCount(catalogue.totalCount);
-            },
-            disableRefresh
-        );
-    }
+    }, [shouldRefresh, searchTerm]);
 
     function onAddToCart(event) {
         event.preventDefault();
@@ -65,7 +91,7 @@ export default function useCatalogue() {
     }
 
     return {
-        catalogue: catalogue,
+        catalogue: visibleCatalogue,
         totalCount: totalCount,
         disableAddToCart: disableAddToCart,
         onAddToCart: onAddToCart,
@@ -73,4 +99,12 @@ export default function useCatalogue() {
         searchTerm: searchTerm,
         setSearchTerm: setSearchTerm
     };
+}
+
+////////////////////////////////v
+// utilities
+////////////////////////////////v
+
+function escapeRegExp(str) {
+    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
