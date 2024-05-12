@@ -9,6 +9,8 @@
     </a>
 </p>
 
+![image](https://github.com/JacobKrueger42/ISDGroup5/assets/26985949/abee5237-cb2e-44a3-83e5-712fb2899579)
+
 ## Quick start
 
 > This project uses `npm` to manage dependencies and run scripts. Ensure you have a recent version installed (`9.5.x+`). npm is a dependency of [NodeJs](https://nodejs.org/en/download).
