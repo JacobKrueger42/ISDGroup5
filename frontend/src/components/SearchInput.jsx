@@ -1,6 +1,9 @@
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
+import SearchIcon from '@mui/icons-material/Search';
+import { IconButton } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
+import Stack from '@mui/material/Stack';
+import TextField from '@mui/material/TextField';
+import { useState } from 'react';
 
 // search input allowing free text input but suggests options
 // will group by category if it exists, else fallback to alphabetical order
@@ -10,6 +13,8 @@ export default function SearchInput({
     setSearchTerm,
     label
 }) {
+    const [clicked, setClicked] = useState(false);
+
     const hasCategory =
         options?.length > 0 && Object.keys(options[0]).includes('category');
 
@@ -25,9 +30,19 @@ export default function SearchInput({
     };
 
     return (
-        <Stack spacing={4} direction='row' alignItems='center'>
+        <Stack
+            spacing={4}
+            direction='row'
+            alignItems='center'
+            border={clicked ? '1px solid transparent' : '1px solid gray'}
+            borderRadius={4}
+        >
+            <IconButton>
+                <SearchIcon />
+            </IconButton>
             <Autocomplete
                 freeSolo
+                onOpen={() => setClicked(!clicked)}
                 value={searchTerm}
                 onChange={onChange}
                 options={options.map(option => option.name).sort()}

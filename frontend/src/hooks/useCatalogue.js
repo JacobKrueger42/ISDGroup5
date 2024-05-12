@@ -105,6 +105,7 @@ export default function useCatalogue() {
 // utilities
 ////////////////////////////////v
 
+// dont let users input regex
 function escapeRegExp(str) {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }

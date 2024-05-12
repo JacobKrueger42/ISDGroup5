@@ -35,7 +35,7 @@ export default function CataloguePage() {
     } = useCatalogue();
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1, padding: 2 }}>
             <Card variant='outlined'>
                 <CardHeader title='Catalogue' />
 
@@ -52,7 +52,7 @@ export default function CataloguePage() {
                     />
                 )}
             </Card>
-            <Card variant='outlined'>
+            <Card>
                 <Grid
                     marginTop={10}
                     container

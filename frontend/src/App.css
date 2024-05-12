@@ -40,3 +40,14 @@
 .read-the-docs {
     color: #888;
 }
+
+/* remove the search border for clean custom look */
+.MuiOutlinedInput-root.Mui-focused,
+.MuiOutlinedInput-notchedOutline {
+    border: none !important;
+}
+
+/* required if we use a custom search bar border to ensure the animated search text doesnt clip the border */
+.MuiInputLabel-root {
+    background-color: #e7faf3;
+}
