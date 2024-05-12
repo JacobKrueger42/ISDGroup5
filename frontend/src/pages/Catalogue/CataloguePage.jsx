@@ -6,11 +6,9 @@ import {
     Pocket_ICBMUrl,
     SpareDronePartsUrl
 } from '#assets';
-import { SearchInput } from '#components';
+import { Layout, SearchInput } from '#components';
 import { useCatalogue } from '#hooks';
-import { Card, CardActions, CardContent, Skeleton } from '@mui/material';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
+import { Grid, Skeleton } from '@mui/material';
 import CatalogueProductEntryCard from './CatalogueProductEntryCard';
 
 const mockProductUrls = [
@@ -33,7 +31,7 @@ export default function CataloguePage() {
     } = useCatalogue();
 
     return (
-        <PageLayout
+        <Layout
             title='Catalogue'
             headerContent={
                 <SearchHeader
@@ -65,7 +63,7 @@ export default function CataloguePage() {
                     ))}
                 </Grid>
             )}
-        </PageLayout>
+        </Layout>
     );
 }
 
@@ -84,31 +82,6 @@ function SearchHeader({ isLoading, catalogue, searchTerm, setSearchTerm }) {
             setSearchTerm={setSearchTerm}
             label='Looking for something in particular?'
         />
-    );
-}
-
-function PageLayout({ title, headerContent, headerActions, children }) {
-    return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'stretch',
-                marginTop: '4rem',
-                justifyContent: 'space-between'
-            }}
-        >
-            <Typography variant='h2' gutterBottom>
-                {title}
-            </Typography>
-
-            <Card sx={{ margin: '4rem' }}>
-                <CardContent>{headerContent}</CardContent>
-                {headerActions && <CardActions>{headerActions}</CardActions>}
-            </Card>
-
-            {children}
-        </div>
     );
 }
 

@@ -1,41 +1,21 @@
-import { EnhancedTableHead, EnhancedTableRow, SearchInput } from '#components';
-import { useEnhancedTable, useProducts } from '#hooks';
-import Button from '@mui/material/Button';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardHeader from '@mui/material/CardHeader';
+import {
+    EnhancedTableHead,
+    EnhancedTableRow,
+    Layout,
+    SearchInput
+} from '#components';
+import { useEnhancedTable, useManageProducts, useProducts } from '#hooks';
+import { Button, Card, Skeleton, Stack, Typography } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import { useState } from 'react';
 import AddProductForm from './AddProduct';
 import UpdateProduct from './UpdateProduct';
-import Stack from '@mui/material/Stack';
-import Skeleton from '@mui/material/Skeleton';
-
-const headCells = [
-    {
-        id: 'uniqueProductCode',
-        label: 'UPC'
-    },
-    {
-        id: 'name',
-        label: 'Product'
-    },
-    {
-        id: 'brandName',
-        label: 'Brand Name'
-    }
-];
 
 export default function ProductsPage() {
-    const [error, setError] = useState(null);
-
     const {
         products,
         totalCount,
@@ -44,15 +24,6 @@ export default function ProductsPage() {
         removeProductAsync,
         isLoading
     } = useProducts();
-
-    const mapToRow = product => {
-        return {
-            id: product.id,
-            name: product.name,
-            brandName: product.brandName,
-            uniqueProductCode: product.uniqueProductCode
-        };
-    };
 
     const {
         order,
@@ -73,114 +44,40 @@ export default function ProductsPage() {
         setSearchTerm
     } = useEnhancedTable(products.map(mapToRow));
 
-    //////////////////
-    // Create product
-    //////////////////
-
-    const [openAddProduct, setOpenAddProduct] = useState(false);
-
-    const onAddProductSubmitAsync = async event => {
-        event.preventDefault();
-
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        const { success, error } = await createProductAsync(formJson);
-
-        if (success) onCloseAddProduct();
-        else setError(error);
-    };
-
-    const onCloseAddProduct = () => {
-        setOpenAddProduct(false);
-        setError(null);
-    };
-
-    //////////////////
-    // Update product
-    //////////////////
-
-    const [openUpdateProduct, setOpenUpdateProduct] = useState(false);
-
-    const getFirstOrDefaultSelectedProduct = () =>
-        products.find(p => p.id === selected[0]);
-
-    const onUpdateProductSubmitAsync = async event => {
-        event.preventDefault();
-
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        const success = await updateProductAsync({
-            id: selected[0],
-            ...formJson
-        });
-
-        if (success) onCloseUpdateProduct();
-        else setError(error);
-    };
-
-    const onCloseUpdateProduct = () => {
-        setOpenUpdateProduct(false);
-        setError(null);
-    };
-
-    //////////////////
-    // Delete product
-    //////////////////
-
-    const onDeleteProductAsync = async event => {
-        event.preventDefault();
-        const existing = getFirstOrDefaultSelectedProduct();
-        await removeProductAsync({ id: existing.id });
-        clearSelection();
-    };
+    const {
+        error,
+        openAddProduct,
+        setOpenAddProduct,
+        openUpdateProduct,
+        setOpenUpdateProduct,
+        onAddProductSubmitAsync,
+        onCloseAddProduct,
+        onUpdateProductSubmitAsync,
+        onCloseUpdateProduct,
+        getFirstOrDefaultSelectedProduct,
+        onDeleteProductAsync
+    } = useManageProducts(
+        products,
+        selected,
+        createProductAsync,
+        updateProductAsync,
+        removeProductAsync,
+        clearSelection
+    );
 
     return (
-        <>
-            <Card variant='outlined'>
-                <CardHeader title='Inventory Management - Products' />
-                <CardContent>
-                    <Stack spacing={2}>
-                        <Typography
-                            align='left'
-                            variant='body'
-                            color='text.secondary'
-                        >
-                            Here you can manage products tracked by the system.
-                            Products listed here can be added to the public
-                            product catalogue.
-                        </Typography>
-                        {isLoading ? (
-                            <Skeleton>
-                                <SearchInput options={[]} />
-                            </Skeleton>
-                        ) : (
-                            <SearchInput
-                                options={products}
-                                searchTerm={searchTerm}
-                                setSearchTerm={setSearchTerm}
-                            />
-                        )}
-                    </Stack>
-
-                    <AddProductForm
-                        open={openAddProduct}
-                        onClose={onCloseAddProduct}
-                        onSubmit={onAddProductSubmitAsync}
-                        isLoading={isLoading}
-                        error={error}
-                    />
-
-                    <UpdateProduct
-                        open={openUpdateProduct}
-                        onClose={onCloseUpdateProduct}
-                        onSubmit={onUpdateProductSubmitAsync}
-                        error={error}
-                        isLoading={isLoading}
-                        getExisting={getFirstOrDefaultSelectedProduct}
-                    />
-                </CardContent>
-
-                <CardActions>
+        <Layout
+            title='Inventory Management - Products'
+            headerContent={
+                <ProductManagementHeader
+                    products={products}
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                    isLoading={isLoading}
+                />
+            }
+            headerActions={
+                <>
                     <Button
                         variant='contained'
                         onClick={() => setOpenAddProduct(true)}
@@ -204,9 +101,26 @@ export default function ProductsPage() {
                     >
                         Delete
                     </Button>
-                </CardActions>
-            </Card>
 
+                    <AddProductForm
+                        open={openAddProduct}
+                        onClose={onCloseAddProduct}
+                        onSubmit={onAddProductSubmitAsync}
+                        isLoading={isLoading}
+                        error={error}
+                    />
+
+                    <UpdateProduct
+                        open={openUpdateProduct}
+                        onClose={onCloseUpdateProduct}
+                        onSubmit={onUpdateProductSubmitAsync}
+                        error={error}
+                        isLoading={isLoading}
+                        getExisting={getFirstOrDefaultSelectedProduct}
+                    />
+                </>
+            }
+        >
             <Card>
                 <TableContainer>
                     <Table
@@ -257,6 +171,57 @@ export default function ProductsPage() {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Card>
-        </>
+        </Layout>
+    );
+}
+
+const headCells = [
+    {
+        id: 'uniqueProductCode',
+        label: 'UPC'
+    },
+    {
+        id: 'name',
+        label: 'Product'
+    },
+    {
+        id: 'brandName',
+        label: 'Brand Name'
+    }
+];
+
+const mapToRow = product => {
+    return {
+        id: product.id,
+        name: product.name,
+        brandName: product.brandName,
+        uniqueProductCode: product.uniqueProductCode
+    };
+};
+
+function ProductManagementHeader({
+    products,
+    searchTerm,
+    setSearchTerm,
+    isLoading
+}) {
+    return (
+        <Stack spacing={2}>
+            <Typography align='left' variant='body' color='text.secondary'>
+                Here you can manage products tracked by the system. Products
+                listed here can be added to the public product catalogue.
+            </Typography>
+            {isLoading ? (
+                <Skeleton>
+                    <SearchInput options={[]} />
+                </Skeleton>
+            ) : (
+                <SearchInput
+                    options={products}
+                    searchTerm={searchTerm}
+                    setSearchTerm={setSearchTerm}
+                />
+            )}
+        </Stack>
     );
 }
