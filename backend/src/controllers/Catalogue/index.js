@@ -1,7 +1,5 @@
-// TODO: create DTOs that include the product data where needed
-
 import { requireRole } from '#middleware';
-import { catalogueRepository, productRepository } from '#services';
+import { catalogueRepository } from '#services';
 import HttpStatus from 'http-status-codes';
 
 // paginated
@@ -13,16 +11,16 @@ export async function list(req, res, next) {
         const take = req.query.take ?? 25;
         const skip = pageNumber * take;
 
-        // const { getAllCatalogueEntryAsync, getTotalCatalogueEntryCount } =
-        //     catalogueRepository();
-        const { getAllProductsAsync, getTotalProductsCount } =
-            productRepository();
+        const {
+            getAllCatalogueProductEntriesAsync,
+            getTotalCatalogueEntryCount
+        } = catalogueRepository();
 
-        const items = await getAllProductsAsync(Number(skip), Number(take));
-
-        const total = await getTotalProductsCount();
-
-        // const total = await getTotalCatalogueEntryCount();
+        const items = await getAllCatalogueProductEntriesAsync(
+            Number(skip),
+            Number(take)
+        );
+        const total = await getTotalCatalogueEntryCount();
 
         return res.json({
             results: items,
