@@ -55,7 +55,7 @@ export default function useCatalogue() {
             setDisableAddToCart(!user);
 
             // first page load
-            if (!catalogue) {
+            if (!catalogue || catalogue.length === 0) {
                 LoadCatalogueAsync();
                 return;
             }
