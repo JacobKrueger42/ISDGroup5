@@ -10,37 +10,99 @@ import users from './seed/users.json' assert { type: 'json' };
 async function main() {
     await seedUsers();
     await seedProducts();
+    await seedCatalogueEntries();
 }
 
 async function seedUsers() {
     // all demo user's seed with password ABC123
     console.log(`discovered ${users.length} users to seed`);
 
-    for (const user of users) {
-        try {
+    try {
+        for (const user of users) {
             await prisma.user.create({
                 data: { ...user }
             });
-        } catch (error) {
-            console.log();
-            console.error('❌ error while seeding,', error);
-            console.log();
         }
+    } catch (error) {
+        console.log();
+        console.error('❌ error while seeding,', error);
+        console.log();
     }
 }
 
 async function seedProducts() {
     console.log(`discovered ${products.length} products to seed`);
-    for (const product of products) {
-        try {
+
+    try {
+        for (const product of products) {
             await prisma.product.create({
                 data: { ...product }
             });
-        } catch (error) {
-            console.log();
-            console.error('❌ error while seeding,', error);
-            console.log();
         }
+    } catch (error) {
+        console.log();
+        console.error('❌ error while seeding,', error);
+        console.log();
+    }
+}
+
+const catalogueEntryCategories = [
+    'TOOLS AND TEST EQUIPMENT',
+    'SOUND AND VIDEO',
+    'CABLES AND CONNECTORS',
+    'COMPONENTS AND ELECTROMECHANICAL',
+    'POWER AND BATTERIES',
+    'HOBBIES AND GADGETS',
+    '3D PRINTING',
+    'SECURITY AND SURVEILLANCE',
+    'COMPUTING AND COMMUNICATION',
+    'KITS, SCIENCE AND LEARNING',
+    'OUTDOORS AND AUTOMOTIVE'
+];
+
+const randInt = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+
+const catalogueEntryCategoryRoulette = () =>
+    catalogueEntryCategories.sort(() => 0.5 - Math.random())[0];
+
+async function seedCatalogueEntries() {
+    // it is assumed this runs after products have been seeded
+    console.log(
+        `discovered ${products.length} products to seed - will attempt to create catalogue entries for each these`
+    );
+
+    // look up the product IDs to link the new data
+    let productsFromDb = [];
+    try {
+        productsFromDb = await prisma.product.findMany({
+            select: {
+                id: true,
+                uniqueProductCode: true
+            }
+        });
+    } catch (error) {
+        console.log();
+        console.error('❌ error while querying dependent seed data,', error);
+        console.log();
+    }
+
+    try {
+        for (const product of productsFromDb) {
+            await prisma.catalogueEntry.create({
+                data: {
+                    price: randInt(3, 200),
+                    stockQuantity: randInt(3, 27),
+                    productCategory: catalogueEntryCategoryRoulette(),
+                    uniqueProductCode: product.uniqueProductCode,
+                    productId: product.id,
+                    isArchived: false
+                }
+            });
+        }
+    } catch (error) {
+        console.log();
+        console.error('❌ error while seeding,', error);
+        console.log();
     }
 }
 
@@ -58,9 +120,9 @@ main()
         console.log('--------------------');
         console.log();
     })
-    .catch(async error => {
+    .catch(async reason => {
         console.log();
-        console.error('❌ error while finalising seeding,', error);
+        console.error('❌ error while finalising seeding,', reason);
         console.log();
         await prisma.$disconnect();
         process.exit(1);

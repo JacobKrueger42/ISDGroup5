@@ -1,6 +1,7 @@
 import { prisma } from '#services';
 import { productRepository } from '#services';
 import { isNullOrEmpty } from './StringUtils.js';
+import CatalogueProductEntryMapper from './CatalogueProductEntryMapper.js';
 
 export default function catalogueRepository() {
     const { getProductByIdAsync } = productRepository();
@@ -91,7 +92,7 @@ export default function catalogueRepository() {
         });
     }
 
-    function getAllCatalogueEntryAsync(skip, take) {
+    async function getAllCatalogueProductEntriesAsync(skip, take) {
         if (
             skip === undefined ||
             take === undefined ||
@@ -103,10 +104,27 @@ export default function catalogueRepository() {
         if (skip < 0) throw new Error('"skip" value must be at least 0');
         if (take < 1) throw new Error('"take" value must be at least 1');
 
-        return prisma.catalogueEntry.findMany({
+        const results = await prisma.catalogueEntry.findMany({
             skip: skip,
-            take: take
+            take: take,
+            where: {
+                isArchived: false
+            },
+            include: {
+                product: {
+                    select: {
+                        name: true,
+                        brandName: true,
+                        description: true
+                    }
+                }
+            },
+            orderBy: {
+                uniqueProductCode: 'desc'
+            }
         });
+
+        return results.map(r => CatalogueProductEntryMapper(r));
     }
 
     function getTotalCatalogueEntryCount() {
@@ -219,6 +237,6 @@ export default function catalogueRepository() {
         createCatalogueEntryAsync,
         updateCatalogueEntryAsync,
         getTotalCatalogueEntryCount,
-        getAllCatalogueEntryAsync
+        getAllCatalogueProductEntriesAsync
     };
 }

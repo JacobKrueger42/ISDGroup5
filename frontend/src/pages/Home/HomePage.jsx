@@ -12,10 +12,6 @@ export default function HomePage() {
     const navigate = useNavigate();
     const { error, user } = useAuth();
 
-    const handleShopNow = () => {
-        navigate('/shop');
-    };
-
     return (
         <>
             <div
@@ -54,7 +50,10 @@ export default function HomePage() {
                         </Typography>
                     </CardContent>
                     <CardActions style={{ justifyContent: 'center' }}>
-                        <Button variant='contained' onClick={handleShopNow}>
+                        <Button
+                            variant='contained'
+                            onClick={() => navigate('/catalogue')}
+                        >
                             Shop Now
                         </Button>
                     </CardActions>
