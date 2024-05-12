@@ -1,4 +1,4 @@
-import { EnhancedTableHead, EnhancedTableRow } from '#components';
+import { EnhancedTableHead, EnhancedTableRow, SearchInput } from '#components';
 import { useEnhancedTable, useProducts } from '#hooks';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -13,7 +13,6 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
-import SearchInput from '../../components/SearchInput';
 import AddProductForm from './AddProduct';
 import UpdateProduct from './UpdateProduct';
 import Stack from '@mui/material/Stack';

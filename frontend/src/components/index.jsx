@@ -10,5 +10,6 @@ export {
     EnhancedTableHead,
     EnhancedTableRow,
     Sidebar,
-    ProfileMenu
+    ProfileMenu,
+    SearchInput
 };

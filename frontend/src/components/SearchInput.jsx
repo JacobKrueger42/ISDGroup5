@@ -1,11 +1,15 @@
 import TextField from '@mui/material/TextField';
 import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
 
 // search input allowing free text input but suggests options
 // will group by category if it exists, else fallback to alphabetical order
-export default function SearchInput({ options, searchTerm, setSearchTerm }) {
+export default function SearchInput({
+    options,
+    searchTerm,
+    setSearchTerm,
+    label
+}) {
     const hasCategory =
         options?.length > 0 && Object.keys(options[0]).includes('category');
 
@@ -22,10 +26,6 @@ export default function SearchInput({ options, searchTerm, setSearchTerm }) {
 
     return (
         <Stack spacing={4} direction='row' alignItems='center'>
-            <Typography align='left' variant='body' color='text.secondary'>
-                or find somethign specific
-            </Typography>
-
             <Autocomplete
                 freeSolo
                 value={searchTerm}
@@ -38,7 +38,7 @@ export default function SearchInput({ options, searchTerm, setSearchTerm }) {
                 renderInput={params => (
                     <TextField
                         {...params}
-                        label='Search input'
+                        label={label ?? 'Search input'}
                         InputProps={{
                             ...params.InputProps,
                             type: 'search'

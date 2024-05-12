@@ -6,12 +6,14 @@ import {
     Pocket_ICBMUrl,
     SpareDronePartsUrl
 } from '#assets';
-import { useAuth, useCatalogue } from '#hooks';
+import { useCatalogue } from '#hooks';
+import { Skeleton } from '@mui/material';
 import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
 import Grid from '@mui/material/Grid';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import CatalogueProductEntryCard from './CatalogueProductEntryCard';
+import { SearchInput } from '#components';
 
 const mockProductUrls = [
     LaserScopeUrl,
@@ -23,50 +25,52 @@ const mockProductUrls = [
 ];
 
 export default function CataloguePage() {
-    const { catalogue } = useCatalogue();
-
-    const navigate = useNavigate();
-    const { user } = useAuth();
-
-    const [disabled, setDisabled] = useState(true);
-
-    useEffect(() => {
-        setDisabled(!user);
-    }, [user]);
-
-    const onAddToCart = event => {
-        event.preventDefault();
-
-        if (disabled) {
-            console.warn(
-                'Not logged in! Cannot add to cart, will prompt user to login...'
-            );
-            navigate('/login');
-        } else {
-            const catalogueEntryId = event.target.id;
-            console.log('Adding item to cart', catalogueEntryId);
-        }
-    };
+    const {
+        catalogue,
+        disableAddToCart,
+        onAddToCart,
+        searchTerm,
+        setSearchTerm,
+        isLoading
+    } = useCatalogue();
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <Grid
-                marginTop={10}
-                container
-                spacing={2}
-                alignItems='baseline'
-                justifyContent='center'
-            >
-                {catalogue.map((item, index) => (
-                    <CatalogueProductEntryCard
-                        item={item}
-                        assetFn={mockProductUrlRoulette()}
-                        key={index}
-                        disabled={disabled}
-                        onAddToCart={onAddToCart}
+            <Card variant='outlined'>
+                <CardHeader title='Catalogue' />
+
+                {isLoading ? (
+                    <Skeleton>
+                        <SearchInput options={[]} />
+                    </Skeleton>
+                ) : (
+                    <SearchInput
+                        options={catalogue}
+                        searchTerm={searchTerm}
+                        setSearchTerm={setSearchTerm}
+                        label='Looking for something in particular?'
                     />
-                ))}
-            </Grid>
+                )}
+            </Card>
+            <Card variant='outlined'>
+                <Grid
+                    marginTop={10}
+                    container
+                    spacing={2}
+                    alignItems='baseline'
+                    justifyContent='center'
+                >
+                    {catalogue.map((item, index) => (
+                        <CatalogueProductEntryCard
+                            item={item}
+                            assetFn={mockProductUrlRoulette()}
+                            key={index}
+                            disabled={disableAddToCart}
+                            onAddToCart={onAddToCart}
+                        />
+                    ))}
+                </Grid>
+            </Card>
         </Box>
     );
 }
