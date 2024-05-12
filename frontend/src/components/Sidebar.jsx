@@ -3,6 +3,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
@@ -66,10 +67,22 @@ function DrawItems({ setOpen, items }) {
                 alignItems='center'
                 sx={{ mb: 4 }}
             >
-                <StorefrontIcon />
-                <Typography variant='h6' sx={{ flexGrow: 1 }}>
-                    IoT Bay
-                </Typography>
+                <IconButton
+                    size='small'
+                    color='inherit'
+                    onClick={() => navigate('/home')}
+                >
+                    <StorefrontIcon />
+                </IconButton>
+                <Button
+                    fullwidth
+                    sx={{ flexGrow: 1 }}
+                    variant='text'
+                    onClick={() => navigate('/home')}
+                >
+                    <Typography variant='subtitle2'>IoT Bay</Typography>
+                </Button>
+
                 <IconButton
                     size='small'
                     color='inherit'

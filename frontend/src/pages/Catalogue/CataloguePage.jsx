@@ -6,15 +6,12 @@ import {
     Pocket_ICBMUrl,
     SpareDronePartsUrl
 } from '#assets';
-import { useCatalogue } from '#hooks';
-import { Skeleton } from '@mui/material';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-import CatalogueProductEntryCard from './CatalogueProductEntryCard';
 import { SearchInput } from '#components';
-
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
+import { useCatalogue } from '#hooks';
+import { Card, CardActions, CardContent, Skeleton } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
+import CatalogueProductEntryCard from './CatalogueProductEntryCard';
 
 const mockProductUrls = [
     LaserScopeUrl,
@@ -90,7 +87,7 @@ function SearchHeader({ isLoading, catalogue, searchTerm, setSearchTerm }) {
     );
 }
 
-function PageLayout({ title, headerContent, children }) {
+function PageLayout({ title, headerContent, headerActions, children }) {
     return (
         <div
             style={{
@@ -105,8 +102,9 @@ function PageLayout({ title, headerContent, children }) {
                 {title}
             </Typography>
 
-            <Card>
+            <Card sx={{ margin: '4rem' }}>
                 <CardContent>{headerContent}</CardContent>
+                {headerActions && <CardActions>{headerActions}</CardActions>}
             </Card>
 
             {children}
