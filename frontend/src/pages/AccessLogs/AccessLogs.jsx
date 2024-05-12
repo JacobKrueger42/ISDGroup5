@@ -1,23 +1,24 @@
-import { useState, useEffect } from 'react';
+import { Layout } from '#components';
+import { useAuth } from '#hooks';
 import {
+    Box,
+    Button,
     Card,
     CardContent,
-    Typography,
-    TextField,
-    Button,
+    Paper,
     Table,
+    TableBody,
+    TableCell,
     TableContainer,
     TableHead,
-    TableBody,
     TableRow,
-    TableCell,
-    Paper,
-    Box
+    TextField,
+    Typography
 } from '@mui/material';
-import { useAuth } from '#hooks';
+import { useEffect, useState } from 'react';
 
 export default function AccessLogPage() {
-    const { getLogsAsync, getUserAsync } = useAuth();
+    const { user, getLogsAsync } = useAuth();
     const [searchDate, setSearchDate] = useState('');
     const [filteredLogs, setFilteredLogs] = useState([]);
     const [logs, setLogs] = useState([]);
@@ -25,7 +26,6 @@ export default function AccessLogPage() {
 
     useEffect(() => {
         (async () => {
-            const user = await getUserAsync();
             const logs = await getLogsAsync(user.id);
             // add index to logs
             const logsWithIndex = logs.map((log, index) => ({
@@ -34,7 +34,9 @@ export default function AccessLogPage() {
             }));
             setLogs(logsWithIndex);
         })();
-    }, []);
+        // only react to the user changing here
+        /* eslint-disable react-hooks/exhaustive-deps */
+    }, [user]);
 
     const formatDate = dateString => {
         const date = new Date(dateString);
@@ -66,20 +68,15 @@ export default function AccessLogPage() {
     };
 
     return (
-        <>
-            <Card
-                sx={{
-                    textAlign: 'left',
-                    minWidth: '650px'
-                }}
-                style={{
-                    marginTop: '150px'
-                }}
-            >
-                <CardContent sx={{ textAlign: 'left' }}>
-                    <Typography marginBottom='20px' variant='h5' gutterBottom>
-                        My Access Logs
-                    </Typography>
+        <Layout
+            title='My Access Logs'
+            headerActions={
+                <>
+                    <Typography
+                        marginBottom='20px'
+                        variant='h5'
+                        gutterBottom
+                    ></Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                         <TextField
                             label='Search by Date'
@@ -103,7 +100,10 @@ export default function AccessLogPage() {
                             logs.
                         </Typography>
                     )}
-                </CardContent>
+                </>
+            }
+        >
+            <Card>
                 <CardContent sx={{ textAlign: 'left' }}>
                     <TableContainer component={Paper}>
                         <Table>
@@ -136,6 +136,6 @@ export default function AccessLogPage() {
                     </TableContainer>
                 </CardContent>
             </Card>
-        </>
+        </Layout>
     );
 }
