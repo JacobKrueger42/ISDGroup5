@@ -1,6 +1,8 @@
 import { Layout } from '#components';
 import { useAuth } from '#hooks';
+import SearchIcon from '@mui/icons-material/Search';
 import {
+    Stack,
     Box,
     Button,
     Card,
@@ -38,20 +40,6 @@ export default function AccessLogPage() {
         /* eslint-disable react-hooks/exhaustive-deps */
     }, [user]);
 
-    const formatDate = dateString => {
-        const date = new Date(dateString);
-        // return string is iso format:
-        return date.toLocaleString('en-AU', {
-            timeZone: 'Australia/Sydney',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        });
-    };
-
     const handleSearch = async () => {
         // only get the date part
         const formattedSearchDate = formatDate(searchDate).split(' ')[0];
@@ -72,30 +60,37 @@ export default function AccessLogPage() {
             title='My Access Logs'
             headerActions={
                 <>
-                    <Typography
-                        marginBottom='20px'
-                        variant='h5'
-                        gutterBottom
-                    ></Typography>
-                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <TextField
-                            label='Search by Date'
-                            type='date'
-                            value={searchDate}
-                            onChange={e => setSearchDate(e.target.value)}
-                            InputLabelProps={{ shrink: true }}
-                            sx={{
-                                textAlign: 'left',
-                                minWidth: '500px',
-                                marginRight: '20px'
-                            }}
-                        />
-                        <Button variant='contained' onClick={handleSearch}>
-                            Search
-                        </Button>
-                    </Box>
+                    <Stack
+                        spacing={4}
+                        direction='row'
+                        alignItems='center'
+                        border='1px solid gray'
+                        borderRadius={4}
+                    >
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <TextField
+                                label='Search by Date'
+                                type='date'
+                                value={searchDate}
+                                onChange={e => setSearchDate(e.target.value)}
+                                InputLabelProps={{ shrink: true }}
+                                sx={{
+                                    textAlign: 'left',
+                                    minWidth: '500px',
+                                    marginRight: '20px'
+                                }}
+                            />
+                            <Button
+                                startIcon={<SearchIcon />}
+                                variant='text' // hack to avoid fixing border overlap
+                                onClick={handleSearch}
+                            >
+                                Search
+                            </Button>
+                        </Box>
+                    </Stack>
                     {isSearchPerformed && filteredLogs.length === 0 && (
-                        <Typography variant='body2' sx={{ marginTop: '10px' }}>
+                        <Typography variant='body2'>
                             No logs found for the selected date. Displaying all
                             logs.
                         </Typography>
@@ -139,3 +134,17 @@ export default function AccessLogPage() {
         </Layout>
     );
 }
+
+const formatDate = dateString => {
+    const date = new Date(dateString);
+    // return string is iso format:
+    return date.toLocaleString('en-AU', {
+        timeZone: 'Australia/Sydney',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+};
