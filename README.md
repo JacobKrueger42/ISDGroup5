@@ -54,6 +54,14 @@ curl -H "Accept: application/json" -H "Content-Type: application/json" -X POST -
 curl http://localhost:8181/counter/count
 ```
 
+## Running tests
+
+We use Jest. Run them with,
+
+```sh
+npm run test
+```
+
 ## Adding a controller
 
 ### What is this?
