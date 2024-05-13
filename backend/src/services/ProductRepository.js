@@ -66,7 +66,7 @@ export default function productRepository() {
                 }
             });
         } catch (error) {
-            return console.error(`error deleting product '${id}':`, error);
+            console.error(`error deleting product '${id}':`, error);
         }
     }
 
@@ -160,9 +160,6 @@ export default function productRepository() {
             _description
         );
 
-        console.log(`created product with result: `, result);
-        // TODO: generate access log
-
         return result.id;
     }
 
@@ -193,7 +190,6 @@ export default function productRepository() {
             }
 
             await editProductNameAsync(id, _name);
-            // TODO: generate access log
         }
 
         if (brandName) {
@@ -207,11 +203,7 @@ export default function productRepository() {
             }
 
             await editProductBrandNameAsync(id, _brandName);
-            // TODO: generate access log
         }
-
-        // log an update to the console if any field changed
-        (name || brandName) && console.log(`updated product with id '${id}'`);
     }
 
     async function removeProductAsync(id) {
@@ -219,9 +211,6 @@ export default function productRepository() {
             throw new Error('an id must be provided to delete a product');
 
         await deleteProductAsync(id);
-
-        // TODO: generate access log
-        console.log(`deleted product with id '${id}'`);
     }
 
     function validateNameAndBrandNameDiffer(name, brandName) {

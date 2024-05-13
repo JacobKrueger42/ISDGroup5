@@ -9,13 +9,13 @@ export default function catalogueRepository() {
     // lifecycle
     ////////////////////////
 
-    function insertCatalogueEntryAsync(
+    function insertCatalogueEntryAsync({
         productId,
         uniqueProductCode,
         price,
         productCategory,
         stockQuantity
-    ) {
+    }) {
         return prisma.catalogueEntry
             .create({
                 data: {
@@ -23,7 +23,8 @@ export default function catalogueRepository() {
                     uniqueProductCode: uniqueProductCode,
                     price: Number(price),
                     productCategory: productCategory,
-                    stockQuantity: Number(stockQuantity)
+                    stockQuantity: Number(stockQuantity),
+                    isArchived: false
                 }
             })
             .catch(error => {
@@ -144,7 +145,7 @@ export default function catalogueRepository() {
         if (isNullOrEmpty(productId))
             throw new Error('an id must be provided to find a catalogue entry');
 
-        const existing = await getProductByIdAsync(id);
+        const existing = await getProductByIdAsync(productId);
 
         if (!existing)
             throw new Error(
@@ -169,9 +170,6 @@ export default function catalogueRepository() {
             productCategory,
             stockQuantity
         });
-
-        // TODO: generate access log
-        console.log(`created catalogue entry for product '${productId}'`);
     }
 
     async function updateCatalogueEntryAsync(
@@ -198,25 +196,18 @@ export default function catalogueRepository() {
                 throw new Error(
                     "cannot price a product's catalogue entry below 0$"
                 );
-            await editCatalogueEntryPriceAsync(id, price);
-            // TODO: generate access log
+            await editCatalogueEntryPriceAsync({ id, price });
         }
 
         if (stockQuantity) {
             if (stockQuantity < 0)
                 throw new Error('cannot create negative stock');
-            await editCatalogueEntryQuantityAsync(id, stockQuantity);
-            // TODO: generate access log
+            await editCatalogueEntryQuantityAsync({ id, stockQuantity });
         }
 
         if (category) {
-            await editCatalogueEntryCategoryAsync(id, catalogueId);
-            // TODO: generate access log
+            await editCatalogueEntryCategoryAsync({ id, catalogueId });
         }
-
-        // log an update to the console if any field changed
-        (price || quantity || category) &&
-            console.log(`updated catalogue entry with id '${id}'`);
     }
 
     async function removeCatalogueEntryAsync(id) {
@@ -226,9 +217,6 @@ export default function catalogueRepository() {
             );
 
         await deleteCatalogueEntryAsync(id);
-
-        // TODO: generate access log
-        console.log(`deleted catalogue entry with id '${id}'`);
     }
 
     return {
