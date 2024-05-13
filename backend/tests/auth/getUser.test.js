@@ -1,24 +1,21 @@
 import { userAuthRepository } from '#services';
-import { prisma } from '#services';
 
 describe('getUserAsync', () => {
+    // use a dummy user for testing - this is brittle and relies on having run the seed method
+    // to add sample data - since we have a auto inc. PK we can safely assume that ID 1 exists
+
+    const mockUserId = 1;
+
     test('returns user details for a specific user id', async () => {
-        // sample user details, assuming user id exists in database
-        const userId = 15;
-
         const { getUserAsync } = userAuthRepository();
-        const user = await getUserAsync(userId);
-        console.log(user.email);
+        const user = await getUserAsync(mockUserId);
 
-        // assert user details
         expect(user).toBeDefined();
-        expect(user.id).toBe(userId);
-
-        const dbUser = await prisma.user.findUnique({
-            where: { id: userId }
-        });
-
-        // assert if returned user matches user in database
-        expect(user).toEqual(dbUser);
+        expect(user.email).toEqual('admin@notreal.com');
+        expect(user.firstName).toEqual('Admin');
+        expect(user.lastName).toEqual('Administrator');
+        expect(user.password).toEqual('bbf2dead374654cbb32a917afd236656');
+        expect(user.phone).toEqual('0000000000');
+        expect(user.role).toEqual('ADMIN');
     });
 });

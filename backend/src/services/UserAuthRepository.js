@@ -140,8 +140,6 @@ export default function userAuthRepository() {
             STAFF: createStaffAsync
         }[role](email, firstName, lastName, hashedPassword, phone);
 
-        console.log(`created user with result: `, result);
-
         // TODO: generate signup "access" log
         // TODO: trigger email notification
         // TODO: generate notification "access" log
@@ -273,7 +271,7 @@ export default function userAuthRepository() {
             }
         });
 
-        if (existingUser && existingUser.id != id){
+        if (existingUser && existingUser.id != id) {
             throw new Error(`${email} already exists`);
         }
 
