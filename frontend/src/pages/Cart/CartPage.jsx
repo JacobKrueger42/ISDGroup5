@@ -1,12 +1,15 @@
 import React from 'react';
-import { useCart } from '../../hooks/useCart';
+import { Typography, Button, List, ListItem, ListItemText, TextField } from '@mui/material';
+import { useCart } from '#hooks'; // Adjust the import path as necessary
+import { Layout } from '#components'; // Ensure Layout is a reusable component that accepts children
+import { bannerPlaceholder } from '#assets'; // Make sure the path is correct
 
-const CartPage = () => {
+export default function CartPage() {
     const { cartItems, updateCartItem, removeCartItem, isLoading } = useCart();
 
-    if (isLoading) return <p>Loading...</p>; // Show loading state while fetching cart items
+    if (isLoading) return <Typography>Loading...</Typography>;
 
-    const handleRemoveClick = (itemId) => {
+    const handleRemoveClick = itemId => {
         removeCartItem(itemId);
     };
 
@@ -15,28 +18,40 @@ const CartPage = () => {
     };
 
     return (
-        <div>
-            <h1>Your Cart</h1>
-            {cartItems.length > 0 ? (
-                <ul>
-                    {cartItems.map(item => (
-                        <li key={item.id}>
-                            {item.product.name} - 
-                            Quantity: 
-                            <input 
-                                type="number" 
-                                value={item.quantity} 
+        <Layout
+            title="Your Cart"
+            headerContent={<Typography variant="h4">Shopping Cart</Typography>}
+            headerActions={<Actions />}
+        >
+            <img loading="lazy" src={bannerPlaceholder} alt="Shopping Cart Banner" style={{ width: '100%' }} />
+            <List>
+                {cartItems.length > 0 ? (
+                    cartItems.map(item => (
+                        <ListItem key={item.id} divider>
+                            <ListItemText primary={item.product.name} secondary={`$${item.product.price}`} />
+                            <TextField
+                                type="number"
+                                value={item.quantity}
                                 onChange={(event) => handleQuantityChange(event, item.id)}
+                                inputProps={{ min: 1, style: { width: '50px' } }}
                             />
-                            <button onClick={() => handleRemoveClick(item.id)}>Remove</button>
-                        </li>
-                    ))}
-                </ul>
-            ) : (
-                <p>Your cart is empty.</p>
-            )}
-        </div>
+                            <Button variant="contained" color="error" onClick={() => handleRemoveClick(item.id)}>
+                                Remove
+                            </Button>
+                        </ListItem>
+                    ))
+                ) : (
+                    <Typography>Your cart is empty.</Typography>
+                )}
+            </List>
+        </Layout>
     );
-};
+}
 
-export default CartPage;
+function Actions() {
+    return (
+        <Button variant="contained" color="primary" style={{ marginLeft: 'auto' }}>
+            Proceed to Checkout
+        </Button>
+    );
+}
