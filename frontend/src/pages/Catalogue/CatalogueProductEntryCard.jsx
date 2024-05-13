@@ -11,6 +11,7 @@ import Chip from '@mui/material/Chip';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import InfoDialogue from './InfoDialogue';
 
 export default function CatalogueProductEntryCard({
@@ -19,6 +20,7 @@ export default function CatalogueProductEntryCard({
     disabled,
     onAddToCart
 }) {
+    const navigate = useNavigate();
     const [isOpen, setOpen] = useState(false);
 
     return (
@@ -52,19 +54,9 @@ export default function CatalogueProductEntryCard({
                     sx={{ height: 140, backgroundSize: 'contain' }}
                     image={assetFn}
                     title={item.name}
+                    onClick={() => navigate(`/catalogue/${item.id}`)}
                 />
                 <CardContent>
-                    <Typography gutterBottom variant='h5' align='left'>
-                        {}
-                    </Typography>
-
-                    <Typography
-                        variant='body2'
-                        color='text.secondary'
-                        align='left'
-                    >
-                        {item.description}
-                    </Typography>
                     <Typography
                         variant='subtitle2'
                         fontSize='1.25rem'

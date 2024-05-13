@@ -1,7 +1,28 @@
-import { useFetch, useServer, useAuth } from '#hooks';
+import {
+    DefensiveMicrobotsUrl,
+    HardlightAfterburnerUrl,
+    HeadStompersUrl,
+    LaserScopeUrl,
+    Pocket_ICBMUrl,
+    SpareDronePartsUrl
+} from '#assets';
+import { useAuth, useFetch, useServer } from '#hooks';
+import FuzzySearch from 'fuzzy-search';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FuzzySearch from 'fuzzy-search';
+
+function mockProductUrlRoulette() {
+    return mockProductUrls.sort(() => 0.5 - Math.random())[0];
+}
+
+const mockProductUrls = [
+    LaserScopeUrl,
+    DefensiveMicrobotsUrl,
+    HeadStompersUrl,
+    Pocket_ICBMUrl,
+    HardlightAfterburnerUrl,
+    SpareDronePartsUrl
+];
 
 export default function useCatalogue() {
     const navigate = useNavigate();
@@ -29,7 +50,13 @@ export default function useCatalogue() {
                     console.log(
                         `loaded ${catalogue.totalCount} catalogue entries`
                     );
-                    setCatalogue(catalogue.results);
+
+                    const mapedDtos = catalogue.results.map(c => {
+                        return { ...c, assetFn: mockProductUrlRoulette() };
+                    });
+
+                    setCatalogue(mapedDtos);
+
                     setTotalCount(catalogue.totalCount);
 
                     // initialise a new searcher instance as the dependencies have changed
@@ -44,7 +71,7 @@ export default function useCatalogue() {
                     );
 
                     // same as the catalogue until we have a search term
-                    setVisibleCatalogue(catalogue.results);
+                    setVisibleCatalogue(mapedDtos);
                 },
                 disableRefresh
             );
@@ -90,6 +117,15 @@ export default function useCatalogue() {
         }
     }
 
+    function getCatalogueEntry(catalogueId) {
+        if (catalogueId === null || catalogueId === undefined)
+            throw new Error('no id provided to get catalogue entry');
+
+        if (isLoading) return { name: 'loading...' };
+
+        return catalogue.find(c => c.id === Number(catalogueId));
+    }
+
     return {
         catalogue: visibleCatalogue,
         totalCount: totalCount,
@@ -97,7 +133,8 @@ export default function useCatalogue() {
         onAddToCart: onAddToCart,
         isLoading: isLoading,
         searchTerm: searchTerm,
-        setSearchTerm: setSearchTerm
+        setSearchTerm: setSearchTerm,
+        getCatalogueEntry: getCatalogueEntry
     };
 }
 
