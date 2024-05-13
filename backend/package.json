@@ -11,7 +11,7 @@
         "seed": "npx prisma db seed",
         "format": "npx prisma format && prettier . --write",
         "prepare": "husky",
-        "test": "jest"
+        "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
     },
     "dependencies": {
         "@prisma/client": "^5.10.2",
@@ -42,7 +42,12 @@
         "**/*": "prettier --write --ignore-unknown"
     },
     "jest": {
-        "transform": {}
-      }
-    
+        "transform": {},
+        "clearMocks": true,
+        "testPathIgnorePatterns": [
+            "/node_modules/",
+            "/.husky/",
+            "/prisma/"
+        ]
+    }
 }
