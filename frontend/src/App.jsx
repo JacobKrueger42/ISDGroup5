@@ -10,8 +10,10 @@ import {
     ProductsPage,
     AnonPage,
     AccountPage,
-    AccessLogsPage
+    AccessLogsPage,
+    CartPage
 } from '#pages';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export default function App() {
@@ -85,6 +87,14 @@ export default function App() {
                             </AuthorisedPageShell>
                         }
                     />
+                    <Route
+                        path='/cart' // Adding the cart page route
+                        element={
+                            <AuthorisedPageShell>
+                                <CartPage />
+                            </AuthorisedPageShell>
+                        }
+                     />
                     <Route path='/not-found' element={<NotFoundPage />} />
                     <Route path='/*' element={<NotFoundPage />} />
                 </Routes>
