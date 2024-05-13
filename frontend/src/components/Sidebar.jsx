@@ -75,7 +75,6 @@ function DrawItems({ setOpen, items }) {
                     <StorefrontIcon />
                 </IconButton>
                 <Button
-                    fullwidth
                     sx={{ flexGrow: 1 }}
                     variant='text'
                     onClick={() => navigate('/home')}
