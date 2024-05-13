@@ -8,6 +8,7 @@ import {
     HomePage,
     CataloguePage,
     ProductsPage,
+    CatalogueDetailPage,
     AnonPage,
     AccountPage,
     AccessLogsPage
@@ -59,6 +60,14 @@ export default function App() {
                             <AnonPageShell>
                                 <CataloguePage />
                             </AnonPageShell>
+                        }
+                    />
+                    <Route
+                        path='/catalogue/:catalogueId'
+                        element={
+                            <AuthorisedPageShell>
+                                <CatalogueDetailPage />
+                            </AuthorisedPageShell>
                         }
                     />
                     <Route
