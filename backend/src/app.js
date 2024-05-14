@@ -4,12 +4,8 @@ import { ConfigureRoutes } from '#configuration';
 import session from 'express-session';
 import crypto from 'crypto';
 import cors from 'cors';
-
-const opts = {
-    port: 8181,
-    verbose: true,
-    frontendOrigin: 'http://localhost:5173'
-};
+import { ServerOptions } from '#configuration';
+import 'dotenv/config'; // init the process with dotenv variables
 
 async function Setup() {
     const app = express();
@@ -17,15 +13,14 @@ async function Setup() {
     // configure pre-request middleware
     app.use(
         cors({
-            origin: opts.frontendOrigin,
+            origin: ServerOptions.frontendOrigin,
             credentials: true
         })
     );
     app.use(express.json());
     app.use(
         session({
-            // ideally this should be loaded from an env var/secret file
-            secret: 'asupersecretkey',
+            secret: process.env.SESSION_SECRET,
             resave: false,
             saveUninitialized: false,
             genid: crypto.randomUUID,
@@ -34,7 +29,7 @@ async function Setup() {
     );
 
     // configure routes automatically
-    await ConfigureRoutes(app, { verbose: opts });
+    await ConfigureRoutes(app, { verbose: ServerOptions.verbose });
 
     // configure post-request middleware
     app.use(ErrorHandler);
@@ -44,9 +39,9 @@ async function Setup() {
 
 Setup().then(app => {
     // startup
-    app.listen(opts.port, () => {
+    app.listen(ServerOptions.port, () => {
         console.log('\n  ExpressJs server is now running\n');
         console.log('    ➜ Hot loading not enabled');
-        console.log(`    ➜ Local:		http://localhost:${opts.port}/`);
+        console.log(`    ➜ Local:		http://localhost:${ServerOptions.port}/`);
     });
 });
