@@ -56,6 +56,21 @@ export default function productRepository() {
             );
     }
 
+    function editProductDescriptionAsync(id, description) {
+        return prisma.product
+            .update({
+                where: {
+                    id: Number(id)
+                },
+                data: {
+                    description: description
+                }
+            })
+            .catch(error =>
+                console.error(`error updating product '${id}':`, error)
+            );
+    }
+
     async function deleteProductAsync(id) {
         await getProductByIdAsync(id);
 
@@ -163,7 +178,7 @@ export default function productRepository() {
         return result.id;
     }
 
-    async function updateProductAsync(id, name, brandName) {
+    async function updateProductAsync(id, name, brandName, description) {
         if (isNullOrEmpty(id))
             throw new Error('an id must be provided to update a product');
 
@@ -203,6 +218,10 @@ export default function productRepository() {
             }
 
             await editProductBrandNameAsync(id, _brandName);
+        }
+
+        if (description) {
+            await editProductDescriptionAsync(id, description);
         }
     }
 

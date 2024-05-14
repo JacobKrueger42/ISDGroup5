@@ -95,9 +95,14 @@ export async function update(req, res, next) {
             res,
             next,
             async () => {
-                const { name, brandName, catalogueId } = req.body;
+                const { name, brandName, description } = req.body;
                 const { updateProductAsync } = productRepository();
-                await updateProductAsync(req.params.id, name, brandName);
+                await updateProductAsync(
+                    req.params.id,
+                    name,
+                    brandName,
+                    description
+                );
 
                 res.send('OK');
             },

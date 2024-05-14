@@ -34,7 +34,7 @@ export async function list(req, res, next) {
 export async function detail(req, res, next) {
     try {
         const { getCatalogueEntryByIdAsync } = catalogueRepository();
-        const catalogueEntry = await getCatalogueEntryByIdAsync(req.query.id);
+        const catalogueEntry = await getCatalogueEntryByIdAsync(req.params.id);
         return res.json(catalogueEntry);
     } catch (error) {
         next(error);
@@ -63,7 +63,7 @@ export async function create(req, res, next) {
                     catalogueEntryId: catalogueEntryId
                 });
             },
-            ['CUSTOMER', 'STAFF', 'ADMIN']
+            ['STAFF', 'ADMIN']
         );
     } catch (error) {
         res.status(HttpStatus.BAD_REQUEST).json({
@@ -81,18 +81,24 @@ export async function update(req, res, next) {
             res,
             next,
             async () => {
-                const { price, stockQuantity, category } = req.body;
-                const { updateCatalogueEntryAsync } = catalogueRepository();
-                await updateCatalogueEntryAsync({
-                    id: req.params.id,
-                    price,
-                    stockQuantity,
-                    category
-                });
+                const { price, stockQuantity, category, isArchived } = req.body;
+                const { updateCatalogueEntryAsync, removeCatalogueEntryAsync } =
+                    catalogueRepository();
+
+                if (isArchived) {
+                    removeCatalogueEntryAsync(req.params.id);
+                } else {
+                    await updateCatalogueEntryAsync({
+                        id: req.params.id,
+                        price,
+                        stockQuantity,
+                        category
+                    });
+                }
 
                 res.send('OK');
             },
-            ['CUSTOMER', 'STAFF', 'ADMIN']
+            ['STAFF', 'ADMIN']
         );
     } catch (error) {
         res.status(HttpStatus.BAD_REQUEST).json({
@@ -115,7 +121,7 @@ export async function remove(req, res, next) {
 
                 res.send('OK');
             },
-            ['CUSTOMER', 'STAFF', 'ADMIN']
+            ['STAFF', 'ADMIN']
         );
     } catch (error) {
         next(error);

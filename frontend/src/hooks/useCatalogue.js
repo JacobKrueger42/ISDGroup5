@@ -170,15 +170,16 @@ export default function useCatalogue() {
         category,
         isArchived
     }) {
-        console.log('update catalogue entry entry', catalogueId);
-
-        console.log('updated: ', {
-            catalogueId,
-            quantity,
-            price,
-            category,
-            isArchived
-        });
+        return makeServerChange(
+            async () =>
+                await post(`catalogue/${catalogueId}/update`, {
+                    price: price,
+                    stockQuantity: quantity,
+                    category: category,
+                    isArchived: isArchived
+                }),
+            res => console.log(`updated catalogue entry with result: `, res)
+        );
     }
 
     return {

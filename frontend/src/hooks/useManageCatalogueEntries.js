@@ -22,8 +22,6 @@ export default function useManageCatalogueEntries({
     }
 
     async function onAddCatalogueEntrySubmitAsync(formData) {
-        console.log(formData);
-
         const { success, error } = await createCatalogueEntryAsync(formData);
 
         if (success) onCloseAddCatalogueEntry();
@@ -43,7 +41,6 @@ export default function useManageCatalogueEntries({
     }
 
     async function onUpdateCatalogueEntrySubmitAsync(formData) {
-        console.log(formData);
         const { success, error } = await updateCatalogueEntryAsync(formData);
 
         if (success) onCloseUpdateCatalogueEntry();
