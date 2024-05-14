@@ -9,9 +9,16 @@ const useCheckout = () => {
 
     const checkout = async () => {
         try {
-            const response = await axios.post('/api/checkout', { items: state.items });
-            console.log('Checkout successful', response.data);
-            dispatch({ type: 'CLEAR_CART' });
+            const disableRefresh = true
+            makeServerChange(
+                // client side pagination for simplicity
+                async () => await post('checkout', { items: state.items }),
+                response => {
+                    console.log('Checkout successful', response.data);
+                    dispatch({ type: 'CLEAR_CART' });
+                },
+                disableRefresh
+            );
         } catch (error) {
             console.error('Checkout failed', error);
         }
