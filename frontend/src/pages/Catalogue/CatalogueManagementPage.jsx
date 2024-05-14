@@ -1,23 +1,11 @@
-import {
-    EnhancedTableHead,
-    EnhancedTableRow,
-    EmptyRowPlaceholder,
-    Layout
-} from '#components';
+import { EnhancedTable, Layout } from '#components';
 import {
     useCatalogue,
     useEnhancedTable,
     useManageCatalogueEntries,
     useProducts
 } from '#hooks';
-import {
-    Button,
-    Card,
-    Table,
-    TableBody,
-    TableContainer,
-    TablePagination
-} from '@mui/material';
+import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { CatalgoueEntryManagementHeader } from './CatalgoueEntryManagementHeader';
 import { mapToRow } from './RowMapper';
@@ -35,47 +23,30 @@ export default function CatalogueManagementPage() {
         isLoading: isLoadingCatalogue
     } = useCatalogue();
 
-    const { products, isLoading: isLoadingProducts } = useProducts();
+    const { isLoading: isLoadingProducts } = useProducts();
+
+    const tableProps = useEnhancedTable(catalogue.map(mapToRow));
+    const { selected, searchTerm, setSearchTerm } = tableProps;
 
     const {
-        order,
-        orderBy,
-        selected,
-        page,
-        rowsPerPage,
-        emptyRows,
-        visibleRows,
-        handleRequestSort,
-        isSelected,
-        onRowClick,
-        handleChangePage,
-        handleChangeRowsPerPage,
-        onSelectAllClick,
-        clearSelection,
-        searchTerm,
-        setSearchTerm
-    } = useEnhancedTable(catalogue.map(mapToRow));
-
-    const {
-        // error,
-        // openAddCatalogueEntry,
+        error,
+        openAddCatalogueEntry,
         setOpenAddCatalogueEntry,
-        // openUpdateCatalogueEntry,
+        openUpdateCatalogueEntry,
         setOpenUpdateCatalogueEntry,
-        // onAddCatalogueEntrySubmitAsync,
-        // onCloseAddCatalogueEntry,
-        // onUpdateCatalogueEntrySubmitAsync,
-        // onCloseUpdateCatalogueEntry,
-        // getFirstOrDefaultSelectedCatalogueEntry,
+        onAddCatalogueEntrySubmitAsync,
+        onCloseAddCatalogueEntry,
+        onUpdateCatalogueEntrySubmitAsync,
+        onCloseUpdateCatalogueEntry,
+        getFirstOrDefaultSelectedCatalogueEntry,
         onDeleteCatalogueEntryAsync
-    } = useManageCatalogueEntries(
+    } = useManageCatalogueEntries({
         catalogue,
-        selected,
         removeCatalogueEntryAsync,
         createCatalogueEntryAsync,
         updateCatalogueEntryAsync,
-        clearSelection
-    );
+        ...tableProps
+    });
 
     useEffect(() => {
         setLoading(isLoadingCatalogue && isLoadingProducts);
@@ -118,69 +89,31 @@ export default function CatalogueManagementPage() {
                         Delete
                     </Button>
 
-                    {/* <AddCatalogueEntryForm
-                        open={openAddCatalogueEntry}
-                        onClose={onCloseAddCatalogueEntry}
-                        onSubmit={onAddCatalogueEntrySubmitAsync}
-                        isLoading={isLoading}
-                        error={error}
-                    />
+                    {/* {<AddCatalogueEntryForm
+                            open={openAddCatalogueEntry}
+                            onClose={onCloseAddCatalogueEntry}
+                            onSubmit={onAddCatalogueEntrySubmitAsync}
+                            isLoading={isLoading}
+                            error={error}
+                        />
 
-                    <UpdateCatalogueEntry
-                        open={openUpdateCatalogueEntry}
-                        onClose={onCloseUpdateCatalogueEntry}
-                        onSubmit={onUpdateCatalogueEntrySubmitAsync}
-                        error={error}
-                        isLoading={isLoading}
-                        getExisting={getFirstOrDefaultSelectedCatalogueEntry}
-                    /> */}
+                        <UpdateCatalogueEntry
+                            open={openUpdateCatalogueEntry}
+                            onClose={onCloseUpdateCatalogueEntry}
+                            onSubmit={onUpdateCatalogueEntrySubmitAsync}
+                            error={error}
+                            isLoading={isLoading}
+                            getExisting={getFirstOrDefaultSelectedCatalogueEntry}
+                        /> */}
                 </>
             }
         >
-            <Card>
-                <TableContainer>
-                    <Table
-                        sx={{ minWidth: 750 }}
-                        aria-labelledby='tableTitle'
-                        size='medium'
-                    >
-                        <EnhancedTableHead
-                            headCells={headCells}
-                            selected={selected}
-                            order={order}
-                            orderBy={orderBy}
-                            onSelectAllClick={onSelectAllClick}
-                            onRequestSort={handleRequestSort}
-                            rowCount={totalCount}
-                        />
-                        <TableBody>
-                            {visibleRows.map((row, index) => {
-                                return (
-                                    <EnhancedTableRow
-                                        row={row}
-                                        index={index}
-                                        key={index}
-                                        onClick={onRowClick}
-                                        isSelected={isSelected}
-                                    />
-                                );
-                            })}
-                            {emptyRows > 0 && (
-                                <EmptyRowPlaceholder count={emptyRows} />
-                            )}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component='div'
-                    count={totalCount}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Card>
+            <EnhancedTable
+                headCells={headCells}
+                totalCount={totalCount}
+                isLoading={isLoading}
+                {...tableProps}
+            />
         </Layout>
     );
 }
