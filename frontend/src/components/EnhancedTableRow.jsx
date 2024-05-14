@@ -1,6 +1,7 @@
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
+import { titleCase } from '#utils';
 
 export default function EnhancedTableRow({
     row,
@@ -34,7 +35,11 @@ export default function EnhancedTableRow({
                 {row.uniqueProductCode}
             </TableCell>
             {rowConfig.map((config, index) => (
-                <TableCell key={index}>{row[config.id]}</TableCell>
+                <TableCell key={index}>
+                    {typeof row[config.id] === 'string'
+                        ? titleCase(row[config.id])
+                        : row[config.id]}
+                </TableCell>
             ))}
         </TableRow>
     );
