@@ -70,7 +70,7 @@ export default function useManageCatalogueEntries({
     ////////////////////////////////////
 
     const getFirstOrDefaultSelectedCatalogueEntry = () =>
-        catalogue.find(p => p.id === selected[0]);
+        catalogue.find(c => c.id === selected[0]);
 
     return {
         error,

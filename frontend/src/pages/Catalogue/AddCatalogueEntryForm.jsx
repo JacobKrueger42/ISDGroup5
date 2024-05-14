@@ -79,12 +79,13 @@ export function AddCatalogueEntryForm({
             existingCatalogue.map(c => c.productId).includes(found?.id);
 
         disasbledSubmission(
-            invalidProductSelected ||
+            isLoading ||
+                invalidProductSelected ||
                 selectedProduct === '' ||
                 selectedCategory === ''
         );
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [selectedProduct]);
+    }, [selectedProduct, selectedCategory, isLoading]);
 
     return (
         <Dialog
@@ -150,7 +151,7 @@ export function AddCatalogueEntryForm({
                     Cancel
                 </Button>
                 <Button
-                    disabled={isLoading || submissionDisabled}
+                    disabled={submissionDisabled}
                     variant='contained'
                     type='submit'
                 >

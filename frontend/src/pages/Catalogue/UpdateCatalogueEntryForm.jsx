@@ -1,24 +1,54 @@
+import { Dropdown } from '#components';
+import { titleCase } from '#utils';
 import {
     Alert,
     Button,
     Dialog,
     DialogActions,
     DialogContent,
+    DialogContentText,
     DialogTitle,
+    InputAdornment,
     TextField
 } from '@mui/material';
-
-import { titleCase } from '#utils';
+import { useEffect, useState } from 'react';
 
 export function UpdateCatalogueEntryForm({
     open,
     onClose,
     onSubmit,
-    getExisting,
+    categoryOptions,
+    existing,
     error,
     isLoading
 }) {
-    const existing = getExisting();
+    const [submissionDisabled, disasbledSubmission] = useState(true);
+    const [selectedCategory, setSelectedCategory] = useState('');
+
+    const categoryDropdownOptions = {
+        id: 'categoryId',
+        label: 'Category',
+        value: selectedCategory,
+        onChange: event => setSelectedCategory(event.target.value),
+        placeholder: 'Choose a category'
+    };
+
+    const onSubmitWrapper = event => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+
+        onSubmit({
+            ...formJson,
+            category: selectedCategory ?? undefined
+        });
+    };
+
+    useEffect(() => {
+        setSelectedCategory(existing?.category ?? '');
+        disasbledSubmission(isLoading || selectedCategory === '');
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoading, selectedCategory, existing]);
 
     return (
         existing && (
@@ -27,7 +57,7 @@ export function UpdateCatalogueEntryForm({
                 onClose={onClose}
                 PaperProps={{
                     component: 'form',
-                    onSubmit: onSubmit
+                    onSubmit: onSubmitWrapper
                 }}
             >
                 <DialogTitle>
@@ -35,35 +65,53 @@ export function UpdateCatalogueEntryForm({
                     {existing.uniqueProductCode}
                 </DialogTitle>
                 <DialogContent>
+                    <DialogContentText margin='normal'>
+                        Update this catalogue entry with a new category, stock
+                        levels, and/or pricing
+                    </DialogContentText>
                     <TextField
-                        name='name'
-                        label='Name'
-                        defaultValue={titleCase(existing.name)}
+                        label='Product'
+                        value={existing.name}
+                        InputProps={{
+                            readOnly: true
+                        }}
+                        fullWidth
+                        type='text'
+                        margin='normal'
+                    />
+                    <TextField
+                        autoFocus
+                        name='quantity'
+                        label='Stock quantity (set the current stock level)'
+                        value={existing.quantity}
                         fullWidth
                         required
-                        type='text'
+                        type='number'
                         error={!!error}
                         margin='normal'
                     />
                     <TextField
-                        name='brandName'
-                        label='Brand Name'
-                        defaultValue={titleCase(existing.brandName)}
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position='start'>
+                                    $
+                                </InputAdornment>
+                            )
+                        }}
+                        name='price'
+                        label='Price (AUD$)'
+                        value={existing.price}
                         fullWidth
                         required
-                        type='text'
+                        type='number'
                         error={!!error}
                         margin='normal'
                     />
-                    <TextField
-                        name='description'
-                        defaultValue={existing.description}
-                        fullWidth
-                        type='text'
-                        margin='normal'
-                        multiline
-                        minRows='4'
-                        maxRows='8'
+                    <Dropdown
+                        autoFocus
+                        options={categoryOptions}
+                        error={!!error}
+                        {...categoryDropdownOptions}
                     />
                 </DialogContent>
                 <DialogActions>
@@ -78,7 +126,7 @@ export function UpdateCatalogueEntryForm({
                     <Button
                         variant='contained'
                         type='submit'
-                        disabled={isLoading}
+                        disabled={submissionDisabled}
                     >
                         Submit
                     </Button>

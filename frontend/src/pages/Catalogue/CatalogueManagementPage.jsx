@@ -120,9 +120,10 @@ export default function CatalogueManagementPage() {
                         open={openUpdateCatalogueEntry}
                         onClose={onCloseUpdateCatalogueEntry}
                         onSubmit={onUpdateCatalogueEntrySubmitAsync}
+                        categoryOptions={categoryOptions}
                         error={error}
                         isLoading={isLoading}
-                        getExisting={getFirstOrDefaultSelectedCatalogueEntry}
+                        existing={getFirstOrDefaultSelectedCatalogueEntry()}
                     />
                 </>
             }
