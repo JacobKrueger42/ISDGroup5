@@ -91,8 +91,8 @@ export default function CatalogueDetailPage() {
                 <Card variant='outlined'>
                     <CardMedia
                         sx={{ height: 140, backgroundSize: 'contain' }}
-                        image={entry.assetFn}
-                        title={entry.name}
+                        image={entry?.assetFn ?? 'loading...'}
+                        title={entry?.name ?? 'loading...'}
                     />
                     <CardContent>
                         <Typography
@@ -100,14 +100,14 @@ export default function CatalogueDetailPage() {
                             fontSize='1.25rem'
                             align='right'
                         >
-                            ${entry.price}
+                            ${entry?.price ?? 'loading...'}
                         </Typography>
                     </CardContent>
                     <CardActions>
                         <Button
                             disabled={disableAddToCart}
                             size='small'
-                            id={entry.id}
+                            id={entry?.id ?? -1}
                             variant='contained'
                             startIcon={<AddShoppingCartIcon />}
                             onClick={onAddToCart}
@@ -120,7 +120,7 @@ export default function CatalogueDetailPage() {
                             component='a'
                             href='https://riskofrain2.fandom.com/wiki/Risk_of_Rain_2_Wiki'
                         >
-                            {entry.brandName}
+                            {entry?.brandName ?? 'loading...'}
                         </Button>
                     </CardActions>
                 </Card>
