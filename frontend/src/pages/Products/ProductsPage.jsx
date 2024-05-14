@@ -1,4 +1,9 @@
-import { EnhancedTableHead, EnhancedTableRow, Layout } from '#components';
+import {
+    EnhancedTableHead,
+    EnhancedTableRow,
+    EmptyRowPlaceholder,
+    Layout
+} from '#components';
 import { useEnhancedTable, useManageProducts, useProducts } from '#hooks';
 import {
     Button,
@@ -150,13 +155,7 @@ export default function ProductsPage() {
                                 );
                             })}
                             {emptyRows > 0 && (
-                                <TableRow
-                                    style={{
-                                        height: 53 * emptyRows
-                                    }}
-                                >
-                                    <TableCell colSpan={6} />
-                                </TableRow>
+                                <EmptyRowPlaceholder count={emptyRows} />
                             )}
                         </TableBody>
                     </Table>

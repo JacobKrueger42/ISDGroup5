@@ -1,4 +1,9 @@
-import { EnhancedTableHead, EnhancedTableRow, Layout } from '#components';
+import {
+    EnhancedTableHead,
+    EnhancedTableRow,
+    EmptyRowPlaceholder,
+    Layout
+} from '#components';
 import {
     useCatalogue,
     useEnhancedTable,
@@ -10,10 +15,8 @@ import {
     Card,
     Table,
     TableBody,
-    TableCell,
     TableContainer,
-    TablePagination,
-    TableRow
+    TablePagination
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { CatalgoueEntryManagementHeader } from './CatalgoueEntryManagementHeader';
@@ -163,13 +166,7 @@ export default function CatalogueManagementPage() {
                                 );
                             })}
                             {emptyRows > 0 && (
-                                <TableRow
-                                    style={{
-                                        height: 53 * emptyRows
-                                    }}
-                                >
-                                    <TableCell colSpan={6} />
-                                </TableRow>
+                                <EmptyRowPlaceholder count={emptyRows} />
                             )}
                         </TableBody>
                     </Table>
