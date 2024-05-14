@@ -28,6 +28,17 @@ export function AddCatalogueEntryForm({
     const getSelectedProduct = selected =>
         products.find(p => p.name === selected);
 
+    const filterProductOptions = products => {
+        return products
+            .filter(
+                product =>
+                    !existingCatalogue
+                        .map(c => c.productId)
+                        .includes(product.id)
+            )
+            .map(product => product.name);
+    };
+
     const dropdownOptions = {
         id: 'productId',
         label: 'Product',
@@ -87,16 +98,15 @@ export function AddCatalogueEntryForm({
             <DialogTitle>Add a new catalogue entry</DialogTitle>
             <DialogContent>
                 <DialogContentText margin='normal'>
-                    Add a new catalogue entry with various details. Be sure to
-                    use a unique{' '}
-                    <a href='https://en.wikipedia.org/wiki/Universal_Product_Code'>
-                        UPC
-                    </a>{' '}
-                    to identify it.
+                    Add a new catalogue entry with various details for an
+                    existing product.
+                    <br />
+                    <strong>Note:</strong> only products without an existing
+                    catalogue entry are available.
                 </DialogContentText>
                 <Dropdown
                     autoFocus
-                    options={products.map(p => p.name)}
+                    options={filterProductOptions(products)}
                     error={!!error}
                     {...dropdownOptions}
                 />
