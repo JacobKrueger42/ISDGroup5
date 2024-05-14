@@ -87,8 +87,8 @@ export default function useEnhancedTable(rows) {
         handleRequestSort,
         isSelected,
         onRowClick,
-        handleChangePage,
-        handleChangeRowsPerPage,
+        onPageChange: handleChangePage,
+        onRowsPerPageChange: handleChangeRowsPerPage,
         onSelectAllClick,
         clearSelection,
         // search interaction

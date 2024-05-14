@@ -15,6 +15,8 @@ export default function EnhancedTable({
     isLoading,
     ...tableProps
 }) {
+    const { orderBy } = tableProps;
+
     if (isLoading)
         return <Skeleton animation='wave' variant='rectangular' height={600} />;
 
@@ -22,7 +24,11 @@ export default function EnhancedTable({
         <Card>
             <TableContainer>
                 <Table sx={{ minWidth: 750 }} size='medium'>
-                    <EnhancedTableHead headCells={headCells} {...tableProps} />
+                    <EnhancedTableHead
+                        orderBy={orderBy}
+                        headCells={headCells}
+                        {...tableProps}
+                    />
                     <EnhancedTableBody {...tableProps} />
                 </Table>
             </TableContainer>
@@ -30,7 +36,10 @@ export default function EnhancedTable({
                 rowsPerPageOptions={rowsPerPageOption}
                 count={totalCount}
                 component='div'
-                {...tableProps}
+                page={tableProps.page}
+                rowsPerPage={tableProps.rowsPerPage}
+                onPageChange={tableProps.onPageChange}
+                onRowsPerPageChange={tableProps.onRowsPerPageChange}
             />
         </Card>
     );
