@@ -21,7 +21,7 @@ export default function emailNotifier() {
                     `Email Notifier | Sending mail to '${to}' regarding '${subject}'`
                 );
 
-            const { statusCode } = await sgMail.send({
+            const response = await sgMail.send({
                 to: to,
                 from: EmailConfig.fromAddress,
                 subject: subject,
@@ -30,8 +30,8 @@ export default function emailNotifier() {
 
             ServerOptions.verbose &&
                 console.debug(
-                    `Email Notifier | Sent mail '${to}' regarding '${subject}' with status code : `,
-                    statusCode
+                    `Email Notifier | Sent mail '${to}' regarding '${subject}' with response: `,
+                    response
                 );
         } catch (error) {
             console.error(
