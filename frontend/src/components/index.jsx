@@ -1,13 +1,14 @@
-export { default as Layout } from './Layout.jsx';
+export { default as Layout } from './Layout';
 
-export { default as ProfileMenu } from './ProfileMenu.jsx';
-export { default as MenuAppBar } from './MenuAppBar.jsx';
-export { default as Sidebar } from './Sidebar.jsx';
+export { default as ProfileMenu } from './ProfileMenu';
+export { default as MenuAppBar } from './MenuAppBar';
+export { default as Sidebar } from './Sidebar';
 
-export { default as EnhancedTableHead } from './EnhancedTableHead.jsx';
-export { default as EnhancedTableRow } from './EnhancedTableRow.jsx';
-export { default as EnhancedTableBody } from './EnhancedTableBody.jsx';
-export { default as EmptyRowPlaceholder } from './EmptyRowPlaceholder.jsx';
-export { default as EnhancedTable } from './EnhancedTable.jsx';
+export { default as EnhancedTableHead } from './EnhancedTableHead';
+export { default as EnhancedTableRow } from './EnhancedTableRow';
+export { default as EnhancedTableBody } from './EnhancedTableBody';
+export { default as EmptyRowPlaceholder } from './EmptyRowPlaceholder';
+export { default as EnhancedTable } from './EnhancedTable';
 
-export { default as SearchInput } from './SearchInput.jsx';
+export { default as SearchInput } from './SearchInput';
+export { default as Dropdown } from './Dropdown';
