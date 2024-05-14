@@ -1,12 +1,6 @@
-import { EnhancedTableHead, EnhancedTableBody, Layout } from '#components';
+import { EnhancedTable, Layout } from '#components';
 import { useEnhancedTable, useManageProducts, useProducts } from '#hooks';
-import {
-    Button,
-    Card,
-    Table,
-    TableContainer,
-    TablePagination
-} from '@mui/material';
+import { Button } from '@mui/material';
 import AddProductForm from './AddProduct';
 import { ProductManagementHeader } from './ProductManagementHeader';
 import { mapToRow } from './RowMapper';
@@ -22,24 +16,8 @@ export default function ProductsPage() {
         isLoading
     } = useProducts();
 
-    const {
-        order,
-        orderBy,
-        selected,
-        page,
-        rowsPerPage,
-        emptyRows,
-        visibleRows,
-        handleRequestSort,
-        isSelected,
-        onRowClick,
-        handleChangePage,
-        handleChangeRowsPerPage,
-        onSelectAllClick,
-        clearSelection,
-        searchTerm,
-        setSearchTerm
-    } = useEnhancedTable(products.map(mapToRow));
+    const tableProps = useEnhancedTable(products.map(mapToRow));
+    const { selected, searchTerm, setSearchTerm } = tableProps;
 
     const {
         error,
@@ -53,14 +31,14 @@ export default function ProductsPage() {
         onCloseUpdateProduct,
         getFirstOrDefaultSelectedProduct,
         onDeleteProductAsync
-    } = useManageProducts(
+    } = useManageProducts({
         products,
         selected,
         createProductAsync,
         updateProductAsync,
         removeProductAsync,
-        clearSelection
-    );
+        ...tableProps
+    });
 
     return (
         <Layout
@@ -118,40 +96,12 @@ export default function ProductsPage() {
                 </>
             }
         >
-            <Card>
-                <TableContainer>
-                    <Table
-                        sx={{ minWidth: 750 }}
-                        aria-labelledby='tableTitle'
-                        size='medium'
-                    >
-                        <EnhancedTableHead
-                            headCells={headCells}
-                            selected={selected}
-                            order={order}
-                            orderBy={orderBy}
-                            onSelectAllClick={onSelectAllClick}
-                            onRequestSort={handleRequestSort}
-                            rowCount={totalCount}
-                        />
-                        <EnhancedTableBody
-                            visibleRows={visibleRows}
-                            emptyRows={emptyRows}
-                            onRowClick={onRowClick}
-                            isSelected={isSelected}
-                        />
-                    </Table>
-                </TableContainer>
-                <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component='div'
-                    count={totalCount}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
-            </Card>
+            <EnhancedTable
+                headCells={headCells}
+                totalCount={totalCount}
+                isLoading={isLoading}
+                {...tableProps}
+            />
         </Layout>
     );
 }

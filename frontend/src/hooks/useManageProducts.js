@@ -1,13 +1,13 @@
 import { useState } from 'react';
 
-export default function useManageProducts(
+export default function useManageProducts({
     products,
     selected,
     createProductAsync,
     updateProductAsync,
     removeProductAsync,
     clearSelection
-) {
+}) {
     const [error, setError] = useState(null);
 
     //////////////////
