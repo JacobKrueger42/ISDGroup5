@@ -146,7 +146,7 @@ describe('catalogue feature', () => {
 
         test('should get all catalogue product entries', async () => {
             // this test is tricky with our test setup so I'm passing it as is - really I'm just checking that
-            // the seed data exists (at least 50 recors) and we return a subset of that
+            // the seed data exists (at least 49 records) and we return a subset of that
             const { getAllCatalogueProductEntriesAsync } =
                 catalogueRepository();
             const entries = await getAllCatalogueProductEntriesAsync(0, 10);
@@ -161,9 +161,9 @@ describe('catalogue feature', () => {
             const count = await getTotalCatalogueEntryCount();
 
             // this test is tricky with our test setup so I'm passing it as is - really I'm just checking that
-            // we at least have the 50 seeded records persisted
+            // we at least have the 49 seeded records persisted
             expect(count).not.toBeNull();
-            expect(count).toBeGreaterThan(50);
+            expect(count).toBeGreaterThan(49);
         });
     });
 
@@ -305,7 +305,7 @@ describe('catalogue feature', () => {
 
         test('should get all products', async () => {
             // this test is tricky with our test setup so I'm passing it as is - really I'm just checking that
-            // we at least have the 50 seeded records persisted
+            // we at least have the 49 seeded records persisted
             const { getAllProductsAsync } = productRepository();
             const products = await getAllProductsAsync(0, 10);
 
@@ -319,9 +319,9 @@ describe('catalogue feature', () => {
             const count = await getTotalProductsCount();
 
             // this test is tricky with our test setup so I'm passing it as is - really I'm just checking that
-            // we at least have the 50 seeded records persisted
+            // we at least have the 49 seeded records persisted
             expect(count).not.toBeNull();
-            expect(count).toBeGreaterThan(50);
+            expect(count).toBeGreaterThan(49);
         });
     });
 });

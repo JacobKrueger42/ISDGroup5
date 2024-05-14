@@ -5,9 +5,11 @@ import { default as useAuthorisedPage } from './useAuthorisedPage.js';
 import { default as useEnhancedTable } from './useEnhancedTable.js';
 import { default as useCatalogue } from './useCatalogue.js';
 import { default as useProducts } from './useProducts.js';
+
 import { default as useManageProducts } from './useManageProducts.js';
 import { useCart } from './useCart.js';
 import { default as useCheckout } from './useCheckout.js';
+import { default as useManageCatalogueEntries } from './useManageCatalogueEntries.js';
 
 export {
     useFetch,
@@ -16,6 +18,7 @@ export {
     useEnhancedTable,
     useProducts,
     useManageProducts,
+    useManageCatalogueEntries,
     useCatalogue,
     useServer,
     useCart,

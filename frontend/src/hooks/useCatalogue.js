@@ -133,6 +133,30 @@ export default function useCatalogue() {
         return catalogue.find(c => c.id === Number(catalogueId));
     }
 
+    function removeCatalogueEntryAsync(catalogueId) {
+        console.log('remove catalogue entry', catalogueId);
+    }
+
+    function createCatalogueEntryAsync({
+        catalogueId,
+        productId,
+        quantity,
+        price,
+        category
+    }) {
+        console.log('create catalogue entry', catalogueId);
+    }
+
+    function updateCatalogueEntryAsync({
+        catalogueId,
+        quantity,
+        price,
+        category,
+        isArchived
+    }) {
+        console.log('update catalogue entry', catalogueId);
+    }
+
     return {
         catalogue: visibleCatalogue,
         totalCount: totalCount,
@@ -141,7 +165,10 @@ export default function useCatalogue() {
         isLoading: isLoading,
         searchTerm: searchTerm,
         setSearchTerm: setSearchTerm,
-        getCatalogueEntry: getCatalogueEntry
+        getCatalogueEntry: getCatalogueEntry,
+        removeCatalogueEntryAsync: removeCatalogueEntryAsync,
+        createCatalogueEntryAsync: createCatalogueEntryAsync,
+        updateCatalogueEntryAsync: updateCatalogueEntryAsync
     };
 }
 

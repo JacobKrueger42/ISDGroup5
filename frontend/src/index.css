@@ -17,8 +17,8 @@
 }
 
 /* remove the search border for clean custom look */
-.MuiOutlinedInput-root.Mui-focused,
-.MuiOutlinedInput-notchedOutline {
+.MuiAutocomplete-root .MuiOutlinedInput-root.Mui-focused,
+.MuiAutocomplete-root .MuiOutlinedInput-notchedOutline {
     border: none !important;
 }
 

@@ -38,11 +38,11 @@ export default function CatalogueDetailPage() {
 
     return (
         <Layout
-            title={entry.name}
+            title={entry?.name ?? 'loading...'}
             headerContent={
                 <Stack direction='row' gap='4rem' marginTop='4rem'>
                     <Typography variant='body' color='text.secondary'>
-                        {entry.description}
+                        {entry?.description ?? 'loading...'}
                     </Typography>
 
                     <List>
@@ -50,7 +50,7 @@ export default function CatalogueDetailPage() {
                             <ListItemText
                                 primary='Unique Product Code (UPC)'
                                 secondary={
-                                    entry.uniqueProductCode ?? '<unknown>'
+                                    entry?.uniqueProductCode ?? 'loading...'
                                 }
                             />
                         </ListItem>
@@ -58,7 +58,7 @@ export default function CatalogueDetailPage() {
                         <ListItem>
                             <ListItemText
                                 primary='Current Stock Level'
-                                secondary={entry.quantity ?? '<unknown>'}
+                                secondary={entry?.quantity ?? 'loading...'}
                             />
                         </ListItem>
                     </List>
@@ -70,7 +70,7 @@ export default function CatalogueDetailPage() {
                             top: '-4rem',
                             left: '4rem'
                         }}
-                        label={entry.category}
+                        label={entry?.category ?? 'loading...'}
                         color='secondary'
                         variant='outlined'
                         icon={<CategoryIcon />}
@@ -91,8 +91,8 @@ export default function CatalogueDetailPage() {
                 <Card variant='outlined'>
                     <CardMedia
                         sx={{ height: 140, backgroundSize: 'contain' }}
-                        image={entry.assetFn}
-                        title={entry.name}
+                        image={entry?.assetFn ?? 'loading...'}
+                        title={entry?.name ?? 'loading...'}
                     />
                     <CardContent>
                         <Typography
@@ -100,14 +100,14 @@ export default function CatalogueDetailPage() {
                             fontSize='1.25rem'
                             align='right'
                         >
-                            ${entry.price}
+                            ${entry?.price ?? 'loading...'}
                         </Typography>
                     </CardContent>
                     <CardActions>
                         <Button
                             disabled={disableAddToCart}
                             size='small'
-                            id={entry.id}
+                            id={entry?.id ?? -1}
                             variant='contained'
                             startIcon={<AddShoppingCartIcon />}
                             onClick={onAddToCart}
@@ -120,7 +120,7 @@ export default function CatalogueDetailPage() {
                             component='a'
                             href='https://riskofrain2.fandom.com/wiki/Risk_of_Rain_2_Wiki'
                         >
-                            {entry.brandName}
+                            {entry?.brandName ?? 'loading...'}
                         </Button>
                     </CardActions>
                 </Card>

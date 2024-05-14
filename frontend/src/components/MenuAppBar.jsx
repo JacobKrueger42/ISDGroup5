@@ -21,8 +21,14 @@ export default function MenuAppBar({ user, onLogout, isLoading }) {
             icon: <SellIcon />
         },
         {
-            text: 'Products',
-            link: '/products',
+            text: 'Manage Products',
+            link: '/product-management',
+            role: 'STAFF',
+            icon: <InventoryIcon />
+        },
+        {
+            text: 'Manage Catalogue',
+            link: '/catalogue-management',
             role: 'STAFF',
             icon: <InventoryIcon />
         }
