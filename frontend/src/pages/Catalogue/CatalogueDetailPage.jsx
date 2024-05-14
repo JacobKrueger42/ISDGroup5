@@ -38,11 +38,11 @@ export default function CatalogueDetailPage() {
 
     return (
         <Layout
-            title={entry.name}
+            title={entry?.name ?? 'loading...'}
             headerContent={
                 <Stack direction='row' gap='4rem' marginTop='4rem'>
                     <Typography variant='body' color='text.secondary'>
-                        {entry.description}
+                        {entry?.description ?? 'loading...'}
                     </Typography>
 
                     <List>
@@ -50,7 +50,7 @@ export default function CatalogueDetailPage() {
                             <ListItemText
                                 primary='Unique Product Code (UPC)'
                                 secondary={
-                                    entry.uniqueProductCode ?? '<unknown>'
+                                    entry?.uniqueProductCode ?? 'loading...'
                                 }
                             />
                         </ListItem>
@@ -58,7 +58,7 @@ export default function CatalogueDetailPage() {
                         <ListItem>
                             <ListItemText
                                 primary='Current Stock Level'
-                                secondary={entry.quantity ?? '<unknown>'}
+                                secondary={entry?.quantity ?? 'loading...'}
                             />
                         </ListItem>
                     </List>
@@ -70,7 +70,7 @@ export default function CatalogueDetailPage() {
                             top: '-4rem',
                             left: '4rem'
                         }}
-                        label={entry.category}
+                        label={entry?.category ?? 'loading...'}
                         color='secondary'
                         variant='outlined'
                         icon={<CategoryIcon />}
