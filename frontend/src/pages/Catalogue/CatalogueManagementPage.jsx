@@ -1,55 +1,212 @@
-import { Layout, SearchInput } from '#components';
-import { useCatalogue } from '#hooks';
-import { Grid, Skeleton } from '@mui/material';
+import { EnhancedTableHead, EnhancedTableRow, Layout } from '#components';
+import {
+    useCatalogue,
+    useEnhancedTable,
+    useManageCatalogueEntries,
+    useProducts
+} from '#hooks';
+import {
+    Button,
+    Card,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TablePagination,
+    TableRow
+} from '@mui/material';
+import { useEffect, useState } from 'react';
+import { CatalgoueEntryManagementHeader } from './CatalgoueEntryManagementHeader';
+import { mapToRow } from './RowMapper';
 
 export default function CatalogueManagementPage() {
-    const { catalogue, searchTerm, setSearchTerm, isLoading } = useCatalogue();
+    // aggregate loading flags
+    const [isLoading, setLoading] = useState(true);
+
+    const {
+        catalogue,
+        totalCount,
+        removeCatalogueEntryAsync,
+        createCatalogueEntryAsync,
+        updateCatalogueEntryAsync,
+        isLoading: isLoadingCatalogue
+    } = useCatalogue();
+
+    const { products, isLoading: isLoadingProducts } = useProducts();
+
+    const {
+        order,
+        orderBy,
+        selected,
+        page,
+        rowsPerPage,
+        emptyRows,
+        visibleRows,
+        handleRequestSort,
+        isSelected,
+        onRowClick,
+        handleChangePage,
+        handleChangeRowsPerPage,
+        onSelectAllClick,
+        clearSelection,
+        searchTerm,
+        setSearchTerm
+    } = useEnhancedTable(catalogue.map(mapToRow));
+
+    const {
+        // error,
+        // openAddCatalogueEntry,
+        setOpenAddCatalogueEntry,
+        // openUpdateCatalogueEntry,
+        setOpenUpdateCatalogueEntry,
+        // onAddCatalogueEntrySubmitAsync,
+        // onCloseAddCatalogueEntry,
+        // onUpdateCatalogueEntrySubmitAsync,
+        // onCloseUpdateCatalogueEntry,
+        // getFirstOrDefaultSelectedCatalogueEntry,
+        onDeleteCatalogueEntryAsync
+    } = useManageCatalogueEntries(
+        catalogue,
+        selected,
+        removeCatalogueEntryAsync,
+        createCatalogueEntryAsync,
+        updateCatalogueEntryAsync,
+        clearSelection
+    );
+
+    useEffect(() => {
+        setLoading(isLoadingCatalogue && isLoadingProducts);
+    }, [isLoadingCatalogue, isLoadingProducts]);
 
     return (
         <Layout
-            title='Catalogue'
+            title='Inventory Management - Catalogue'
             headerContent={
-                <SearchHeader
-                    isLoading={isLoading}
+                <CatalgoueEntryManagementHeader
                     catalogue={catalogue}
                     searchTerm={searchTerm}
                     setSearchTerm={setSearchTerm}
+                    isLoading={isLoading}
                 />
             }
+            headerActions={
+                <>
+                    <Button
+                        variant='contained'
+                        onClick={() => setOpenAddCatalogueEntry(true)}
+                    >
+                        Add
+                    </Button>
+
+                    <Button
+                        variant='contained'
+                        disabled={selected.length !== 1}
+                        onClick={() => setOpenUpdateCatalogueEntry(true)}
+                    >
+                        Update
+                    </Button>
+
+                    <Button
+                        variant='contained'
+                        color='error'
+                        disabled={selected.length !== 1}
+                        onClick={onDeleteCatalogueEntryAsync}
+                    >
+                        Delete
+                    </Button>
+
+                    {/* <AddCatalogueEntryForm
+                        open={openAddCatalogueEntry}
+                        onClose={onCloseAddCatalogueEntry}
+                        onSubmit={onAddCatalogueEntrySubmitAsync}
+                        isLoading={isLoading}
+                        error={error}
+                    />
+
+                    <UpdateCatalogueEntry
+                        open={openUpdateCatalogueEntry}
+                        onClose={onCloseUpdateCatalogueEntry}
+                        onSubmit={onUpdateCatalogueEntrySubmitAsync}
+                        error={error}
+                        isLoading={isLoading}
+                        getExisting={getFirstOrDefaultSelectedCatalogueEntry}
+                    /> */}
+                </>
+            }
         >
-            {isLoading ? (
-                <Skeleton
-                    animation='wave'
-                    sx={{ marginTop: '4rem' }}
-                    variant='rectangular'
-                    width={1000}
-                    height={600}
+            <Card>
+                <TableContainer>
+                    <Table
+                        sx={{ minWidth: 750 }}
+                        aria-labelledby='tableTitle'
+                        size='medium'
+                    >
+                        <EnhancedTableHead
+                            headCells={headCells}
+                            selected={selected}
+                            order={order}
+                            orderBy={orderBy}
+                            onSelectAllClick={onSelectAllClick}
+                            onRequestSort={handleRequestSort}
+                            rowCount={totalCount}
+                        />
+                        <TableBody>
+                            {visibleRows.map((row, index) => {
+                                return (
+                                    <EnhancedTableRow
+                                        row={row}
+                                        index={index}
+                                        key={index}
+                                        onClick={onRowClick}
+                                        isSelected={isSelected}
+                                    />
+                                );
+                            })}
+                            {emptyRows > 0 && (
+                                <TableRow
+                                    style={{
+                                        height: 53 * emptyRows
+                                    }}
+                                >
+                                    <TableCell colSpan={6} />
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component='div'
+                    count={totalCount}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
                 />
-            ) : (
-                <Grid sx={{ marginTop: '4rem' }} container spacing={2}>
-                    {catalogue.map((item, index) => (
-                        <p key={index}>{item.name}</p>
-                    ))}
-                </Grid>
-            )}
+            </Card>
         </Layout>
     );
 }
 
-function SearchHeader({ isLoading, catalogue, searchTerm, setSearchTerm }) {
-    return isLoading ? (
-        <Skeleton
-            variant='rounded'
-            animation='wave'
-            width={1000}
-            height={100}
-        />
-    ) : (
-        <SearchInput
-            options={catalogue}
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            label='Looking for something in particular?'
-        />
-    );
-}
+const headCells = [
+    {
+        id: 'uniqueProductCode',
+        label: 'UPC'
+    },
+    {
+        id: 'name',
+        label: 'Product Name'
+    },
+    {
+        id: 'price',
+        label: 'Price'
+    },
+    {
+        id: 'quantity',
+        label: 'Stock Level'
+    },
+    {
+        id: 'category',
+        label: 'Catgory'
+    }
+];
