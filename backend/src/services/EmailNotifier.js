@@ -1,23 +1,9 @@
-import { transponder } from '#services';
+import sgMail from '@sendgrid/mail';
 import { EmailConfig, ServerOptions } from '#configuration';
 import { isNullOrEmpty } from './StringUtils.js';
 
 export default function emailNotifier() {
-    init();
-
-    function init() {
-        ServerOptions.verbose &&
-            console.debug('Email Notifier | Initialising email notifier');
-
-        verify the configuration before continuing
-        if (!transponder.verify()) {
-            ServerOptions.verbose &&
-                console.error(
-                    'Email Notifier | Initialising email notifier failed'
-                );
-            return null;
-        }
-    }
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
     async function sendAsync({ to, subject, message }) {
         if (typeof to !== 'string' || isNullOrEmpty(to))
@@ -34,22 +20,30 @@ export default function emailNotifier() {
                 console.debug(
                     `Email Notifier | Sending mail to '${to}' regarding '${subject}'`
                 );
-            const info = await transponder.client.sendMail({
-                from: EmailConfig.fromAddress,
+
+            const { statusCode } = await sgMail.send({
                 to: to,
+                from: EmailConfig.fromAddress,
                 subject: subject,
                 html: message
             });
 
             ServerOptions.verbose &&
                 console.debug(
-                    `Email Notifier | Sent mail '${to}' regarding '${subject}' with info: `,
-                    info
+                    `Email Notifier | Sent mail '${to}' regarding '${subject}' with status code : `,
+                    statusCode
                 );
         } catch (error) {
             console.error(
                 `Email Notifier | Failed to send email to '${to}' regarding '${subject}'`
             );
+
+            ServerOptions.verbose &&
+                error.response &&
+                console.error(
+                    `Email Notifier | Error included a response body, `,
+                    error.response.body
+                );
         }
     }
 

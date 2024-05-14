@@ -1,6 +1,4 @@
 import { default as prisma } from '../services/DatabaseClient.js';
-import { default as transponder } from '../services/TransponderClient.js';
-
 import { default as emailNotifier } from '../services/EmailNotifier.js';
 
 import { default as userAuthRepository } from '../services/UserAuthRepository.js';
@@ -12,6 +10,5 @@ export {
     userAuthRepository,
     productRepository,
     catalogueRepository,
-    transponder,
     emailNotifier
 };
