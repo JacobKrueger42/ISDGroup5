@@ -1,5 +1,5 @@
 import { Layout } from '#components';
-import { useCheckout } from '#hooks';
+import { useCheckout, useCart } from '#hooks';
 import {
     Box,
     Button,
@@ -11,11 +11,10 @@ import {
     TextField,
     Typography
 } from '@mui/material';
-import { useCart } from '../../contexts/CartContext';
 
 export default function CheckoutPage() {
-    const { state } = useCart();
     const { checkout, isLoading } = useCheckout();
+    const { cartItems } = useCart();
 
     const handleCheckout = () => {
         checkout();
@@ -33,8 +32,8 @@ export default function CheckoutPage() {
                             Order Summary
                         </Typography>
                         <List>
-                            {state.items.length > 0 ? (
-                                state.items.map(item => (
+                            {cartItems.length > 0 ? (
+                                cartItems.map(item => (
                                     <ListItem key={item.productId} divider>
                                         <ListItemText
                                             primary={item.product.name}

@@ -2,29 +2,33 @@ import { useContext } from 'react';
 import { CartContext } from '../contexts/CartContext'; // Correct import path
 
 export function useCart() {
-  const { state, dispatch } = useContext(CartContext);
+    const { cartItems, dispatch } = useContext(CartContext);
 
-  const addToCart = (product, quantity) => {
-    dispatch({ type: 'ADD_ITEM', payload: { ...product, quantity } });
-  };
+    const addToCart = (product, quantity) => {
+        console.log('adding: ', { name: product.name, quantity });
+        dispatch({ type: 'ADD_ITEM', payload: { ...product, quantity } });
+    };
 
-  const updateCartItem = (productId, quantity) => {
-    dispatch({ type: 'UPDATE_ITEM', payload: { productId, quantity } });
-  };
+    const updateCartItem = (productId, quantity) => {
+        console.log('updating: ', { id: productId, quantity });
+        dispatch({ type: 'UPDATE_ITEM', payload: { productId, quantity } });
+    };
 
-  const removeCartItem = (productId) => {
-    dispatch({ type: 'REMOVE_ITEM', payload: { productId } });
-  };
+    const removeCartItem = productId => {
+        console.log('removing: ', { id: productId });
+        dispatch({ type: 'REMOVE_ITEM', payload: { productId } });
+    };
 
-  const clearCart = () => {
-    dispatch({ type: 'CLEAR_CART' });
-  };
+    const clearCart = () => {
+        console.log('clearing everything');
+        dispatch({ type: 'CLEAR_CART' });
+    };
 
-  return {
-    cartItems: state.items,
-    addToCart,
-    updateCartItem,
-    removeCartItem,
-    clearCart
-  };
+    return {
+        cartItems,
+        addToCart,
+        updateCartItem,
+        removeCartItem,
+        clearCart
+    };
 }
