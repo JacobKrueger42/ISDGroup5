@@ -1,3 +1,5 @@
-import { default as ConfigureRoutes } from '../configuration/ConfigureRoutes.js';
+import { default as ConfigureRoutes } from './ConfigureRoutes.js';
+import { EmailConfig } from './EmailConfig.js';
+import { ServerOptions } from './ServerOptions.js';
 
-export { ConfigureRoutes };
+export { ConfigureRoutes, EmailConfig, ServerOptions };
