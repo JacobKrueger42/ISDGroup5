@@ -12,14 +12,15 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
 import InfoDialogue from './InfoDialogue';
+import { useCart } from '#hooks';
 
 export default function CatalogueProductEntryCard({
     item,
     assetFn,
-    disabled,
-    onAddToCart
+    disabled
 }) {
     const [isOpen, setOpen] = useState(false);
+    const { addToCart } = useCart();
 
     return (
         <Grid item sm={2} md={5} lg={4}>
@@ -80,7 +81,7 @@ export default function CatalogueProductEntryCard({
                         id={item.id}
                         variant='contained'
                         startIcon={<AddShoppingCartIcon />}
-                        onClick={onAddToCart}
+                        onClick={() => addToCart(item)}
                     >
                         Add to cart
                     </Button>

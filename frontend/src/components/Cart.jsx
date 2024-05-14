@@ -1,27 +1,42 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import CartItem from './CartItem'; // Make sure CartItem is also correctly placed and imported
+import CartItem from './CartItem';
 
 const Cart = () => {
+    const [cartItems, setCartItems] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
 
-    useEffect(() => {
-    axios.get('/api/cart', { params: { userId: user.id } })
-        .then(response => {
-            setCartItems(response.data);
+    function loadCartItems() {
+        // Load cart items from localStorage
+        try {
+            const savedCart = localStorage.getItem('cartItems');
+            const items = savedCart ? JSON.parse(savedCart) : [];
+            setCartItems(items);
             setError('');  // Clear any previous errors on successful fetch
-        })
-        .catch(err => {
-            console.error('Error fetching cart items:', err);
+        } catch (error) {
+            console.error('Error fetching cart items:', error);
             setError('Failed to fetch cart items');  // Set user-friendly error message
-        });
-}, [user]);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        loadCartItems();
+    }, []);
+
+    if (isLoading) return <div>Loading cart items...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <div>
-            {cartItems.map(item => (
-                <CartItem key={item.productId} item={item} />
-            ))}
+            {cartItems.length > 0 ? (
+                cartItems.map(item => (
+                    <CartItem key={item.productId} item={item} />
+                ))
+            ) : (
+                <div>Your cart is empty.</div>
+            )}
         </div>
     );
 };

@@ -11,10 +11,12 @@ import {
     AnonPage,
     AccountPage,
     AccessLogsPage,
-    CartPage
+    CartPage,
+    CheckoutPage
 } from '#pages';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CartProvider } from './contexts/CartContext';
 
 export default function App() {
     // we can change this later, just setting it up for now
@@ -33,72 +35,82 @@ export default function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            <BrowserRouter>
-                <Routes>
-                    <Route
-                        path='/'
-                        exact
-                        element={
-                            <AnonPageShell>
-                                <AnonPage />
-                            </AnonPageShell>
-                        }
-                    />
-                    <Route
-                        path='/home'
-                        exact
-                        element={
-                            <AuthorisedPageShell>
-                                <HomePage />
-                            </AuthorisedPageShell>
-                        }
-                    />
-                    <Route path='/login' element={<LoginPage />} />
-                    <Route path='/register' element={<RegisterPage />} />
-                    <Route
-                        path='/catalogue'
-                        element={
-                            <AnonPageShell>
-                                <CataloguePage />
-                            </AnonPageShell>
-                        }
-                    />
-                    <Route
-                        path='/products'
-                        element={
-                            <AuthorisedPageShell>
-                                <ProductsPage />
-                            </AuthorisedPageShell>
-                        }
-                    />
-                    <Route
-                        path='/account'
-                        element={
-                            <AuthorisedPageShell>
-                                <AccountPage />
-                            </AuthorisedPageShell>
-                        }
-                    />
-                    <Route
-                        path='/accesslogs'
-                        element={
-                            <AuthorisedPageShell>
-                                <AccessLogsPage />
-                            </AuthorisedPageShell>
-                        }
-                    />
-                    <Route
-                        path='/cart' // Adding the cart page route
-                        element={
-                            <AuthorisedPageShell>
-                                <CartPage />
-                            </AuthorisedPageShell>
-                        }
-                     />
-                    <Route path='/not-found' element={<NotFoundPage />} />
-                    <Route path='/*' element={<NotFoundPage />} />
-                </Routes>
-            </BrowserRouter>
+            <CartProvider>
+                <BrowserRouter>
+                    <Routes>
+                        <Route
+                            path='/'
+                            exact
+                            element={
+                                <AnonPageShell>
+                                    <AnonPage />
+                                </AnonPageShell>
+                            }
+                        />
+                        <Route
+                            path='/home'
+                            exact
+                            element={
+                                <AuthorisedPageShell>
+                                    <HomePage />
+                                </AuthorisedPageShell>
+                            }
+                        />
+                        <Route path='/login' element={<LoginPage />} />
+                        <Route path='/register' element={<RegisterPage />} />
+                        <Route
+                            path='/catalogue'
+                            element={
+                                <AnonPageShell>
+                                    <CataloguePage />
+                                </AnonPageShell>
+                            }
+                        />
+                        <Route
+                            path='/products'
+                            element={
+                                <AuthorisedPageShell>
+                                    <ProductsPage />
+                                </AuthorisedPageShell>
+                            }
+                        />
+                        <Route
+                            path='/account'
+                            element={
+                                <AuthorisedPageShell>
+                                    <AccountPage />
+                                </AuthorisedPageShell>
+                            }
+                        />
+                        <Route
+                            path='/accesslogs'
+                            element={
+                                <AuthorisedPageShell>
+                                    <AccessLogsPage />
+                                </AuthorisedPageShell>
+                            }
+                        />
+                        <Route
+                            path='/cart'
+                            element={
+                                <AnonPageShell>
+                                    <CartPage />
+                                </AnonPageShell>
+                            }
+                        /> 
+                        <Route
+                            path='/checkout'
+                            element={
+                                <AnonPageShell>
+                                    <CheckoutPage />
+                                </AnonPageShell>
+                            }
+                        />
+                        <Route path='/not-found' element={<NotFoundPage />} />
+                        <Route path='/*' element={<NotFoundPage />} />
+                    </Routes>
+                </BrowserRouter>
+            </CartProvider>
         </ThemeProvider>
     );
 }

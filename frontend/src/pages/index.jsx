@@ -11,6 +11,7 @@ import { default as AnonPage } from './Landing/landing.jsx';
 import { default as AccountPage } from './Account/AccountPage.jsx';
 import { default as AccessLogsPage } from './AccessLogs/AccessLogs.jsx';
 import { default as CartPage } from './Cart/CartPage.jsx';
+import { default as CheckoutPage } from './Cart/CheckoutPage.jsx';
 
 
 export {
@@ -25,5 +26,6 @@ export {
     AnonPage,
     AccountPage,
     AccessLogsPage,
-    CartPage
+    CartPage,
+    CheckoutPage
 };
