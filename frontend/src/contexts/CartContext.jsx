@@ -1,9 +1,7 @@
-// src/contexts/CartContext.jsx
 import { createContext, useContext, useReducer } from 'react';
-
 // Initial state
 const initialState = {
-  items: [],
+  items: JSON.parse(localStorage.getItem('cartItems')) || []
 };
 
 // Create context
@@ -47,6 +45,10 @@ const cartReducer = (state, action) => {
 export const CartProvider = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
 
+  useEffect(() => {
+    localStorage.setItem('cartItems', JSON.stringify(state.items));
+  }, [state.items]);
+
   return (
     <CartContext.Provider value={{ state, dispatch }}>
       {children}
@@ -56,6 +58,3 @@ export const CartProvider = ({ children }) => {
 
 // Custom hook to use cart context
 export const useCart = () => useContext(CartContext);
-
-// Make sure to export CartContext for direct use if needed
-export { CartContext };

@@ -4,13 +4,17 @@ import { Layout } from '#components';
 import { useCheckout } from '#hooks';
 
 export default function CheckoutPage() {
+<<<<<<< Updated upstream
     const { state } = useCart();
+=======
+    const { cartItems, clearCart } = useCart();
+>>>>>>> Stashed changes
     const checkout = useCheckout();
 
-    const handleCheckout = () => {
-        checkout();
+    const handleCheckout = async () => {
+        await checkout(cartItems); // Pass cart items to checkout
+        clearCart(); // Clear cart after successful checkout
     };
-
     return (
         <Layout
             title="Checkout"

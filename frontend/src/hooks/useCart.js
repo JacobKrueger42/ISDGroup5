@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
+import { useContext } from 'react';
+import { CartContext } from '../contexts/CartContext'; 
 
 export function useCart() {
-    const [cartItems, setCartItems] = useState(() => {
-        const savedCart = localStorage.getItem('cartItems');
-        return savedCart ? JSON.parse(savedCart) : [];
-    });
+  const { state, dispatch } = useContext(CartContext);
 
-    useEffect(() => {
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }, [cartItems]);
+  const addToCart = (product, quantity) => {
+    dispatch({ type: 'ADD_ITEM', payload: { ...product, quantity } });
+  };
 
-    const addToCart = (product, quantity) => {
-        const existingItem = cartItems.find(item => item.id === product.id);
+  const updateCartItem = (productId, quantity) => {
+    dispatch({ type: 'UPDATE_ITEM', payload: { productId, quantity } });
+  };
 
+<<<<<<< Updated upstream
         if (existingItem) {
             setCartItems(cartItems.map(item =>
                 item.id === product.id
@@ -46,3 +46,21 @@ export function useCart() {
         clearCart
     };
 }
+=======
+  const removeCartItem = (productId) => {
+    dispatch({ type: 'REMOVE_ITEM', payload: { productId } });
+  };
+
+  const clearCart = () => {
+    dispatch({ type: 'CLEAR_CART' });
+  };
+
+  return {
+    cartItems: state.items,
+    addToCart,
+    updateCartItem,
+    removeCartItem,
+    clearCart
+  };
+}
+>>>>>>> Stashed changes
