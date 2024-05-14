@@ -41,7 +41,7 @@ export default function CatalogueManagementPage() {
 
     const { products, isLoading: isLoadingProducts } = useProducts();
 
-    const tableProps = useEnhancedTable(catalogue.map(mapToRow));
+    const tableProps = useEnhancedTable({ rows: catalogue.map(mapToRow) });
     const { selected, searchTerm, setSearchTerm } = tableProps;
 
     const {

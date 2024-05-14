@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 
-export default function useEnhancedTable(rows) {
+export default function useEnhancedTable({ rows }) {
     // ordering
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('calories');

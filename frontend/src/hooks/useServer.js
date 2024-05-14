@@ -1,10 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function useServer() {
     const [shouldRefresh, setRefresh] = useState(false);
     const toggleRefresh = () => {
-        setRefresh(!shouldRefresh);
+        console.log('server event has triggered a refresh...');
+        setRefresh(true);
     };
+
+    // little hacky, but this ensures listeners can use the bool flag as expected
+    // this results in a "pulse" to consumers that can trigger a short-term effect
+    useEffect(() => {
+        setRefresh(false);
+    }, [shouldRefresh]);
 
     const [isLoading, setLoading] = useState(true);
 

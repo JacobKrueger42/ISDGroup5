@@ -61,7 +61,7 @@ export default function useManageCatalogueEntries({
     async function onDeleteCatalogueEntryAsync(event) {
         event.preventDefault();
         const existing = getFirstOrDefaultSelectedCatalogueEntry();
-        await removeCatalogueEntryAsync({ id: existing.id });
+        await removeCatalogueEntryAsync(existing.id);
         clearSelection();
     }
 
