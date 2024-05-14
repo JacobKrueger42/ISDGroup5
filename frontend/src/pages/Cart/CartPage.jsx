@@ -1,16 +1,21 @@
-// src/pages/Cart/CartPage.jsx
-import React from 'react';
-import { Typography, Button, List, ListItem, ListItemText, TextField } from '@mui/material';
-import { useCart } from '../../contexts/CartContext'; // Adjust the import path as necessary
+import { bannerPlaceholder } from '#assets';
 import { Layout } from '#components'; // Ensure Layout is a reusable component that accepts children
-import { bannerPlaceholder } from '#assets'; 
+import {
+    Button,
+    List,
+    ListItem,
+    ListItemText,
+    TextField,
+    Typography
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useCart } from '../../contexts/CartContext'; // Adjust the import path as necessary
 
 export default function CartPage() {
     const { state, dispatch } = useCart();
     const navigate = useNavigate(); // Initialize the useNavigate hook
 
-    const handleRemoveClick = (productId) => {
+    const handleRemoveClick = productId => {
         dispatch({ type: 'REMOVE_ITEM', payload: { productId } });
     };
 
@@ -23,23 +28,42 @@ export default function CartPage() {
 
     return (
         <Layout
-            title="Your Cart"
-            headerContent={<Typography variant="h4">Shopping Cart</Typography>}
+            title='Your Cart'
+            headerContent={<Typography variant='h4'>Shopping Cart</Typography>}
             headerActions={<Actions navigate={navigate} />}
         >
-            <img loading="lazy" src={bannerPlaceholder} alt="Shopping Cart Banner" style={{ width: '100%' }} />
+            <img
+                loading='lazy'
+                src={bannerPlaceholder}
+                alt='Shopping Cart Banner'
+                style={{ width: '100%' }}
+            />
             <List>
                 {state.items.length > 0 ? (
                     state.items.map(item => (
                         <ListItem key={item.productId} divider>
-                            <ListItemText primary={item.product.name} secondary={`$${item.product.price}`} />
-                            <TextField
-                                type="number"
-                                value={item.quantity}
-                                onChange={(e) => handleQuantityChange(e, item.productId)}
-                                inputProps={{ min: 1, style: { width: '50px' } }}
+                            <ListItemText
+                                primary={item.product.name}
+                                secondary={`$${item.product.price}`}
                             />
-                            <Button variant="contained" color="error" onClick={() => handleRemoveClick(item.productId)}>
+                            <TextField
+                                type='number'
+                                value={item.quantity}
+                                onChange={e =>
+                                    handleQuantityChange(e, item.productId)
+                                }
+                                inputProps={{
+                                    min: 1,
+                                    style: { width: '50px' }
+                                }}
+                            />
+                            <Button
+                                variant='contained'
+                                color='error'
+                                onClick={() =>
+                                    handleRemoveClick(item.productId)
+                                }
+                            >
                                 Remove
                             </Button>
                         </ListItem>
@@ -58,7 +82,12 @@ function Actions({ navigate }) {
     };
 
     return (
-        <Button variant="contained" color="primary" onClick={handleProceedToCheckout} style={{ marginLeft: 'auto' }}>
+        <Button
+            variant='contained'
+            color='primary'
+            onClick={handleProceedToCheckout}
+            style={{ marginLeft: 'auto' }}
+        >
             Proceed to Checkout
         </Button>
     );

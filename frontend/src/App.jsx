@@ -1,20 +1,20 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import {
-    AuthorisedPageShell,
-    AnonPageShell,
-    LoginPage,
-    RegisterPage,
-    NotFoundPage,
-    HomePage,
-    CataloguePage,
-    ProductsPage,
-    CatalogueDetailPage,
-    AnonPage,
-    AccountPage,
     AccessLogsPage,
+    AccountPage,
+    AnonPage,
+    AnonPageShell,
+    AuthorisedPageShell,
     CartPage,
-    CheckoutPage
+    CatalogueDetailPage,
+    CataloguePage,
+    CheckoutPage,
+    HomePage,
+    LoginPage,
+    NotFoundPage,
+    ProductsPage,
+    RegisterPage
 } from '#pages';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { CartProvider } from './contexts/CartContext';
