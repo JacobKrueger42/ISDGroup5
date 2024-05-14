@@ -3,13 +3,19 @@ import axios from 'axios';
 import CartItem from './CartItem'; // Make sure CartItem is also correctly placed and imported
 
 const Cart = () => {
-    const [cartItems, setCartItems] = useState([]);
+    const [error, setError] = useState('');
 
     useEffect(() => {
-        axios.get('/api/cart', { params: { userId: 1 } })  // This is just an example
-            .then(response => setCartItems(response.data))
-            .catch(err => console.error('Error fetching cart items:', err));
-    }, []);
+    axios.get('/api/cart', { params: { userId: user.id } })
+        .then(response => {
+            setCartItems(response.data);
+            setError('');  // Clear any previous errors on successful fetch
+        })
+        .catch(err => {
+            console.error('Error fetching cart items:', err);
+            setError('Failed to fetch cart items');  // Set user-friendly error message
+        });
+}, [user]);
 
     return (
         <div>
