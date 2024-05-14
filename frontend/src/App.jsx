@@ -71,9 +71,9 @@ export default function App() {
                         <Route
                             path='/catalogue/:catalogueId'
                             element={
-                                <AuthorisedPageShell>
+                                <AnonPageShell>
                                     <CatalogueDetailPage />
-                                </AuthorisedPageShell>
+                                </AnonPageShell>
                             }
                         />
                         <Route
