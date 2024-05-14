@@ -1,18 +1,18 @@
-import {
-    EnhancedTableHead,
-    EnhancedTableRow,
-    Layout,
-    SearchInput
-} from '#components';
+import { EnhancedTableHead, EnhancedTableRow, Layout } from '#components';
 import { useEnhancedTable, useManageProducts, useProducts } from '#hooks';
-import { Button, Card, Skeleton, Stack, Typography } from '@mui/material';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
+import {
+    Button,
+    Card,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TablePagination,
+    TableRow
+} from '@mui/material';
 import AddProductForm from './AddProduct';
+import { ProductManagementHeader } from './ProductManagementHeader';
+import { mapToRow } from './RowMapper';
 import UpdateProduct from './UpdateProduct';
 
 export default function ProductsPage() {
@@ -189,39 +189,3 @@ const headCells = [
         label: 'Brand Name'
     }
 ];
-
-const mapToRow = product => {
-    return {
-        id: product.id,
-        name: product.name,
-        brandName: product.brandName,
-        uniqueProductCode: product.uniqueProductCode
-    };
-};
-
-function ProductManagementHeader({
-    products,
-    searchTerm,
-    setSearchTerm,
-    isLoading
-}) {
-    return (
-        <Stack spacing={2}>
-            <Typography align='left' variant='body' color='text.secondary'>
-                Here you can manage products tracked by the system. Products
-                listed here can be added to the public product catalogue.
-            </Typography>
-            {isLoading ? (
-                <Skeleton>
-                    <SearchInput options={[]} />
-                </Skeleton>
-            ) : (
-                <SearchInput
-                    options={products}
-                    searchTerm={searchTerm}
-                    setSearchTerm={setSearchTerm}
-                />
-            )}
-        </Stack>
-    );
-}
