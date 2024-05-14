@@ -30,7 +30,6 @@ export default function CataloguePage() {
                     animation='wave'
                     sx={{ marginTop: '4rem' }}
                     variant='rectangular'
-                    width={1000}
                     height={600}
                 />
             ) : (

@@ -1,19 +1,11 @@
-import {
-    EnhancedTableHead,
-    EnhancedTableRow,
-    EmptyRowPlaceholder,
-    Layout
-} from '#components';
+import { EnhancedTableHead, EnhancedTableBody, Layout } from '#components';
 import { useEnhancedTable, useManageProducts, useProducts } from '#hooks';
 import {
     Button,
     Card,
     Table,
-    TableBody,
-    TableCell,
     TableContainer,
-    TablePagination,
-    TableRow
+    TablePagination
 } from '@mui/material';
 import AddProductForm from './AddProduct';
 import { ProductManagementHeader } from './ProductManagementHeader';
@@ -142,22 +134,12 @@ export default function ProductsPage() {
                             onRequestSort={handleRequestSort}
                             rowCount={totalCount}
                         />
-                        <TableBody>
-                            {visibleRows.map((row, index) => {
-                                return (
-                                    <EnhancedTableRow
-                                        row={row}
-                                        index={index}
-                                        key={index}
-                                        onClick={onRowClick}
-                                        isSelected={isSelected}
-                                    />
-                                );
-                            })}
-                            {emptyRows > 0 && (
-                                <EmptyRowPlaceholder count={emptyRows} />
-                            )}
-                        </TableBody>
+                        <EnhancedTableBody
+                            visibleRows={visibleRows}
+                            emptyRows={emptyRows}
+                            onRowClick={onRowClick}
+                            isSelected={isSelected}
+                        />
                     </Table>
                 </TableContainer>
                 <TablePagination
