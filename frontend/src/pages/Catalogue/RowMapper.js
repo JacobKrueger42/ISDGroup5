@@ -1,5 +1,4 @@
 export const mapToRow = catalogueEntry => {
-    console.log(catalogueEntry);
     return {
         id: catalogueEntry.id,
         name: catalogueEntry.name,
