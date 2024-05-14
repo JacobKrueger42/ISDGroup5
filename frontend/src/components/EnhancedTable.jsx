@@ -29,7 +29,10 @@ export default function EnhancedTable({
                         headCells={headCells}
                         {...tableProps}
                     />
-                    <EnhancedTableBody {...tableProps} />
+                    <EnhancedTableBody
+                        rowConfig={headCells.filter(c => c.label !== 'UPC')}
+                        {...tableProps}
+                    />
                 </Table>
             </TableContainer>
             <TablePagination

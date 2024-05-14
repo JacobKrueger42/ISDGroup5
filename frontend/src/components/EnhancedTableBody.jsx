@@ -5,7 +5,8 @@ export default function EnhancedTableBody({
     visibleRows,
     emptyRows,
     onRowClick,
-    isSelected
+    isSelected,
+    rowConfig
 }) {
     return (
         <TableBody>
@@ -17,6 +18,7 @@ export default function EnhancedTableBody({
                         key={index}
                         onClick={onRowClick}
                         isSelected={isSelected}
+                        rowConfig={rowConfig}
                     />
                 );
             })}

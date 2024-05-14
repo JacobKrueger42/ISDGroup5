@@ -1,9 +1,14 @@
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
-import { titleCase } from '#utils';
 
-export default function EnhancedTableRow({ row, index, onClick, isSelected }) {
+export default function EnhancedTableRow({
+    row,
+    index,
+    onClick,
+    isSelected,
+    rowConfig
+}) {
     const isItemSelected = isSelected(row.id);
 
     return (
@@ -28,9 +33,9 @@ export default function EnhancedTableRow({ row, index, onClick, isSelected }) {
             >
                 {row.uniqueProductCode}
             </TableCell>
-
-            <TableCell>{titleCase(row.name)}</TableCell>
-            <TableCell>{titleCase(row.brandName)}</TableCell>
+            {rowConfig.map((config, index) => (
+                <TableCell key={index}>{row[config.id]}</TableCell>
+            ))}
         </TableRow>
     );
 }
