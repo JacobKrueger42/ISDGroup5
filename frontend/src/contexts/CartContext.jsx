@@ -1,4 +1,5 @@
 import { createContext, useContext, useReducer } from 'react';
+
 // Initial state
 const initialState = {
   items: JSON.parse(localStorage.getItem('cartItems')) || []
