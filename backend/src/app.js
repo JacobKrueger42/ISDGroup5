@@ -4,6 +4,9 @@ import { ConfigureRoutes } from '#configuration';
 import session from 'express-session';
 import crypto from 'crypto';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import OrderController from './controllers/OrderController';
+import prisma from './prisma/client';
 
 const opts = {
     port: 8181,
@@ -35,6 +38,11 @@ async function Setup() {
 
     // configure routes automatically
     await ConfigureRoutes(app, { verbose: opts });
+
+
+    // Import and use order routes
+    app.use('/api/orders', OrderController);
+
 
     // configure post-request middleware
     app.use(ErrorHandler);
