@@ -1,22 +1,26 @@
-const express = require('express');
-const router = express.Router();
-const { processCheckout } = require('../services/CheckoutService');
+import { requireRole } from '#middleware';
+import { checkoutService } from '#services';
+import { ServerOptions } from '#configuration';
 
-
-// POST /api/checkout
-const checkout = async (req, res) => {
-    const { items } = req.body;
-    if (!items || !Array.isArray(items) || items.length === 0) {
-        return res.status(400).json({ success: false, message: 'Invalid items' });
-    }
-
+export async function create(req, res) {
     try {
-        const result = await processCheckout(items);
-        res.json(result);
-    } catch (error) {
-        console.error('Checkout failed:', error);
-        res.status(500).json({ success: false, message: 'Checkout failed' });
-    }
-};
+        await requireRole(
+            req,
+            res,
+            next,
+            async () => {
+                const { items } = req.body;
+                if (!items || !Array.isArray(items) || items.length === 0)
+                    throw new Error('Invalid items for checkout');
 
-module.exports = { checkout };
+                const { processCheckout } = checkoutService();
+                const result = await processCheckout(items);
+                return res.json(result);
+            },
+            ['CUSTOMER']
+        );
+    } catch (error) {
+        ServerOptions.verbose && console.error('Checkout failed:', error);
+        next(error);
+    }
+}

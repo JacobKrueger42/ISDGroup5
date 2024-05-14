@@ -15,11 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import InfoDialogue from './InfoDialogue';
 import { useCart } from '#hooks';
 
-export default function CatalogueProductEntryCard({
-    item,
-    assetFn,
-    disabled
-}) {
+export default function CatalogueProductEntryCard({ item, assetFn, disabled }) {
     const navigate = useNavigate();
     const [isOpen, setOpen] = useState(false);
     const { addToCart } = useCart();
@@ -73,7 +69,7 @@ export default function CatalogueProductEntryCard({
                         id={item.id}
                         variant='contained'
                         startIcon={<AddShoppingCartIcon />}
-                        onClick={() => addToCart(item)}
+                        onClick={() => addToCart(item, 1)}
                     >
                         Add to cart
                     </Button>
