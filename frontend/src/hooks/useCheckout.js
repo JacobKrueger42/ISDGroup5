@@ -11,7 +11,8 @@ const useCheckout = () => {
         try {
             const disableRefresh = true;
             makeServerChange(
-                async () => await post('checkout', { items: state.items }),
+                async () =>
+                    await post('checkout/create', { items: state.items }),
                 response => {
                     console.log('Checkout successful', response.data);
                     dispatch({ type: 'CLEAR_CART' });

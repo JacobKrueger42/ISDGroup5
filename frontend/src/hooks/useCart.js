@@ -14,23 +14,35 @@ export function useCart() {
         const existingItem = cartItems.find(item => item.id === product.id);
 
         if (existingItem) {
-            setCartItems(cartItems.map(item =>
-                item.id === product.id
-                    ? { ...item, quantity: item.quantity + quantity }
-                    : item
-            ));
+            console.log('item already in cart, updating quantity', {
+                name: existingItem.name,
+                quantity: existingItem.quantity + quantity
+            });
+            setCartItems(
+                cartItems.map(item =>
+                    item.id === product.id
+                        ? { ...item, quantity: item.quantity + quantity }
+                        : item
+                )
+            );
         } else {
+            console.log('item added to cart for first time', {
+                name: product.name,
+                quantity
+            });
             setCartItems([...cartItems, { ...product, quantity }]);
         }
     };
 
     const updateCartItem = (productId, quantity) => {
-        setCartItems(cartItems.map(item =>
-            item.id === productId ? { ...item, quantity } : item
-        ));
+        setCartItems(
+            cartItems.map(item =>
+                item.id === productId ? { ...item, quantity } : item
+            )
+        );
     };
 
-    const removeCartItem = (productId) => {
+    const removeCartItem = productId => {
         setCartItems(cartItems.filter(item => item.id !== productId));
     };
 

@@ -26,17 +26,23 @@ const mockProductUrls = [
 
 export default function useCatalogue() {
     const navigate = useNavigate();
-    const { user } = useAuth();
+    const { user, isLoading: isLoadingUser } = useAuth();
 
     const [searcher, setSearcher] = useState(null);
     const [searchTerm, setSearchTerm] = useState(null);
 
-    const { isLoading, shouldRefresh, makeServerChange } = useServer();
+    const {
+        isLoading: isLoadingServer,
+        shouldRefresh,
+        makeServerChange
+    } = useServer();
 
     const [catalogue, setCatalogue] = useState([]);
     const [totalCount, setTotalCount] = useState(0);
     const [visibleCatalogue, setVisibleCatalogue] = useState([]);
     const [disableAddToCart, setDisableAddToCart] = useState(true);
+
+    const [isLoading, setLoading] = useState(true);
 
     const { get } = useFetch();
 
@@ -99,9 +105,10 @@ export default function useCatalogue() {
             }
         })();
 
-        // we only care to refresh when we toggle either of these flags
+        setLoading(isLoadingServer && isLoadingUser);
+        // we only care to refresh when we toggle these flags
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [shouldRefresh, searchTerm]);
+    }, [shouldRefresh, searchTerm, isLoadingServer, isLoadingUser]);
 
     function onAddToCart(event) {
         event.preventDefault();
