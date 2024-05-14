@@ -6,6 +6,7 @@ import {
     AuthorisedPageShell,
     CartPage,
     CatalogueDetailPage,
+    CatalogueManagementPage,
     CataloguePage,
     CheckoutPage,
     HomePage,
@@ -76,10 +77,18 @@ export default function App() {
                             }
                         />
                         <Route
-                            path='/products'
+                            path='/product-management'
                             element={
                                 <AuthorisedPageShell>
                                     <ProductsPage />
+                                </AuthorisedPageShell>
+                            }
+                        />
+                        <Route
+                            path='/catalogue-management'
+                            element={
+                                <AuthorisedPageShell>
+                                    <CatalogueManagementPage />
                                 </AuthorisedPageShell>
                             }
                         />
