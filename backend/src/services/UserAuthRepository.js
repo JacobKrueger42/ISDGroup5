@@ -1,14 +1,12 @@
 import { prisma } from '#services';
 import PasswordHasher from '../services/PasswordHasher.js';
 import { isNullOrEmpty } from './StringUtils.js';
-
-const passwordOptions = Object.freeze({
-    minLength: 8,
-    requireAlphaNumeric: true
-});
+import { emailNotifier } from '#services';
+import { AuthOptions, ServerOptions } from '#configuration';
 
 export default function userAuthRepository() {
     const availableRoles = ['ADMIN', 'STAFF', 'CUSTOMER'];
+    const { sendAsync } = emailNotifier();
 
     ////////////////////////
     // lifecycle
@@ -97,7 +95,7 @@ export default function userAuthRepository() {
     ) {
         if (isNullOrEmpty(role) || !availableRoles.includes(role))
             throw new Error(
-                'a role must be provided for a user (either ADMIN, CUSTOMER, or STAFF)'
+                'A role must be provided for a user (either ADMIN, CUSTOMER, or STAFF)'
             );
 
         if (isNullOrEmpty(firstName))
@@ -106,13 +104,9 @@ export default function userAuthRepository() {
         if (isNullOrEmpty(lastName))
             throw new Error('Last name must be provided');
 
-        if (isNullOrEmpty(email)) throw new Error('Email must be provided');
-
-        if (isNullOrEmpty(password))
-            throw new Error('Password must be provided');
-
-        if (isNullOrEmpty(phone))
-            throw new Error('Phone number must be provided');
+        validateEmail(email);
+        validatePassword(password);
+        validatePhone(phone);
 
         // check for existing user (email unique)
         const existingUser = await prisma.user.findUnique({
@@ -123,15 +117,10 @@ export default function userAuthRepository() {
         });
 
         if (existingUser) throw new Error(`${email} already exists`);
-        validateEmail(email);
-        // simple password validation - simple assignment
-        validatePassword(password);
         const { hashPassword } = PasswordHasher();
 
         // hash and persist the password, don't bother with salting
         const hashedPassword = hashPassword(password);
-
-        validatePhone(phone);
 
         // finally persist user
         const result = await {
@@ -140,9 +129,17 @@ export default function userAuthRepository() {
             STAFF: createStaffAsync
         }[role](email, firstName, lastName, hashedPassword, phone);
 
-        // TODO: generate signup "access" log
-        // TODO: trigger email notification
-        // TODO: generate notification "access" log
+        ServerOptions.verbose &&
+            console.debug(
+                `User Auth Repository | Signed up new user '${result.id}' with email '${result.email}'`
+            );
+
+        await sendAsync({
+            to: result.email,
+            subject: `Welcome ${result.firstName} ${result.lastName} to IoT Bay!`,
+            message:
+                "Welcome to the Iot Bay (Group 5) project system. This notification was sent because you just signed up.<br />If this wasn't you, click <a href='https://www.youtube.com/watch?v=dQw4w9WgXcQ'>here</a>"
+        });
     }
 
     async function loginAsync(email, password) {
@@ -319,18 +316,18 @@ export default function userAuthRepository() {
     };
 }
 
-// helpers
+// validators
 
 function validatePassword(password) {
-    if (isNullOrEmpty(password))
-        throw new Error('Password is required (none was provided)');
+    if (isNullOrEmpty(password)) throw new Error('Password must be provided');
 
-    if (password.length < passwordOptions.minLength)
+    if (password.length < AuthOptions.minLength) {
         throw new Error(
-            `Password must be at least ${passwordOptions.minLength} characters`
+            `Password must be at least ${AuthOptions.minLength} characters`
         );
+    }
 
-    if (passwordOptions.requireAlphaNumeric) {
+    if (AuthOptions.requireAlphaNumeric) {
         const reg = new RegExp(/^(?=.*[a-zA-Z])(?=.*\d).{8,}$/);
         if (!reg.test(password))
             throw new Error(
@@ -353,13 +350,7 @@ function validatePhone(phone) {
 function validateEmail(email) {
     if (isNullOrEmpty(email)) throw new Error('An email must be provided');
 
-    if (!isValidEmail(email)) {
-        throw new Error('Invalid email format');
-    }
-}
-
-function isValidEmail(email) {
     // format e.g ran@gmail.com
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+    if (!emailRegex.test(email)) throw new Error('Invalid email format');
 }
