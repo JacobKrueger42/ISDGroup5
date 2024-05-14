@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import axios from 'axios';
+import { useAuth, useFetch, useServer } from '#hooks';
 import { CartContext } from '../contexts/CartContext';
 
 const useCheckout = () => {
