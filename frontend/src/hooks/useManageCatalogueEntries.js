@@ -10,25 +10,73 @@ export default function useManageCatalogueEntries({
 }) {
     const [error, setError] = useState(null);
 
-    function openAddCatalogueEntry() {}
+    ////////////////////////////////////
+    // Create catalogue entry
+    ////////////////////////////////////
 
-    function setOpenAddCatalogueEntry() {}
+    const [openAddCatalogueEntry, setOpenAddCatalogueEntry] = useState(false);
 
-    function openUpdateCatalogueEntry() {}
+    function onCloseAddCatalogueEntry() {
+        setOpenAddCatalogueEntry(false);
+        setError(null);
+    }
 
-    function setOpenUpdateCatalogueEntry() {}
+    async function onAddCatalogueEntrySubmitAsync(event) {
+        event.preventDefault();
 
-    function onAddCatalogueEntrySubmitAsync() {}
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        console.log(formJson);
+        const success = true;
+        // const { success, error } = await createCatalogueEntryAsync(formJson);
 
-    function onCloseAddCatalogueEntry() {}
+        if (success) onCloseAddCatalogueEntry();
+        else setError(error);
+    }
 
-    function onUpdateCatalogueEntrySubmitAsync() {}
+    ////////////////////////////////////
+    // Update catalogue entry
+    ////////////////////////////////////
 
-    function onCloseUpdateCatalogueEntry() {}
+    const [openUpdateCatalogueEntry, setOpenUpdateCatalogueEntry] =
+        useState(false);
 
-    function getFirstOrDefaultSelectedCatalogueEntry() {}
+    function onCloseUpdateCatalogueEntry() {
+        setOpenUpdateCatalogueEntry(false);
+        setError(null);
+    }
 
-    function onDeleteCatalogueEntryAsync() {}
+    async function onUpdateCatalogueEntrySubmitAsync(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        const success = await updateCatalogueEntryAsync({
+            id: selected[0],
+            ...formJson
+        });
+
+        if (success) onCloseUpdateCatalogueEntry();
+        else setError(error);
+    }
+
+    ////////////////////////////////////
+    // Delete catalogue entry
+    ////////////////////////////////////
+
+    async function onDeleteCatalogueEntryAsync(event) {
+        event.preventDefault();
+        const existing = getFirstOrDefaultSelectedCatalogueEntry();
+        await removeCatalogueEntryAsync({ id: existing.id });
+        clearSelection();
+    }
+
+    ////////////////////////////////////
+    // Helpers
+    ////////////////////////////////////
+
+    const getFirstOrDefaultSelectedCatalogueEntry = () =>
+        catalogue.find(p => p.id === selected[0]);
 
     return {
         error,

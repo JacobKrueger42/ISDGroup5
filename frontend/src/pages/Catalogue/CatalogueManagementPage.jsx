@@ -8,6 +8,8 @@ import {
 import { Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { CatalgoueEntryManagementHeader } from './CatalgoueEntryManagementHeader';
+import { AddCatalogueEntryForm } from './AddCatalogueEntryForm';
+import { UpdateCatalogueEntryForm } from './UpdateCatalogueEntryForm';
 import { mapToRow } from './RowMapper';
 
 export default function CatalogueManagementPage() {
@@ -23,7 +25,7 @@ export default function CatalogueManagementPage() {
         isLoading: isLoadingCatalogue
     } = useCatalogue();
 
-    const { isLoading: isLoadingProducts } = useProducts();
+    const { products, isLoading: isLoadingProducts } = useProducts();
 
     const tableProps = useEnhancedTable(catalogue.map(mapToRow));
     const { selected, searchTerm, setSearchTerm } = tableProps;
@@ -89,22 +91,23 @@ export default function CatalogueManagementPage() {
                         Delete
                     </Button>
 
-                    {/* {<AddCatalogueEntryForm
-                            open={openAddCatalogueEntry}
-                            onClose={onCloseAddCatalogueEntry}
-                            onSubmit={onAddCatalogueEntrySubmitAsync}
-                            isLoading={isLoading}
-                            error={error}
-                        />
+                    <AddCatalogueEntryForm
+                        open={openAddCatalogueEntry}
+                        onClose={onCloseAddCatalogueEntry}
+                        onSubmit={onAddCatalogueEntrySubmitAsync}
+                        productOptions={products.map(p => p.name)}
+                        isLoading={isLoading}
+                        error={error}
+                    />
 
-                        <UpdateCatalogueEntry
-                            open={openUpdateCatalogueEntry}
-                            onClose={onCloseUpdateCatalogueEntry}
-                            onSubmit={onUpdateCatalogueEntrySubmitAsync}
-                            error={error}
-                            isLoading={isLoading}
-                            getExisting={getFirstOrDefaultSelectedCatalogueEntry}
-                        /> */}
+                    <UpdateCatalogueEntryForm
+                        open={openUpdateCatalogueEntry}
+                        onClose={onCloseUpdateCatalogueEntry}
+                        onSubmit={onUpdateCatalogueEntrySubmitAsync}
+                        error={error}
+                        isLoading={isLoading}
+                        getExisting={getFirstOrDefaultSelectedCatalogueEntry}
+                    />
                 </>
             }
         >
