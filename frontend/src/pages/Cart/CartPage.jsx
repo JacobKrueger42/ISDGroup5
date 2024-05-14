@@ -4,11 +4,11 @@ import { Typography, Button, List, ListItem, ListItemText, TextField } from '@mu
 import { useCart } from '../../contexts/CartContext'; // Adjust the import path as necessary
 import { Layout } from '#components'; // Ensure Layout is a reusable component that accepts children
 import { bannerPlaceholder } from '#assets'; 
-import { useCheckout } from '#hooks'; // Correct the import statement
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 export default function CartPage() {
     const { state, dispatch } = useCart();
-    const checkout = useCheckout();
+    const navigate = useNavigate(); // Initialize the useNavigate hook
 
     const handleRemoveClick = (productId) => {
         dispatch({ type: 'REMOVE_ITEM', payload: { productId } });
@@ -25,7 +25,7 @@ export default function CartPage() {
         <Layout
             title="Your Cart"
             headerContent={<Typography variant="h4">Shopping Cart</Typography>}
-            headerActions={<Actions checkout={checkout} />}
+            headerActions={<Actions navigate={navigate} />}
         >
             <img loading="lazy" src={bannerPlaceholder} alt="Shopping Cart Banner" style={{ width: '100%' }} />
             <List>
@@ -52,9 +52,13 @@ export default function CartPage() {
     );
 }
 
-function Actions({ checkout }) {
+function Actions({ navigate }) {
+    const handleProceedToCheckout = () => {
+        navigate('/checkout'); // Navigate to the Checkout page
+    };
+
     return (
-        <Button variant="contained" color="primary" onClick={checkout} style={{ marginLeft: 'auto' }}>
+        <Button variant="contained" color="primary" onClick={handleProceedToCheckout} style={{ marginLeft: 'auto' }}>
             Proceed to Checkout
         </Button>
     );
