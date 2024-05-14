@@ -21,14 +21,10 @@ export default function useManageCatalogueEntries({
         setError(null);
     }
 
-    async function onAddCatalogueEntrySubmitAsync(event) {
-        event.preventDefault();
+    async function onAddCatalogueEntrySubmitAsync(formData) {
+        console.log(formData);
 
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        console.log(formJson);
-        const success = true;
-        // const { success, error } = await createCatalogueEntryAsync(formJson);
+        const { success, error } = await createCatalogueEntryAsync(formData);
 
         if (success) onCloseAddCatalogueEntry();
         else setError(error);
@@ -47,8 +43,6 @@ export default function useManageCatalogueEntries({
     }
 
     async function onUpdateCatalogueEntrySubmitAsync(event) {
-        event.preventDefault();
-
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
         const success = await updateCatalogueEntryAsync({

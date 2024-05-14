@@ -8,18 +8,19 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    TextField
+    TextField,
+    InputAdornment
 } from '@mui/material';
 
 export function AddCatalogueEntryForm({
     open,
     onClose,
     onSubmit,
-    productOptions,
+    products,
+    categoryOptions,
     error,
     isLoading
 }) {
-    // provide a placeholder
     const [selectedProduct, setSelectedProduct] = useState('');
 
     const dropdownOptions = {
@@ -30,13 +31,36 @@ export function AddCatalogueEntryForm({
         placeholder: 'Choose a product'
     };
 
+    const [selectedCategory, setSelectedCategory] = useState('');
+
+    const categoryDropdownOptions = {
+        id: 'categoryId',
+        label: 'Category',
+        value: selectedCategory,
+        onChange: event => setSelectedCategory(event.target.value),
+        placeholder: 'Choose a category'
+    };
+
+    const onSubmitWrapper = event => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const formJson = Object.fromEntries(formData.entries());
+        const found = products.find(p => p.name === selectedProduct);
+
+        onSubmit({
+            ...formJson,
+            productId: found?.id ?? undefined,
+            category: selectedCategory ?? undefined
+        });
+    };
+
     return (
         <Dialog
             open={open}
             onClose={onClose}
             PaperProps={{
                 component: 'form',
-                onSubmit: onSubmit
+                onSubmit: onSubmitWrapper
             }}
         >
             <DialogTitle>Add a new catalogue entry</DialogTitle>
@@ -49,48 +73,40 @@ export function AddCatalogueEntryForm({
                     </a>{' '}
                     to identify it.
                 </DialogContentText>
-                <TextField
-                    autoFocus
-                    name='uniqueProductCode'
-                    label='UPC (Unique Product Code)'
-                    fullWidth
-                    required
-                    type='text'
-                    error={!!error}
-                    margin='normal'
-                />
-                <TextField
-                    name='name'
-                    label='Name'
-                    fullWidth
-                    required
-                    type='text'
-                    error={!!error}
-                    margin='normal'
-                />
-                <TextField
-                    name='brandName'
-                    label='Brand Name'
-                    fullWidth
-                    required
-                    type='text'
-                    error={!!error}
-                    margin='normal'
-                />
-                <TextField
-                    name='description'
-                    label='Description'
-                    fullWidth
-                    type='text'
-                    margin='normal'
-                    multiline
-                    minRows='4'
-                    maxRows='8'
-                />
                 <Dropdown
-                    options={productOptions}
+                    autoFocus
+                    options={products.map(p => p.name)}
                     error={!!error}
                     {...dropdownOptions}
+                />
+                <TextField
+                    name='quantity'
+                    label='Stock quantity (set the current stock level)'
+                    fullWidth
+                    required
+                    type='number'
+                    error={!!error}
+                    margin='normal'
+                />
+                <TextField
+                    InputProps={{
+                        startAdornment: (
+                            <InputAdornment position='start'>$</InputAdornment>
+                        )
+                    }}
+                    name='price'
+                    label='Price (AUD$)'
+                    fullWidth
+                    required
+                    type='number'
+                    error={!!error}
+                    margin='normal'
+                />
+                <Dropdown
+                    autoFocus
+                    options={categoryOptions}
+                    error={!!error}
+                    {...categoryDropdownOptions}
                 />
             </DialogContent>
             <DialogActions>

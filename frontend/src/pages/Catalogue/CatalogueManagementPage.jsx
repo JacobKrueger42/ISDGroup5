@@ -12,6 +12,20 @@ import { AddCatalogueEntryForm } from './AddCatalogueEntryForm';
 import { UpdateCatalogueEntryForm } from './UpdateCatalogueEntryForm';
 import { mapToRow } from './RowMapper';
 
+const categoryOptions = [
+    'TOOLS AND TEST EQUIPMENT',
+    'SOUND AND VIDEO',
+    'CABLES AND CONNECTORS',
+    'COMPONENTS AND ELECTROMECHANICAL',
+    'POWER AND BATTERIES',
+    'HOBBIES AND GADGETS',
+    '3D PRINTING',
+    'SECURITY AND SURVEILLANCE',
+    'COMPUTING AND COMMUNICATION',
+    'KITS, SCIENCE AND LEARNING',
+    'OUTDOORS AND AUTOMOTIVE'
+];
+
 export default function CatalogueManagementPage() {
     // aggregate loading flags
     const [isLoading, setLoading] = useState(true);
@@ -95,7 +109,8 @@ export default function CatalogueManagementPage() {
                         open={openAddCatalogueEntry}
                         onClose={onCloseAddCatalogueEntry}
                         onSubmit={onAddCatalogueEntrySubmitAsync}
-                        productOptions={products.map(p => p.name)}
+                        products={products}
+                        categoryOptions={categoryOptions}
                         isLoading={isLoading}
                         error={error}
                     />

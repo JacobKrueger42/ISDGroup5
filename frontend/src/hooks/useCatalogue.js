@@ -138,13 +138,19 @@ export default function useCatalogue() {
     }
 
     function createCatalogueEntryAsync({
-        catalogueId,
         productId,
-        quantity,
         price,
-        category
+        category,
+        quantity
     }) {
-        console.log('create catalogue entry', catalogueId);
+        console.log('creating a new catalogue entry for product: ', productId);
+
+        console.log('created: ', {
+            productId,
+            price,
+            category,
+            quantity
+        });
     }
 
     function updateCatalogueEntryAsync({
@@ -155,6 +161,14 @@ export default function useCatalogue() {
         isArchived
     }) {
         console.log('update catalogue entry', catalogueId);
+
+        console.log('updated: ', {
+            catalogueId,
+            quantity,
+            price,
+            category,
+            isArchived
+        });
     }
 
     return {
