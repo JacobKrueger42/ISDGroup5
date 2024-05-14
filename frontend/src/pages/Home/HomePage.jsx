@@ -26,7 +26,6 @@ function Greeter() {
                     ? `Welcome ${user.firstName}, 👋`
                     : 'Welcome, please login or create an account'}
             </Typography>
-            {/* don't show auth errors if the user isn't logged in - keep the landing page clean */}
             {user && error && (
                 <Alert sx={{ margin: 4 }} severity='error'>
                     {error.message}
@@ -46,6 +45,12 @@ function Actions() {
         <>
             <Button variant='contained' onClick={() => navigate('/catalogue')}>
                 Shop Now
+            </Button>
+            <Button variant='outlined' onClick={() => navigate('/cart')} style={{ marginLeft: '10px' }}>
+                View Cart
+            </Button>
+            <Button variant='outlined' onClick={() => navigate('/checkout')} style={{ marginLeft: '10px' }}>
+                Checkout
             </Button>
         </>
     );
