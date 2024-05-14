@@ -1,8 +1,10 @@
+// src/pages/Cart/CartPage.jsx
+import React from 'react';
 import { Typography, Button, List, ListItem, ListItemText, TextField } from '@mui/material';
-import { useCart } from '../../contexts/CartContext';
-import { Layout } from '#components';
-import { bannerPlaceholder } from '#assets';
-import useCheckout from '#hooks';
+import { useCart } from '../../contexts/CartContext'; // Adjust the import path as necessary
+import { Layout } from '#components'; // Ensure Layout is a reusable component that accepts children
+import { bannerPlaceholder } from '#assets'; 
+import { useCheckout } from '#hooks'; // Correct the import statement
 
 export default function CartPage() {
     const { state, dispatch } = useCart();
@@ -14,10 +16,10 @@ export default function CartPage() {
 
     const handleQuantityChange = (event, productId) => {
         const quantity = parseInt(event.target.value, 10);
-        dispatch({ type: 'UPDATE_ITEM', payload: { productId, quantity } });
+        if (quantity > 0) {
+            dispatch({ type: 'UPDATE_ITEM', payload: { productId, quantity } });
+        }
     };
-
-    if (state.isLoading) return <Typography>Loading...</Typography>;
 
     return (
         <Layout
