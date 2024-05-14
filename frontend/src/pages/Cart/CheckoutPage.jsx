@@ -1,4 +1,3 @@
-import React from 'react';
 import { Typography, Button, List, ListItem, ListItemText, TextField, Grid, Paper, Box } from '@mui/material';
 import { useCart } from '../../contexts/CartContext';
 import { Layout } from '#components';
