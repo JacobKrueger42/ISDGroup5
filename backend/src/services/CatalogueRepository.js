@@ -58,26 +58,28 @@ export default function catalogueRepository() {
         return prisma.catalogueEntry
             .update({
                 where: { id: Number(id) },
-                data: { category: category }
+                data: { productCategory: category }
             })
             .catch(error =>
                 console.error(`error updating catalogue entry '${id}':`, error)
             );
     }
 
-    // TODO: make this a soft delete for data integrity of order system
     async function deleteCatalogueEntryAsync(id) {
         await getCatalogueEntryByIdAsync(id);
 
         try {
-            return await prisma.catalogueEntry.delete({
+            return await prisma.catalogueEntry.update({
+                data: {
+                    isArchived: true
+                },
                 where: {
                     id: Number(id)
                 }
             });
         } catch (error) {
             return console.error(
-                `error deleting catalogue entry '${id}':`,
+                `error archiving catalogue entry '${id}':`,
                 error
             );
         }
@@ -114,6 +116,7 @@ export default function catalogueRepository() {
             include: {
                 product: {
                     select: {
+                        id: true,
                         name: true,
                         brandName: true,
                         description: true
@@ -172,12 +175,12 @@ export default function catalogueRepository() {
         });
     }
 
-    async function updateCatalogueEntryAsync(
+    async function updateCatalogueEntryAsync({
         id,
         price,
         stockQuantity,
         category
-    ) {
+    }) {
         if (isNullOrEmpty(id))
             throw new Error(
                 'an id must be provided to update a catalogue entry'
@@ -206,7 +209,7 @@ export default function catalogueRepository() {
         }
 
         if (category) {
-            await editCatalogueEntryCategoryAsync({ id, catalogueId });
+            await editCatalogueEntryCategoryAsync({ id, category });
         }
     }
 

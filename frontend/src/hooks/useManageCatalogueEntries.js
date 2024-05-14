@@ -21,14 +21,8 @@ export default function useManageCatalogueEntries({
         setError(null);
     }
 
-    async function onAddCatalogueEntrySubmitAsync(event) {
-        event.preventDefault();
-
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        console.log(formJson);
-        const success = true;
-        // const { success, error } = await createCatalogueEntryAsync(formJson);
+    async function onAddCatalogueEntrySubmitAsync(formData) {
+        const { success, error } = await createCatalogueEntryAsync(formData);
 
         if (success) onCloseAddCatalogueEntry();
         else setError(error);
@@ -46,15 +40,8 @@ export default function useManageCatalogueEntries({
         setError(null);
     }
 
-    async function onUpdateCatalogueEntrySubmitAsync(event) {
-        event.preventDefault();
-
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        const success = await updateCatalogueEntryAsync({
-            id: selected[0],
-            ...formJson
-        });
+    async function onUpdateCatalogueEntrySubmitAsync(formData) {
+        const { success, error } = await updateCatalogueEntryAsync(formData);
 
         if (success) onCloseUpdateCatalogueEntry();
         else setError(error);
@@ -67,7 +54,7 @@ export default function useManageCatalogueEntries({
     async function onDeleteCatalogueEntryAsync(event) {
         event.preventDefault();
         const existing = getFirstOrDefaultSelectedCatalogueEntry();
-        await removeCatalogueEntryAsync({ id: existing.id });
+        await removeCatalogueEntryAsync(existing.id);
         clearSelection();
     }
 
@@ -76,7 +63,7 @@ export default function useManageCatalogueEntries({
     ////////////////////////////////////
 
     const getFirstOrDefaultSelectedCatalogueEntry = () =>
-        catalogue.find(p => p.id === selected[0]);
+        catalogue.find(c => c.id === selected[0]);
 
     return {
         error,

@@ -12,6 +12,20 @@ import { AddCatalogueEntryForm } from './AddCatalogueEntryForm';
 import { UpdateCatalogueEntryForm } from './UpdateCatalogueEntryForm';
 import { mapToRow } from './RowMapper';
 
+const categoryOptions = [
+    'TOOLS AND TEST EQUIPMENT',
+    'SOUND AND VIDEO',
+    'CABLES AND CONNECTORS',
+    'COMPONENTS AND ELECTROMECHANICAL',
+    'POWER AND BATTERIES',
+    'HOBBIES AND GADGETS',
+    '3D PRINTING',
+    'SECURITY AND SURVEILLANCE',
+    'COMPUTING AND COMMUNICATION',
+    'KITS, SCIENCE AND LEARNING',
+    'OUTDOORS AND AUTOMOTIVE'
+];
+
 export default function CatalogueManagementPage() {
     // aggregate loading flags
     const [isLoading, setLoading] = useState(true);
@@ -27,7 +41,7 @@ export default function CatalogueManagementPage() {
 
     const { products, isLoading: isLoadingProducts } = useProducts();
 
-    const tableProps = useEnhancedTable(catalogue.map(mapToRow));
+    const tableProps = useEnhancedTable({ rows: catalogue.map(mapToRow) });
     const { selected, searchTerm, setSearchTerm } = tableProps;
 
     const {
@@ -95,7 +109,9 @@ export default function CatalogueManagementPage() {
                         open={openAddCatalogueEntry}
                         onClose={onCloseAddCatalogueEntry}
                         onSubmit={onAddCatalogueEntrySubmitAsync}
-                        productOptions={products.map(p => p.name)}
+                        existingCatalogue={catalogue}
+                        products={products}
+                        categoryOptions={categoryOptions}
                         isLoading={isLoading}
                         error={error}
                     />
@@ -104,9 +120,10 @@ export default function CatalogueManagementPage() {
                         open={openUpdateCatalogueEntry}
                         onClose={onCloseUpdateCatalogueEntry}
                         onSubmit={onUpdateCatalogueEntrySubmitAsync}
+                        categoryOptions={categoryOptions}
                         error={error}
                         isLoading={isLoading}
-                        getExisting={getFirstOrDefaultSelectedCatalogueEntry}
+                        existing={getFirstOrDefaultSelectedCatalogueEntry()}
                     />
                 </>
             }

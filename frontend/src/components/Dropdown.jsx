@@ -1,4 +1,5 @@
 import { FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { titleCase } from '#utils';
 
 export default function Dropdown({ options, error, ...dropDownProps }) {
     return (
@@ -8,7 +9,7 @@ export default function Dropdown({ options, error, ...dropDownProps }) {
                 {options &&
                     options.map((option, index) => (
                         <MenuItem value={option} key={index}>
-                            {option}
+                            {titleCase(option)}
                         </MenuItem>
                     ))}
             </Select>

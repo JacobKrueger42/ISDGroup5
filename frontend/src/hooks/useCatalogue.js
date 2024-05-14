@@ -44,71 +44,71 @@ export default function useCatalogue() {
 
     const [isLoading, setLoading] = useState(true);
 
-    const { get } = useFetch();
+    const { get, post, remove } = useFetch();
 
     useEffect(() => {
-        function LoadCatalogueAsync() {
-            const disableRefresh = true;
-            makeServerChange(
-                // client side pagination for simplicity
-                async () => await get('catalogue/list?take=50'),
-                catalogue => {
-                    console.log(
-                        `loaded ${catalogue.totalCount} catalogue entries`
-                    );
-
-                    const mapedDtos = catalogue.results.map(c => {
-                        return { ...c, assetFn: mockProductUrlRoulette() };
-                    });
-
-                    setCatalogue(mapedDtos);
-
-                    setTotalCount(catalogue.totalCount);
-
-                    // initialise a new searcher instance as the dependencies have changed
-                    setSearcher(
-                        new FuzzySearch(
-                            catalogue.results,
-                            ['name', 'uniqueProductCode'],
-                            {
-                                caseSensitive: true
-                            }
-                        )
-                    );
-
-                    // same as the catalogue until we have a search term
-                    setVisibleCatalogue(mapedDtos);
-                },
-                disableRefresh
-            );
-        }
-
         (async () => {
             // we should only allow users to add to a cart if they're logged in
             setDisableAddToCart(!user);
 
             // first page load
-            if (!catalogue || catalogue.length === 0) {
-                LoadCatalogueAsync();
-                return;
-            }
-
-            if (searchTerm && searcher) {
-                const filteredResults = searcher.search(
-                    escapeRegExp(searchTerm)
-                );
-                console.log('search results: ', filteredResults);
-                setVisibleCatalogue(filteredResults);
-            } else {
-                // reset to the original content without prompting a network call
-                setVisibleCatalogue(catalogue);
-            }
+            if (!catalogue || catalogue.length === 0)
+                await LoadCatalogueAsync();
+            else await RefreshCatalogueAsync();
         })();
 
         setLoading(isLoadingServer && isLoadingUser);
         // we only care to refresh when we toggle these flags
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shouldRefresh, searchTerm, isLoadingServer, isLoadingUser]);
+
+    async function RefreshCatalogueAsync() {
+        if (shouldRefresh) {
+            console.log('refreshing catalogue...');
+            await LoadCatalogueAsync();
+        } else if (searchTerm && searcher) {
+            const filteredResults = searcher.search(escapeRegExp(searchTerm));
+            console.log('search results: ', filteredResults);
+            setVisibleCatalogue(filteredResults);
+        } else {
+            // reset to the original content without prompting a network call
+            setVisibleCatalogue(catalogue);
+        }
+    }
+
+    function LoadCatalogueAsync() {
+        const disableRefresh = true;
+        return makeServerChange(
+            // client side pagination for simplicity
+            async () => await get('catalogue/list?take=50'),
+            catalogue => {
+                console.log(`loaded ${catalogue.totalCount} catalogue entries`);
+
+                const mapedDtos = catalogue.results.map(c => {
+                    return { ...c, assetFn: mockProductUrlRoulette() };
+                });
+
+                setCatalogue(mapedDtos);
+
+                setTotalCount(catalogue.totalCount);
+
+                // initialise a new searcher instance as the dependencies have changed
+                setSearcher(
+                    new FuzzySearch(
+                        catalogue.results,
+                        ['name', 'uniqueProductCode'],
+                        {
+                            caseSensitive: true
+                        }
+                    )
+                );
+
+                // same as the catalogue until we have a search term
+                setVisibleCatalogue(mapedDtos);
+            },
+            disableRefresh
+        );
+    }
 
     function onAddToCart(event) {
         event.preventDefault();
@@ -135,16 +135,32 @@ export default function useCatalogue() {
 
     function removeCatalogueEntryAsync(catalogueId) {
         console.log('remove catalogue entry', catalogueId);
+
+        if (!catalogueId)
+            throw new Error('cannot remove a catalogue entry without its ID');
+
+        return makeServerChange(
+            async () => await remove(`catalogue/${catalogueId}/remove`),
+            res => console.log(`remove catalogue entry with result: `, res)
+        );
     }
 
     function createCatalogueEntryAsync({
-        catalogueId,
         productId,
-        quantity,
         price,
-        category
+        category,
+        quantity
     }) {
-        console.log('create catalogue entry', catalogueId);
+        return makeServerChange(
+            async () =>
+                await post('catalogue/create', {
+                    productId: productId,
+                    price: price,
+                    productCategory: category,
+                    stockQuantity: quantity
+                }),
+            res => console.log(`created catalogue entry with result: `, res)
+        );
     }
 
     function updateCatalogueEntryAsync({
@@ -154,7 +170,16 @@ export default function useCatalogue() {
         category,
         isArchived
     }) {
-        console.log('update catalogue entry', catalogueId);
+        return makeServerChange(
+            async () =>
+                await post(`catalogue/${catalogueId}/update`, {
+                    price: price,
+                    stockQuantity: quantity,
+                    category: category,
+                    isArchived: isArchived
+                }),
+            res => console.log(`updated catalogue entry with result: `, res)
+        );
     }
 
     return {

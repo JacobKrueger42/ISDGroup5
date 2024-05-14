@@ -16,7 +16,7 @@ export default function ProductsPage() {
         isLoading
     } = useProducts();
 
-    const tableProps = useEnhancedTable(products.map(mapToRow));
+    const tableProps = useEnhancedTable({ rows: products.map(mapToRow) });
     const { selected, searchTerm, setSearchTerm } = tableProps;
 
     const {
