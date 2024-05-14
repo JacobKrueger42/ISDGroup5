@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography, Button, List, ListItem, ListItemText, TextField } from '@mui/material';
 import { useCart } from '../../contexts/CartContext'; 
 import { Layout } from '#components'; 
-import { bannerPlaceholder } from '#assets'; 
+//import { bannerPlaceholder } from '#assets'; 
 import useCheckout from '#hooks';
 
 export default function CartPage() {
