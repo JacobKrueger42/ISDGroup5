@@ -1,60 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useContext } from 'react';
+import { CartContext } from '../contexts/CartContext'; // Correct import path
 
 export function useCart() {
-    const [cartItems, setCartItems] = useState(() => {
-        const savedCart = localStorage.getItem('cartItems');
-        return savedCart ? JSON.parse(savedCart) : [];
-    });
+  const { state, dispatch } = useContext(CartContext);
 
-    useEffect(() => {
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }, [cartItems]);
+  const addToCart = (product, quantity) => {
+    dispatch({ type: 'ADD_ITEM', payload: { ...product, quantity } });
+  };
 
-    const addToCart = (product, quantity) => {
-        const existingItem = cartItems.find(item => item.id === product.id);
+  const updateCartItem = (productId, quantity) => {
+    dispatch({ type: 'UPDATE_ITEM', payload: { productId, quantity } });
+  };
 
-        if (existingItem) {
-            console.log('item already in cart, updating quantity', {
-                name: existingItem.name,
-                quantity: existingItem.quantity + quantity
-            });
-            setCartItems(
-                cartItems.map(item =>
-                    item.id === product.id
-                        ? { ...item, quantity: item.quantity + quantity }
-                        : item
-                )
-            );
-        } else {
-            console.log('item added to cart for first time', {
-                name: product.name,
-                quantity
-            });
-            setCartItems([...cartItems, { ...product, quantity }]);
-        }
-    };
+  const removeCartItem = (productId) => {
+    dispatch({ type: 'REMOVE_ITEM', payload: { productId } });
+  };
 
-    const updateCartItem = (productId, quantity) => {
-        setCartItems(
-            cartItems.map(item =>
-                item.id === productId ? { ...item, quantity } : item
-            )
-        );
-    };
+  const clearCart = () => {
+    dispatch({ type: 'CLEAR_CART' });
+  };
 
-    const removeCartItem = productId => {
-        setCartItems(cartItems.filter(item => item.id !== productId));
-    };
-
-    const clearCart = () => {
-        setCartItems([]);
-    };
-
-    return {
-        cartItems,
-        addToCart,
-        updateCartItem,
-        removeCartItem,
-        clearCart
-    };
+  return {
+    cartItems: state.items,
+    addToCart,
+    updateCartItem,
+    removeCartItem,
+    clearCart
+  };
 }
