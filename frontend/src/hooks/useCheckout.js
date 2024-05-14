@@ -4,6 +4,8 @@ import { CartContext } from '../contexts/CartContext';
 
 const useCheckout = () => {
     const { state, dispatch } = useContext(CartContext);
+    const { isLoading, shouldRefresh, makeServerChange } = useServer();
+    const { post } = useFetch();
 
     const checkout = async () => {
         try {
