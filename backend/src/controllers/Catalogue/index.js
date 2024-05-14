@@ -52,12 +52,12 @@ export async function create(req, res, next) {
                     req.body;
 
                 const { createCatalogueEntryAsync } = catalogueRepository();
-                const catalogueEntryId = await createCatalogueEntryAsync(
+                const catalogueEntryId = await createCatalogueEntryAsync({
                     productId,
                     price,
                     productCategory,
                     stockQuantity
-                );
+                });
 
                 res.json({
                     catalogueEntryId: catalogueEntryId
@@ -83,12 +83,12 @@ export async function update(req, res, next) {
             async () => {
                 const { price, stockQuantity, category } = req.body;
                 const { updateCatalogueEntryAsync } = catalogueRepository();
-                await updateCatalogueEntryAsync(
-                    req.params.id,
+                await updateCatalogueEntryAsync({
+                    id: req.params.id,
                     price,
                     stockQuantity,
                     category
-                );
+                });
 
                 res.send('OK');
             },

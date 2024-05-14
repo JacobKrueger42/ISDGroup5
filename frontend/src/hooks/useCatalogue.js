@@ -44,7 +44,7 @@ export default function useCatalogue() {
 
     const [isLoading, setLoading] = useState(true);
 
-    const { get } = useFetch();
+    const { get, post } = useFetch();
 
     useEffect(() => {
         function LoadCatalogueAsync() {
@@ -143,14 +143,16 @@ export default function useCatalogue() {
         category,
         quantity
     }) {
-        console.log('creating a new catalogue entry for product: ', productId);
-
-        console.log('created: ', {
-            productId,
-            price,
-            category,
-            quantity
-        });
+        return makeServerChange(
+            async () =>
+                await post('catalogue/create', {
+                    productId: productId,
+                    price: price,
+                    productCategory: category,
+                    stockQuantity: quantity
+                }),
+            res => console.log(`created category with result: `, res)
+        );
     }
 
     function updateCatalogueEntryAsync({

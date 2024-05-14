@@ -1,5 +1,4 @@
 import { Dropdown } from '#components';
-import { useState } from 'react';
 import {
     Alert,
     Button,
@@ -8,20 +7,26 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
-    TextField,
-    InputAdornment
+    InputAdornment,
+    TextField
 } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 export function AddCatalogueEntryForm({
     open,
     onClose,
     onSubmit,
+    existingCatalogue,
     products,
     categoryOptions,
     error,
     isLoading
 }) {
+    const [submissionDisabled, disasbledSubmission] = useState(true);
     const [selectedProduct, setSelectedProduct] = useState('');
+
+    const getSelectedProduct = selected =>
+        products.find(p => p.name === selected);
 
     const dropdownOptions = {
         id: 'productId',
@@ -45,7 +50,7 @@ export function AddCatalogueEntryForm({
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const formJson = Object.fromEntries(formData.entries());
-        const found = products.find(p => p.name === selectedProduct);
+        const found = getSelectedProduct(selectedProduct);
 
         onSubmit({
             ...formJson,
@@ -53,6 +58,22 @@ export function AddCatalogueEntryForm({
             category: selectedCategory ?? undefined
         });
     };
+
+    useEffect(() => {
+        const found = getSelectedProduct(selectedProduct);
+
+        // we cannot create a catalogue entry for an existing product
+        const invalidProductSelected =
+            (found?.id ?? undefined) &&
+            existingCatalogue.map(c => c.productId).includes(found?.id);
+
+        disasbledSubmission(
+            invalidProductSelected ||
+                selectedProduct === '' ||
+                selectedCategory === ''
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedProduct]);
 
     return (
         <Dialog
@@ -118,7 +139,11 @@ export function AddCatalogueEntryForm({
                 >
                     Cancel
                 </Button>
-                <Button disabled={isLoading} variant='contained' type='submit'>
+                <Button
+                    disabled={isLoading || submissionDisabled}
+                    variant='contained'
+                    type='submit'
+                >
                     Submit
                 </Button>
             </DialogActions>

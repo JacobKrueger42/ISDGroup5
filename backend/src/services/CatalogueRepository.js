@@ -114,6 +114,7 @@ export default function catalogueRepository() {
             include: {
                 product: {
                     select: {
+                        id: true,
                         name: true,
                         brandName: true,
                         description: true
@@ -172,12 +173,12 @@ export default function catalogueRepository() {
         });
     }
 
-    async function updateCatalogueEntryAsync(
+    async function updateCatalogueEntryAsync({
         id,
         price,
         stockQuantity,
         category
-    ) {
+    }) {
         if (isNullOrEmpty(id))
             throw new Error(
                 'an id must be provided to update a catalogue entry'

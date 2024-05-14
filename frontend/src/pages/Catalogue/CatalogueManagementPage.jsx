@@ -109,6 +109,7 @@ export default function CatalogueManagementPage() {
                         open={openAddCatalogueEntry}
                         onClose={onCloseAddCatalogueEntry}
                         onSubmit={onAddCatalogueEntrySubmitAsync}
+                        existingCatalogue={catalogue}
                         products={products}
                         categoryOptions={categoryOptions}
                         isLoading={isLoading}

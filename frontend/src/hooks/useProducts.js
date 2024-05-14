@@ -23,6 +23,7 @@ export default function useProducts() {
                 disableRefresh
             );
         })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shouldRefresh]);
 
     async function createProductAsync({
