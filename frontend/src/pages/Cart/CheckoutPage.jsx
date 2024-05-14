@@ -1,7 +1,8 @@
+import React from 'react';
 import { Typography, Button, List, ListItem, ListItemText, TextField } from '@mui/material';
-import { useCart } from '../../contexts/CartContext';
-import { Layout } from '#components';
-import { bannerPlaceholder } from '#assets';
+import { useCart } from '../../contexts/CartContext'; 
+import { Layout } from '#components'; 
+import { bannerPlaceholder } from '#assets'; 
 import useCheckout from '#hooks';
 
 export default function CartPage() {
@@ -14,10 +15,10 @@ export default function CartPage() {
 
     const handleQuantityChange = (event, productId) => {
         const quantity = parseInt(event.target.value, 10);
-        dispatch({ type: 'UPDATE_ITEM', payload: { productId, quantity } });
+        if (quantity > 0) {
+            dispatch({ type: 'UPDATE_ITEM', payload: { productId, quantity } });
+        }
     };
-
-    if (state.isLoading) return <Typography>Loading...</Typography>;
 
     return (
         <Layout
@@ -53,7 +54,7 @@ export default function CartPage() {
 function Actions({ checkout }) {
     return (
         <Button variant="contained" color="primary" onClick={checkout} style={{ marginLeft: 'auto' }}>
-            Proceed to Checkout
+            Checkout
         </Button>
     );
 }
