@@ -42,13 +42,9 @@ export default function useManageCatalogueEntries({
         setError(null);
     }
 
-    async function onUpdateCatalogueEntrySubmitAsync(event) {
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
-        const success = await updateCatalogueEntryAsync({
-            id: selected[0],
-            ...formJson
-        });
+    async function onUpdateCatalogueEntrySubmitAsync(formData) {
+        console.log(formData);
+        const { success, error } = await updateCatalogueEntryAsync(formData);
 
         if (success) onCloseUpdateCatalogueEntry();
         else setError(error);

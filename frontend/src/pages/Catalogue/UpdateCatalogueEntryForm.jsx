@@ -9,7 +9,9 @@ import {
     DialogContentText,
     DialogTitle,
     InputAdornment,
-    TextField
+    TextField,
+    Switch,
+    FormControlLabel
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 
@@ -25,30 +27,55 @@ export function UpdateCatalogueEntryForm({
     const [submissionDisabled, disasbledSubmission] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState('');
 
+    const [formData, setFormData] = useState({
+        isArchived: false,
+        price: 0,
+        quantity: 0
+    });
+
     const categoryDropdownOptions = {
         id: 'categoryId',
         label: 'Category',
         value: selectedCategory,
-        onChange: event => setSelectedCategory(event.target.value),
-        placeholder: 'Choose a category'
+        onChange: event => setSelectedCategory(event.target.value)
+    };
+
+    const onUpdateForm = event => {
+        // checkboxes are always different for shits and giggles
+        if (event.target.name === 'isArchived') {
+            setFormData({
+                ...formData,
+                [event.target.name]: event.target.checked
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [event.target.name]: event.target.value
+            });
+        }
     };
 
     const onSubmitWrapper = event => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const formJson = Object.fromEntries(formData.entries());
 
         onSubmit({
-            ...formJson,
-            category: selectedCategory ?? undefined
+            catalogueId: existing.id,
+            category: selectedCategory,
+            ...formData
         });
     };
 
     useEffect(() => {
+        setFormData({
+            ...formData,
+            isArchived: existing?.isArchived ?? false,
+            price: existing?.price ?? 0,
+            quantity: existing?.quantity ?? 0
+        });
         setSelectedCategory(existing?.category ?? '');
-        disasbledSubmission(isLoading || selectedCategory === '');
+        disasbledSubmission(isLoading);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isLoading, selectedCategory, existing]);
+    }, [isLoading, existing]);
 
     return (
         existing && (
@@ -69,6 +96,12 @@ export function UpdateCatalogueEntryForm({
                         Update this catalogue entry with a new category, stock
                         levels, and/or pricing
                     </DialogContentText>
+                    {formData.isArchived && (
+                        <Alert sx={{ margin: 2 }} severity='warning'>
+                            This catalogue entry will be archived (the product
+                            will remain and must be removed separately)
+                        </Alert>
+                    )}
                     <TextField
                         label='Product'
                         value={existing.name}
@@ -83,7 +116,9 @@ export function UpdateCatalogueEntryForm({
                         autoFocus
                         name='quantity'
                         label='Stock quantity (set the current stock level)'
-                        value={existing.quantity}
+                        value={formData.quantity}
+                        onChange={onUpdateForm}
+                        disabled={formData.isArchived}
                         fullWidth
                         required
                         type='number'
@@ -100,7 +135,9 @@ export function UpdateCatalogueEntryForm({
                         }}
                         name='price'
                         label='Price (AUD$)'
-                        value={existing.price}
+                        value={formData.price}
+                        onChange={onUpdateForm}
+                        disabled={formData.isArchived}
                         fullWidth
                         required
                         type='number'
@@ -109,9 +146,18 @@ export function UpdateCatalogueEntryForm({
                     />
                     <Dropdown
                         autoFocus
+                        disabled={formData.isArchived}
                         options={categoryOptions}
                         error={!!error}
                         {...categoryDropdownOptions}
+                    />
+
+                    <FormControlLabel
+                        name='isArchived'
+                        checked={formData.isArchived}
+                        onChange={onUpdateForm}
+                        control={<Switch color='warning' />}
+                        label='Archive'
                     />
                 </DialogContent>
                 <DialogActions>
