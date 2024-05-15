@@ -1,53 +1,27 @@
-import { useState, useEffect } from 'react';
+import { useContext } from 'react';
+import { CartContext } from '../contexts/CartContext'; // Correct import path
 
 export function useCart() {
-    const [cartItems, setCartItems] = useState(() => {
-        const savedCart = localStorage.getItem('cartItems');
-        return savedCart ? JSON.parse(savedCart) : [];
-    });
-
-    useEffect(() => {
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    }, [cartItems]);
+    const { cartItems, dispatch } = useContext(CartContext);
 
     const addToCart = (product, quantity) => {
-        const existingItem = cartItems.find(item => item.id === product.id);
-
-        if (existingItem) {
-            console.log('item already in cart, updating quantity', {
-                name: existingItem.name,
-                quantity: existingItem.quantity + quantity
-            });
-            setCartItems(
-                cartItems.map(item =>
-                    item.id === product.id
-                        ? { ...item, quantity: item.quantity + quantity }
-                        : item
-                )
-            );
-        } else {
-            console.log('item added to cart for first time', {
-                name: product.name,
-                quantity
-            });
-            setCartItems([...cartItems, { ...product, quantity }]);
-        }
+        console.log('adding: ', { name: product.name, quantity });
+        dispatch({ type: 'ADD_ITEM', payload: { ...product, quantity } });
     };
 
     const updateCartItem = (productId, quantity) => {
-        setCartItems(
-            cartItems.map(item =>
-                item.id === productId ? { ...item, quantity } : item
-            )
-        );
+        console.log('updating: ', { id: productId, quantity });
+        dispatch({ type: 'UPDATE_ITEM', payload: { productId, quantity } });
     };
 
     const removeCartItem = productId => {
-        setCartItems(cartItems.filter(item => item.id !== productId));
+        console.log('removing: ', { id: productId });
+        dispatch({ type: 'REMOVE_ITEM', payload: { productId } });
     };
 
     const clearCart = () => {
-        setCartItems([]);
+        console.log('clearing everything');
+        dispatch({ type: 'CLEAR_CART' });
     };
 
     return {
