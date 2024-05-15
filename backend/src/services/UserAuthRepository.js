@@ -340,11 +340,11 @@ function validatePhone(phone) {
     if (isNullOrEmpty(phone))
         throw new Error('Phone number is required (none was provided)');
 
-    if (phone.length !== 10)
-        throw new Error('Phone number must be exactly 10 digits');
-
     if (!/^\d+$/.test(phone))
         throw new Error('Phone number must contain only numbers');
+
+    if (phone.length !== 10)
+        throw new Error('Phone number must be exactly 10 digits');
 }
 
 function validateEmail(email) {
