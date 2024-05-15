@@ -1,0 +1,102 @@
+[
+    {
+        "loginDate": "2024-05-01T08:00:00Z",
+        "logoutDate": "2024-05-01T09:00:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-02T08:00:00Z",
+        "logoutDate": "2024-05-02T08:30:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-03T09:00:00Z",
+        "logoutDate": "2024-05-03T10:00:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-04T08:00:00Z",
+        "logoutDate": "2024-05-04T08:45:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-05T08:00:00Z",
+        "logoutDate": "2024-05-05T09:15:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-06T10:00:00Z",
+        "logoutDate": "2024-05-06T11:00:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-07T08:00:00Z",
+        "logoutDate": "2024-05-07T08:30:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-08T09:00:00Z",
+        "logoutDate": "2024-05-08T09:45:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-09T08:00:00Z",
+        "logoutDate": "2024-05-09T08:30:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-10T08:00:00Z",
+        "logoutDate": "2024-05-10T08:45:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-11T08:00:00Z",
+        "logoutDate": "2024-05-11T09:00:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-12T08:00:00Z",
+        "logoutDate": "2024-05-12T08:30:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-13T09:00:00Z",
+        "logoutDate": "2024-05-13T09:45:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-14T08:00:00Z",
+        "logoutDate": "2024-05-14T08:30:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-01T10:00:00Z",
+        "logoutDate": "2024-05-01T11:00:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-02T10:00:00Z",
+        "logoutDate": "2024-05-02T10:30:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-03T11:00:00Z",
+        "logoutDate": "2024-05-03T11:45:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-04T10:00:00Z",
+        "logoutDate": "2024-05-04T10:30:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-05T10:00:00Z",
+        "logoutDate": "2024-05-05T10:45:00Z",
+        "userId": 4
+    },
+    {
+        "loginDate": "2024-05-06T11:00:00Z",
+        "logoutDate": "2024-05-06T11:30:00Z",
+        "userId": 4
+    }
+]
