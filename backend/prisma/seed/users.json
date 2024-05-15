@@ -22,5 +22,166 @@
         "password": "bbf2dead374654cbb32a917afd236656",
         "phone": "123123123",
         "role": "CUSTOMER"
+    },
+    {
+        "email": "customer1@notreal.com",
+        "firstName": "John",
+        "lastName": "Doe",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "1234567890",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer2@notreal.com",
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "2345678901",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer3@notreal.com",
+        "firstName": "Emily",
+        "lastName": "Johnson",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "3456789012",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer4@notreal.com",
+        "firstName": "Michael",
+        "lastName": "Brown",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "4567890123",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer5@notreal.com",
+        "firstName": "Jessica",
+        "lastName": "Davis",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "5678901234",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer6@notreal.com",
+        "firstName": "David",
+        "lastName": "Wilson",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "6789012345",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer7@notreal.com",
+        "firstName": "Sarah",
+        "lastName": "Martinez",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "7890123456",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer8@notreal.com",
+        "firstName": "Matthew",
+        "lastName": "Anderson",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "8901234567",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer9@notreal.com",
+        "firstName": "Ashley",
+        "lastName": "Thomas",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "9012345678",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer10@notreal.com",
+        "firstName": "Daniel",
+        "lastName": "Taylor",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "0123456789",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer11@notreal.com",
+        "firstName": "Laura",
+        "lastName": "Moore",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "1123456789",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer12@notreal.com",
+        "firstName": "Anthony",
+        "lastName": "Jackson",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "2234567890",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer13@notreal.com",
+        "firstName": "Amanda",
+        "lastName": "White",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "3345678901",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer14@notreal.com",
+        "firstName": "Joshua",
+        "lastName": "Harris",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "4456789012",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer15@notreal.com",
+        "firstName": "Elizabeth",
+        "lastName": "Martin",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "5567890123",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer16@notreal.com",
+        "firstName": "Andrew",
+        "lastName": "Lee",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "6678901234",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer17@notreal.com",
+        "firstName": "Megan",
+        "lastName": "Perez",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "7789012345",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer18@notreal.com",
+        "firstName": "Christopher",
+        "lastName": "Thompson",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "8890123456",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer19@notreal.com",
+        "firstName": "Nicole",
+        "lastName": "Garcia",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "9901234567",
+        "role": "CUSTOMER"
+    },
+    {
+        "email": "customer20@notreal.com",
+        "firstName": "Justin",
+        "lastName": "Martinez",
+        "password": "bbf2dead374654cbb32a917afd236656",
+        "phone": "1012345678",
+        "role": "CUSTOMER"
     }
+    
 ]

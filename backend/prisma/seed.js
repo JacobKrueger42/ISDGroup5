@@ -6,11 +6,14 @@ const prisma = new PrismaClient();
 
 import products from './seed/products.json' assert { type: 'json' };
 import users from './seed/users.json' assert { type: 'json' };
+import accesslogs from './seed/accesslogs.json' assert { type: 'json' };
+
 
 async function main() {
     await seedUsers();
     await seedProducts();
     await seedCatalogueEntries();
+    await seedAccessLogs();
 }
 
 async function seedUsers() {
@@ -45,6 +48,24 @@ async function seedProducts() {
         console.log();
     }
 }
+
+async function seedAccessLogs() {
+    console.log(`discovered ${accesslogs.length} access logs to seed`);
+
+    try {
+        for (const accesslog of accesslogs) {
+            await prisma.userAccessLog.create({
+                data: { ...accesslog }
+            });
+        }
+
+    } catch (error) {
+        console.log();
+        console.error('❌ error while seeding,', error);
+        console.log();
+    }
+}
+
 
 const catalogueEntryCategories = [
     'TOOLS AND TEST EQUIPMENT',
