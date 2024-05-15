@@ -11,6 +11,9 @@ import { default as CatalogueDetailPage } from './Catalogue/CatalogueDetailPage.
 import { default as AnonPage } from './Landing/landing.jsx';
 import { default as AccountPage } from './Account/AccountPage.jsx';
 import { default as AccessLogsPage } from './AccessLogs/AccessLogs.jsx';
+import { default as Checkout } from './Checkout/Checkout.jsx';
+
+
 
 export {
     AuthorisedPageShell,
@@ -24,5 +27,6 @@ export {
     CatalogueDetailPage,
     AnonPage,
     AccountPage,
-    AccessLogsPage
+    AccessLogsPage,
+    Checkout
 };

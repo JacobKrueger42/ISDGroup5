@@ -11,7 +11,8 @@ import {
     CatalogueDetailPage,
     AnonPage,
     AccountPage,
-    AccessLogsPage
+    AccessLogsPage,
+    Checkout
 } from '#pages';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -91,6 +92,14 @@ export default function App() {
                         element={
                             <AuthorisedPageShell>
                                 <AccessLogsPage />
+                            </AuthorisedPageShell>
+                        }
+                    />
+                    <Route
+                        path='/checkout'
+                        element={
+                            <AuthorisedPageShell>
+                                <Checkout />
                             </AuthorisedPageShell>
                         }
                     />

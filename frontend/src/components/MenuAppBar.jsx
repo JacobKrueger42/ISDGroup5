@@ -1,6 +1,7 @@
 import { ProfileMenu, Sidebar } from '#components';
 import HomeIcon from '@mui/icons-material/Home';
 import InventoryIcon from '@mui/icons-material/Inventory';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SellIcon from '@mui/icons-material/Sell';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -25,6 +26,12 @@ export default function MenuAppBar({ user, onLogout, isLoading }) {
             link: '/products',
             role: 'STAFF',
             icon: <InventoryIcon />
+        },
+        {
+            text: 'Checkout',
+            link: '/checkout',
+            role: 'CUSTOMER',
+            icon: <ShoppingCartIcon />
         }
     ];
 
