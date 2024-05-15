@@ -65,7 +65,7 @@ export default function AccessLogPage() {
                         direction='row'
                         alignItems='center'
                         border='1px solid gray'
-                        borderRadius={4}
+                        borderRadius={2}
                     >
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <TextField
@@ -137,7 +137,7 @@ export default function AccessLogPage() {
 
 const formatDate = dateString => {
     const date = new Date(dateString);
-    // return string is iso format:
+    // convert string from iso to australian format:
     return date.toLocaleString('en-AU', {
         timeZone: 'Australia/Sydney',
         year: 'numeric',
