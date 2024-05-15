@@ -137,7 +137,7 @@ describe('catalogue feature', () => {
 
             // Act
             const { updateCatalogueEntryAsync } = catalogueRepository();
-            await updateCatalogueEntryAsync(testCatalogueEntry.id, 1500); // Update price to 1500
+            await updateCatalogueEntryAsync({id: testCatalogueEntry.id, price: 1500}); // Update price to 1500
 
             // Assert
             const updatedEntry = await getCatalogueEntry(testProduct.id);

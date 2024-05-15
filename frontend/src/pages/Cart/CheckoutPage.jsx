@@ -20,6 +20,8 @@ export default function CheckoutPage() {
         checkout();
     };
 
+    console.log(cartItems);
+
     return (
         <Layout
             title='Checkout'
@@ -36,8 +38,8 @@ export default function CheckoutPage() {
                                 cartItems.map(item => (
                                     <ListItem key={item.productId} divider>
                                         <ListItemText
-                                            primary={item.product.name}
-                                            secondary={`$${item.product.price}`}
+                                            primary={item.name}
+                                            secondary={`$${item.price}`}
                                         />
                                         <Typography variant='body2'>
                                             Quantity: {item.quantity}

@@ -1,3 +1,5 @@
+import { ServerOptions } from "#configuration";
+
 export default function checkoutService() {
     const processCheckout = async items => {
         // Step 1: Validate items
@@ -45,9 +47,9 @@ export default function checkoutService() {
 
     // Mock payment processing function
     const processPayment = async items => {
-        console.log('Processing payment for items:', items);
+        ServerOptions.verbose && console.log('Processing payment for items:', items);
         // Simulate a payment processing delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise(resolve => setTimeout(resolve, 100));
         // Mock payment result
         return {
             success: true,
@@ -57,7 +59,7 @@ export default function checkoutService() {
 
     // Mock inventory update function
     const updateInventory = async items => {
-        console.log('Updating inventory for items:', items);
+        ServerOptions.verbose && console.log('Updating inventory for items:', items);
         // Simulate inventory update delay
         await new Promise(resolve => setTimeout(resolve, 500));
         // Mock inventory update success
@@ -66,7 +68,7 @@ export default function checkoutService() {
 
     // Mock order creation function
     const createOrderRecord = async (items, transactionId) => {
-        console.log('Creating order record for items:', items);
+        ServerOptions.verbose && console.log('Creating order record for items:', items);
         // Simulate order record creation delay
         await new Promise(resolve => setTimeout(resolve, 500));
         // Mock order record
