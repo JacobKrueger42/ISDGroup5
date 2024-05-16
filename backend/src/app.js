@@ -6,6 +6,7 @@ import crypto from 'crypto';
 import cors from 'cors';
 import { ServerOptions } from '#configuration';
 import 'dotenv/config'; // init the process with dotenv variables
+import OrderController from './controllers/OrderController';
 
 async function Setup() {
     const app = express();
@@ -30,6 +31,9 @@ async function Setup() {
 
     // configure routes automatically
     await ConfigureRoutes(app, { verbose: ServerOptions.verbose });
+
+    // Import and use order routes
+    app.use('/api/orders', OrderController);
 
     // configure post-request middleware
     app.use(ErrorHandler);
