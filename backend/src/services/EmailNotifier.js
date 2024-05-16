@@ -39,10 +39,9 @@ export default function emailNotifier() {
             );
 
             ServerOptions.verbose &&
-                error.response &&
                 console.error(
                     `Email Notifier | Error included a response body, `,
-                    error.response.body
+                    error
                 );
         }
     }
